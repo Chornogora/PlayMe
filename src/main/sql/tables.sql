@@ -13,18 +13,21 @@ CREATE TABLE statuses(
 CREATE TABLE users(
 	user_id varchar(36) NOT NULL PRIMARY KEY,
 	user_login varchar(64) NOT NULL UNIQUE,
-	user_password varchar(32) NOT NULL,
+	user_password varchar(64) NOT NULL,
 	user_email varchar(320) NOT NULL UNIQUE,
-	user_birthday date NOT NULL,
+	user_birthdate date NOT NULL,
 	user_name varchar(64) NOT NULL,
 	role_id varchar(36) NOT NULL,
 	status_id varchar(36) NOT NULL,
+	creation_date date not null,
+	modification_date date not null,
 	FOREIGN KEY(role_id) REFERENCES roles(role_id),
 	FOREIGN KEY(status_id) REFERENCES statuses(status_id)
 );
 
 CREATE TABLE musicians(
 	musician_id varchar(36) NOT NULL PRIMARY KEY,
+	musician_nickname varchar(64) NOT NULL,
 	user_id varchar(36) NOT NULL UNIQUE,
 	band_id varchar(36)
 );
