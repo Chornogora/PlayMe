@@ -13,3 +13,5 @@ INSERT INTO skills VALUES('7e8e571a-c95e-4ef4-b83d-08f96ae52b85', 'acoustic guit
 INSERT INTO skills VALUES('dfe681ce-3a5e-4337-9e59-0a4c8fdc0771', 'bass guitar');
 INSERT INTO skills VALUES('560ef018-a2d8-4628-b594-f39e77907d59', 'vocal');
 INSERT INTO skills VALUES('2d4012c8-fd17-447b-ae0d-a03bebc16ce0', 'piano');
+
+INSERT INTO users VALUES('bea6b180-d4f9-4bc9-8c42-dcf1832ea731', 'MainDeveloper', '37eb6480fa0e4bb48bb98fdcc69ef17ded019a51de8248fd968af7001f094943', 'anthony.bulhakov@gmail.com', TO_DATE('2000-01-05', 'YYYY-MM-DD'), 'Anton', 'Bulhakov', 'cfdafb34-5c90-49bf-a3db-bd909ac6e692', 'e2d487d3-7e4a-4024-8f0d-40af28a929be', NOW(), null);

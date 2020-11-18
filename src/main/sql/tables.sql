@@ -11,7 +11,7 @@ CREATE TABLE statuses(
 );
 
 CREATE TABLE users(
-	user_id varchar(36) NOT NULL PRIMARY KEY,
+	id varchar(36) NOT NULL PRIMARY KEY,
 	login varchar(64) NOT NULL UNIQUE,
 	password varchar(64) NOT NULL,
     email varchar(320) NOT NULL UNIQUE,
@@ -38,7 +38,7 @@ CREATE TABLE bands(
 	name varchar(64) NOT NULL UNIQUE,
 	creation_date date NOT NULL,
 	leader_id varchar(36) NOT NULL,
-	FOREIGN KEY(leader_id) REFERENCES users(id)
+	FOREIGN KEY(leader_id) REFERENCES musicians(id)
 );
 
 ALTER TABLE musicians ADD FOREIGN KEY(band_id) REFERENCES bands(id);
