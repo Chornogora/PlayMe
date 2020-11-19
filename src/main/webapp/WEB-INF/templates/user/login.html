@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link rel="stylesheet" href="/PlayMe/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/PlayMe/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="/PlayMe/css/authorization.css">
+</head>
+<body>
+
+<div class="container">
+    <div class="card card-login mx-auto text-center bg-dark">
+        <div class="card-header mx-auto bg-dark">
+            <span class="logo_title mt-5 playme-name">PlayMe</span>
+        </div>
+        <div class="card-body">
+            <form method="post" action="/auth" th:attr="action=@{/auth}">
+                <div class="input-group form-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fas fa-user"></i></span>
+                    </div>
+                    <input type="text" id="login" name="login" class="form-control" placeholder="Login">
+                </div>
+
+                <div class="input-group form-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fas fa-key"></i></span>
+                    </div>
+                    <input type="password" id="password" name="password" class="form-control" placeholder="Password">
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" id="submit-button" value="Login" class="btn btn-outline-danger login_btn">
+                </div>
+
+                <div th:if="${invalid}" class="invalid-message"> Login or password is incorrect. Try again.</div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
