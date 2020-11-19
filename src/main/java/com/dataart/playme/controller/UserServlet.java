@@ -1,9 +1,11 @@
 package com.dataart.playme.controller;
 
 import com.dataart.playme.service.UserService;
+import com.dataart.playme.util.SessionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -18,15 +20,15 @@ public class UserServlet extends HttpServlet {
     private UserService userService;
 
     @Override
-    public void init() {
+    public void init() throws ServletException {
+        super.init();
         String userServiceName = UserService.class.getName();
         userService = (UserService) getServletContext().getAttribute(userServiceName);
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        LOGGER.info("userServlet#doGet executed");
-        userService.getById("ert343");
-        resp.getWriter().write("User Servlet");
+        SessionUtil.invalidateSession(req.getSession(), resp);
+        resp.getWriter().write("userServlet#doGet()");
     }
 }

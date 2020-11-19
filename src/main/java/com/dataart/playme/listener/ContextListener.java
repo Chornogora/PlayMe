@@ -3,8 +3,10 @@ package com.dataart.playme.listener;
 import com.dataart.playme.exception.ApplicationInitializationException;
 import com.dataart.playme.repository.JDBCUserRepository;
 import com.dataart.playme.repository.impl.JDBCUserRepositoryImpl;
+import com.dataart.playme.service.AuthorizationService;
 import com.dataart.playme.service.UserService;
 import com.dataart.playme.service.UserValidationService;
+import com.dataart.playme.service.impl.AuthorizationServiceImpl;
 import com.dataart.playme.service.impl.UserServiceImpl;
 import com.dataart.playme.service.impl.UserValidationServiceImpl;
 import com.dataart.playme.util.JDBCConnector;
@@ -43,9 +45,11 @@ public class ContextListener implements ServletContextListener {
         //init services
         UserValidationService userValidationService = new UserValidationServiceImpl();
         UserService userService = new UserServiceImpl(userRepository, userValidationService);
+        AuthorizationService authorizationService = new AuthorizationServiceImpl();
 
         //save services
         context.setAttribute(UserService.class.getName(), userService);
+        context.setAttribute(AuthorizationService.class.getName(), authorizationService);
     }
 
     private DataSource getDataSource() {
