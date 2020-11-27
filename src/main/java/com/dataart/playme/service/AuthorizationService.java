@@ -4,5 +4,9 @@ import com.dataart.playme.model.User;
 
 public interface AuthorizationService {
 
-    boolean authorize(User user, String password);
+    AuthorizationStatus authorize(User user, String password);
+
+    enum AuthorizationStatus {
+        SUCCESS, WRONG_PASSWORD, ILLEGAL_STATUS
+    }
 }

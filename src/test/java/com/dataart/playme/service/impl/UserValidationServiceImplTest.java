@@ -107,6 +107,16 @@ public class UserValidationServiceImplTest {
     }
 
     @Test
+    public void shouldFindOneIssueCauseBirthdateIsTooEarly() {
+        DateUtil.getDateFromString("01-01-1800", "dd-MM-yyyy");
+        user.setBirthdate(new Date(System.currentTimeMillis()));
+
+        List<String> issues = validationService.validate(user);
+
+        Assert.assertEquals(1, issues.size());
+    }
+
+    @Test
     public void shouldFindOneIssueCauseFirstNameIsTooShort() {
         user.setFirstName("I");
 

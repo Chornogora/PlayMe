@@ -12,7 +12,11 @@ public final class Constants {
 
     public static final String DELETED_STATUS_ID = "user.status.deleted";
 
+    public static final String PENDING_STATUS_ID = "user.status.pending";
+
     public static final String DELETED_USER_MARK = "_deleted_on_";
+
+    public static final String WEB_DATE_FORMAT = "yyyy-MM-dd";
 
     public static final String ENCODING_ID = "security.encoding";
 
@@ -32,11 +36,15 @@ public final class Constants {
 
     public static final String SESSION_LAST_ACTIVATION_TIME_ATTRIBUTE = "last_active";
 
+    public static final String OPERATION_STATUS_CONTEXT_PARAMETER = "operationStatus";
+
     public static final String APPLICATION_PATH = "/PlayMe";
+
+    public static final String LOGIN_PAGE_PATH = "/PlayMe/auth";
 
     public static final String USER_MAIN_PAGE = "/PlayMe/main.html";
 
-    public static final String ADMIN_MAIN_PAGE = "/PlayMe/main-admin.html";
+    public static final String ADMIN_MAIN_PAGE = "/PlayMe/admin/users";
 
     private static Properties properties;
 
@@ -55,7 +63,7 @@ public final class Constants {
         Constants.properties = properties;
     }
 
-    public enum CONSTRAINTS {
+    public enum Constraints {
         MAX_LOGIN_LENGTH("constraints.max-login-length"),
         MIN_LOGIN_LENGTH("constraints.min-login-length"),
         LOGIN_PATTERN("constraints.login.regexp"),
@@ -65,11 +73,13 @@ public final class Constants {
         MAX_NAME_LENGTH("constraints.max-name-length"),
         MIN_NAME_LENGTH("constraints.min-name-length"),
         NAME_PATTERN("constraints.name.regexp"),
-        MIN_BIRTHDATE("constraints.birthdate.min");
+        MAX_BIRTHDATE("constraints.birthdate.max"),
+        MIN_BIRTHDATE("constraints.birthdate.min"),
+        MIN_CREATION_DATE("constraints.creation-date.min");
 
         private final String value;
 
-        CONSTRAINTS(String value) {
+        Constraints(String value) {
             this.value = value;
         }
 

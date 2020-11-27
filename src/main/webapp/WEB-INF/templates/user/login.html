@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Title</title>
 
+    <link rel='shortcut icon' type='image/x-icon' th:href='@{/favicon.ico}' />
     <link rel="stylesheet" href="/PlayMe/css/bootstrap.min.css">
     <link rel="stylesheet" href="/PlayMe/css/fontawesome-all.min.css">
     <link rel="stylesheet" href="/PlayMe/css/authorization.css">
@@ -35,7 +36,8 @@
                     <input type="submit" id="submit-button" value="Login" class="btn btn-outline-danger login_btn">
                 </div>
 
-                <div th:if="${invalid}" class="invalid-message"> Login or password is incorrect. Try again.</div>
+                <div th:if="${invalid_credentials}" class="invalid-message">Login or password is incorrect. Try again.</div>
+                <div th:if="${invalid_status}" class="invalid-message">Illegal status, confirm your email or contact the administrator</div>
             </form>
         </div>
     </div>

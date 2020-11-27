@@ -1,8 +1,8 @@
 package com.dataart.playme.exception;
 
-public class NoSuchRecordException extends RuntimeException{
+public class NoSuchRecordException extends RuntimeException {
 
-    public NoSuchRecordException(String message){
+    public NoSuchRecordException(String message) {
         super(message);
     }
 }

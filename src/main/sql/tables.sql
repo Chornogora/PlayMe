@@ -12,7 +12,7 @@ CREATE TABLE statuses(
 
 CREATE TABLE users(
 	id varchar(36) NOT NULL PRIMARY KEY,
-	login varchar(64) NOT NULL UNIQUE,
+	login varchar(128) NOT NULL UNIQUE,
 	password varchar(64) NOT NULL,
     email varchar(320) NOT NULL UNIQUE,
 	birthdate date NOT NULL,

@@ -6,7 +6,7 @@ public class ValidationException extends RuntimeException {
 
     private final List<String> issues;
 
-    public ValidationException(List<String> issues){
+    public ValidationException(List<String> issues) {
         this.issues = issues;
     }
 
