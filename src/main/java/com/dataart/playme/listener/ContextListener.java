@@ -6,6 +6,8 @@ import com.dataart.playme.repository.impl.JDBCUserRepositoryImpl;
 import com.dataart.playme.service.AuthorizationService;
 import com.dataart.playme.service.UserService;
 import com.dataart.playme.service.UserValidationService;
+import com.dataart.playme.service.dto.UserDtoTransformationService;
+import com.dataart.playme.service.dto.impl.UserDtoTransformationServiceImpl;
 import com.dataart.playme.service.impl.AuthorizationServiceImpl;
 import com.dataart.playme.service.impl.UserServiceImpl;
 import com.dataart.playme.service.impl.UserValidationServiceImpl;
@@ -46,10 +48,12 @@ public class ContextListener implements ServletContextListener {
         UserValidationService userValidationService = new UserValidationServiceImpl();
         UserService userService = new UserServiceImpl(userRepository, userValidationService);
         AuthorizationService authorizationService = new AuthorizationServiceImpl();
+        UserDtoTransformationService userDtoTransformationService = new UserDtoTransformationServiceImpl();
 
         //save services
         context.setAttribute(UserService.class.getName(), userService);
         context.setAttribute(AuthorizationService.class.getName(), authorizationService);
+        context.setAttribute(UserDtoTransformationService.class.getName(), userDtoTransformationService);
     }
 
     private DataSource getDataSource() {

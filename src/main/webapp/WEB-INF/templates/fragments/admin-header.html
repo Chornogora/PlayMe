@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
+<nav th:fragment="admin-header" class="navbar navbar-dark bg-dark">
+    <div class="collapse navbar-collapse custom-navbar">
+        <a class="navbar-brand" th:href="@{/admin/users}">
+            <img th:attr="src=@{/images/icon.png}" width="30" height="30" class="d-inline-block align-top" alt="logo">
+            PlayMe
+        </a>
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" th:href="@{/admin/users}">Users</a>
+            </li>
+        </ul>
+        <div class="form-inline">
+            <form method="post" th:attr="action=@{/signout}">
+                <input type="submit" class="btn btn-outline-info my-2 my-sm-0" value="Sign out">
+            </form>
+        </div>
+    </div>
+</nav>
+</body>
+</html>

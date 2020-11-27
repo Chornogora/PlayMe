@@ -1,5 +1,6 @@
 package com.dataart.playme.repository.impl;
 
+import com.dataart.playme.dto.FilterBean;
 import com.dataart.playme.exception.DatabaseOperationException;
 import com.dataart.playme.model.User;
 import com.dataart.playme.repository.JDBCUserRepository;
@@ -7,6 +8,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class JDBCUserRepositoryImpl implements JDBCUserRepository {
@@ -23,6 +27,37 @@ public class JDBCUserRepositoryImpl implements JDBCUserRepository {
             "JOIN roles ON users.role_id = roles.id " +
             "WHERE users.login = ?";
 
+    private static final String FIND_BY_LOGIN_OR_EMAIL_QUERY = "SELECT users.*, roles.name AS role_name, statuses.name AS status_name " +
+            "FROM users JOIN statuses ON users.status_id = statuses.id " +
+            "JOIN roles ON users.role_id = roles.id " +
+            "WHERE LOWER(users.login) = LOWER(?) OR users.email = ? LIMIT 1";
+
+    private static final String FILTERED_SEARCH_QUERY_PATTERN = "SELECT users.*, roles.name AS role_name, statuses.name AS status_name " +
+            "FROM users JOIN statuses ON users.status_id = statuses.id " +
+            "JOIN roles ON users.role_id = roles.id " +
+            "WHERE users.login LIKE CONCAT('%%', ?, '%%') " +
+            "AND users.email LIKE CONCAT('%%', ?, '%%') " +
+            "AND users.first_name LIKE CONCAT('%%', ?, '%%') " +
+            "AND users.last_name LIKE CONCAT('%%', ?, '%%') " +
+            "AND users.birthdate BETWEEN ? AND ? " +
+            "AND users.creation_date BETWEEN ? AND ? " +
+            "AND roles.name = ANY (string_to_array(?, ',')) " +
+            "AND statuses.name = ANY (string_to_array(?, ',')) " +
+            "ORDER BY %s %s " +
+            "LIMIT ? OFFSET ?";
+
+    private static final String USERS_COUNT_QUERY_PATTERN = "SELECT COUNT(*) " +
+            "FROM users JOIN statuses ON users.status_id = statuses.id " +
+            "JOIN roles ON users.role_id = roles.id " +
+            "WHERE users.login LIKE CONCAT('%%', ?, '%%') " +
+            "AND users.email LIKE CONCAT('%%', ?, '%%') " +
+            "AND users.first_name LIKE CONCAT('%%', ?, '%%') " +
+            "AND users.last_name LIKE CONCAT('%%', ?, '%%') " +
+            "AND users.birthdate BETWEEN ? AND ? " +
+            "AND users.creation_date BETWEEN ? AND ? " +
+            "AND roles.name = ANY (string_to_array(?, ',')) " +
+            "AND statuses.name = ANY (string_to_array(?, ','))";
+
     private static final String INSERT_QUERY = "INSERT INTO users VALUES(" +
             "?, ?, ?, ?, ?, ?, ?, " +
             "(SELECT id FROM roles WHERE name = ?), " +
@@ -34,6 +69,19 @@ public class JDBCUserRepositoryImpl implements JDBCUserRepository {
             "role_id = (SELECT id FROM roles WHERE name = ?), " +
             "status_id = (SELECT id FROM statuses WHERE name = ?) " +
             "WHERE id = ?";
+
+    private static final Map<String, String> SORTING_PARAMETERS = Map.of(
+            "id", "users.id",
+            "login", "users.login",
+            "email", "users.email",
+            "firstName", "users.first_name",
+            "lastName", "users.last_name",
+            "birthdate", "users.birthdate",
+            "creationDate", "users.creation_date");
+
+    final Map<String, String> SORTING_TYPES = Map.of(
+            "ASC", "ASC",
+            "DESC", "DESC");
 
     @Override
     public Optional<User> getById(Connection connection, String id) {
@@ -59,6 +107,74 @@ public class JDBCUserRepositoryImpl implements JDBCUserRepository {
             ResultSet resultSet = statement.executeQuery();
 
             return (resultSet.next()) ? Optional.of(extractUser(resultSet)) : Optional.empty();
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage());
+            throw new DatabaseOperationException("Can't get user from database", e);
+        }
+    }
+
+    @Override
+    public Optional<User> findByLoginOrEmail(Connection connection, String login, String email) {
+        try {
+            PreparedStatement statement = connection.prepareStatement(FIND_BY_LOGIN_OR_EMAIL_QUERY);
+            statement.setString(1, login);
+            statement.setString(2, email);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            return (resultSet.next()) ? Optional.of(extractUser(resultSet)) : Optional.empty();
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage());
+            throw new DatabaseOperationException("Can't get user from database", e);
+        }
+    }
+
+    @Override
+    public List<User> findFiltered(Connection connection, FilterBean filterBean) {
+        try {
+            String filteredSearchQuery = getFilteredSearchQuery(filterBean);
+            PreparedStatement statement = connection.prepareStatement(filteredSearchQuery);
+
+            statement.setString(1, filterBean.getLogin());
+            statement.setString(2, filterBean.getEmail());
+            statement.setString(3, filterBean.getFirstName());
+            statement.setString(4, filterBean.getLastName());
+            statement.setDate(5, new Date(filterBean.getBirthdateFrom().getTime()));
+            statement.setDate(6, new Date(filterBean.getBirthdateTo().getTime()));
+            statement.setDate(7, new Date(filterBean.getCreationDateFrom().getTime()));
+            statement.setDate(8, new Date(filterBean.getCreationDateTo().getTime()));
+            statement.setString(9, filterBean.getRoles());
+            statement.setString(10, filterBean.getStatuses());
+            statement.setInt(11, filterBean.getLimit());
+            statement.setInt(12, filterBean.getOffset());
+
+            ResultSet resultSet = statement.executeQuery();
+            return extractUsers(resultSet);
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage());
+            throw new DatabaseOperationException("Can't get user from database", e);
+        }
+    }
+
+    @Override
+    public int getUsersCount(Connection connection, FilterBean filterBean) {
+        try {
+            PreparedStatement statement = connection.prepareStatement(USERS_COUNT_QUERY_PATTERN);
+
+            statement.setString(1, filterBean.getLogin());
+            statement.setString(2, filterBean.getEmail());
+            statement.setString(3, filterBean.getFirstName());
+            statement.setString(4, filterBean.getLastName());
+            statement.setDate(5, new Date(filterBean.getBirthdateFrom().getTime()));
+            statement.setDate(6, new Date(filterBean.getBirthdateTo().getTime()));
+            statement.setDate(7, new Date(filterBean.getCreationDateFrom().getTime()));
+            statement.setDate(8, new Date(filterBean.getCreationDateTo().getTime()));
+            statement.setString(9, filterBean.getRoles());
+            statement.setString(10, filterBean.getStatuses());
+
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
+            return resultSet.getInt(1);
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
             throw new DatabaseOperationException("Can't get user from database", e);
@@ -108,6 +224,15 @@ public class JDBCUserRepositoryImpl implements JDBCUserRepository {
         }
     }
 
+    private List<User> extractUsers(ResultSet resultSet) throws SQLException {
+        List<User> users = new LinkedList<>();
+        while (resultSet.next()) {
+            User user = extractUser(resultSet);
+            users.add(user);
+        }
+        return users;
+    }
+
     private User extractUser(ResultSet resultSet) throws SQLException {
         User user = new User();
         user.setId(resultSet.getString("id"));
@@ -122,5 +247,11 @@ public class JDBCUserRepositoryImpl implements JDBCUserRepository {
         user.setRole(resultSet.getString("role_name"));
         user.setStatus(resultSet.getString("status_name"));
         return user;
+    }
+
+    private String getFilteredSearchQuery(FilterBean filterBean) {
+        String sortingField = SORTING_PARAMETERS.get(filterBean.getSortingField());
+        String sortingType = SORTING_TYPES.get(filterBean.getSortingType());
+        return String.format(FILTERED_SEARCH_QUERY_PATTERN, sortingField, sortingType);
     }
 }

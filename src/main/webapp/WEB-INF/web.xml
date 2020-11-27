@@ -6,7 +6,7 @@
     <display-name>PlayMe</display-name>
 
     <welcome-file-list>
-        <welcome-file>/pages/main.html</welcome-file>
+        <welcome-file>/PlayMe/auth</welcome-file>
     </welcome-file-list>
 
     <resource-ref>
@@ -32,18 +32,18 @@
     </filter-mapping>
 
     <filter-mapping>
+        <filter-name>UserFilter</filter-name>
+        <url-pattern>/main.html</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
         <filter-name>SessionFilter</filter-name>
-        <url-pattern>/main-admin.html</url-pattern>
+        <url-pattern>/admin/*</url-pattern>
     </filter-mapping>
 
     <filter-mapping>
         <filter-name>AdministratorFilter</filter-name>
-        <url-pattern>/main-admin.html</url-pattern>
-    </filter-mapping>
-
-    <filter-mapping>
-        <filter-name>UserFilter</filter-name>
-        <url-pattern>/main.html</url-pattern>
+        <url-pattern>/admin/*</url-pattern>
     </filter-mapping>
 
     <filter-mapping>

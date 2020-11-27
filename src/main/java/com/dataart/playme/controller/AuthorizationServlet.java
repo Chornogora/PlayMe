@@ -6,6 +6,7 @@ import com.dataart.playme.service.AuthorizationService;
 import com.dataart.playme.service.UserService;
 import com.dataart.playme.util.Constants;
 import com.dataart.playme.util.SessionUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.thymeleaf.context.WebContext;
 
 import javax.servlet.ServletContext;
@@ -23,7 +24,11 @@ public class AuthorizationServlet extends ThymeleafServlet {
 
     private static final String PASSWORD_PARAMETER_NAME = "password";
 
-    private static final String INVALID_MARK = "invalid";
+    private static final String INVALID_LOGIN_OR_PASSWORD_MARK = "invalid_credentials";
+
+    private static final String INVALID_STATUS_MARK = "invalid_status";
+
+    private static final String STATUS_SESSION_ATTRIBUTE = "status";
 
     private AuthorizationService authorizationService;
 
@@ -42,10 +47,9 @@ public class AuthorizationServlet extends ThymeleafServlet {
         ServletContext servletContext = req.getServletContext();
         WebContext context = new WebContext(req, resp, servletContext);
 
-        String isInvalid = req.getParameter(INVALID_MARK);
-        if ("true".equals(isInvalid)) {
-            context.setVariable(INVALID_MARK, "true");
-        }
+        String status = (String) req.getSession().getAttribute(STATUS_SESSION_ATTRIBUTE);
+        context.setVariable(status == null ? StringUtils.EMPTY : status, true);
+        req.getSession().removeAttribute(status);
 
         templateEngine.process(LOGIN_PAGE_PATH, context, resp.getWriter());
     }
@@ -57,14 +61,20 @@ public class AuthorizationServlet extends ThymeleafServlet {
 
         try {
             User user = userService.getByLogin(login);
-            if (authorizationService.authorize(user, password)) {
-                SessionUtil.refreshSession(req.getSession());
-                redirectUser(req, resp, user);
-                return;
+            AuthorizationService.AuthorizationStatus status = authorizationService.authorize(user, password);
+            switch (status) {
+                case WRONG_PASSWORD:
+                    sendInvalid(req, resp, INVALID_LOGIN_OR_PASSWORD_MARK);
+                    break;
+                case ILLEGAL_STATUS:
+                    sendInvalid(req, resp, INVALID_STATUS_MARK);
+                    break;
+                case SUCCESS:
+                    SessionUtil.refreshSession(req.getSession());
+                    redirectUser(req, resp, user);
             }
-            sendInvalid(resp);
         } catch (NoSuchRecordException e) {
-            sendInvalid(resp);
+            sendInvalid(req, resp, INVALID_LOGIN_OR_PASSWORD_MARK);
         }
     }
 
@@ -74,8 +84,9 @@ public class AuthorizationServlet extends ThymeleafServlet {
         resp.sendRedirect(redirectLocation);
     }
 
-    private void sendInvalid(HttpServletResponse resp) throws IOException {
-        String redirectLocation = String.format("/PlayMe/auth?%s=true", INVALID_MARK);
+    private void sendInvalid(HttpServletRequest req, HttpServletResponse resp, String message) throws IOException {
+        req.getSession().setAttribute(STATUS_SESSION_ATTRIBUTE, message);
+        String redirectLocation = "/PlayMe/auth";
         resp.sendRedirect(redirectLocation);
     }
 

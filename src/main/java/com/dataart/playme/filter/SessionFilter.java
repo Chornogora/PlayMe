@@ -14,8 +14,6 @@ import java.util.Date;
 @WebFilter(filterName = "SessionFilter")
 public class SessionFilter implements Filter {
 
-    private static final String LOGIN_PAGE_PATH = "/PlayMe/auth";
-
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
@@ -29,7 +27,7 @@ public class SessionFilter implements Filter {
         }
 
         SessionUtil.invalidateSession(session, httpServletResponse);
-        httpServletResponse.sendRedirect(LOGIN_PAGE_PATH);
+        httpServletResponse.sendRedirect(Constants.LOGIN_PAGE_PATH);
     }
 
     private boolean isSessionActive(HttpSession session) {

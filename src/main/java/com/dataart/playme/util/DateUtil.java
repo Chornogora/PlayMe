@@ -10,7 +10,11 @@ public final class DateUtil {
 
     public static Date getDateFromString(String dateAsString) {
         String datePattern = Constants.get(Constants.DATE_PATTERN_ID);
-        SimpleDateFormat dateFormat = new SimpleDateFormat(datePattern);
+        return getDateFromString(dateAsString, datePattern);
+    }
+
+    public static Date getDateFromString(String dateAsString, String pattern) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
         try {
             return dateFormat.parse(dateAsString);
         } catch (ParseException e) {
