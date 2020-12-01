@@ -16,13 +16,11 @@ public interface UserService {
 
     int getUsersCount(FilterBean filterBean);
 
-    void addUser(User user);
+    User addUser(User user);
 
-    void updateUser(String userId, UserDto changes);
+    User updateUser(String userId, UserDto changes);
 
-    void deleteUser(User user);
+    User deleteUser(User user);
 
-    void activateUser(User user);
-
-    void disableUser(User user);
+    User activateUser(User user);
 }
