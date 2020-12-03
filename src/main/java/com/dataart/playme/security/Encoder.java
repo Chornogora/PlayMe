@@ -1,14 +1,20 @@
-package com.dataart.playme.util;
+package com.dataart.playme.security;
+
+import com.dataart.playme.util.Constants;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Formatter;
 
-public class Encoder {
+@Component
+public class Encoder implements PasswordEncoder {
 
-    public static String encode(String line) {
-        byte[] bytesOfMessage = line.getBytes(StandardCharsets.UTF_8);
+    @Override
+    public String encode(CharSequence line) {
+        byte[] bytesOfMessage = line.toString().getBytes(StandardCharsets.UTF_8);
         String encoding = Constants.get(Constants.ENCODING_ID);
 
         MessageDigest md;
@@ -20,6 +26,12 @@ public class Encoder {
 
         byte[] encodedBytes = md.digest(bytesOfMessage);
         return byteToHex(encodedBytes);
+    }
+
+    @Override
+    public boolean matches(CharSequence rawPassword, String encodedPassword) {
+        String newPasswordEncoded = encode(rawPassword);
+        return encodedPassword.equals(newPasswordEncoded);
     }
 
     private static String byteToHex(final byte[] hash) {

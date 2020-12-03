@@ -1,6 +1,7 @@
 package com.dataart.playme.controller.rest;
 
-import com.dataart.playme.dto.FilterBean;
+import com.dataart.playme.model.Role;
+import com.dataart.playme.model.Status;
 import com.dataart.playme.model.User;
 import com.dataart.playme.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,10 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController
-@RequestMapping("/users/rest")
+@RequestMapping("/user")
 public class UserRestController {
 
     private final UserService userService;
@@ -22,9 +21,11 @@ public class UserRestController {
     }
 
     @GetMapping
-    public List<User> getUsers(){
-        FilterBean filterBean = new FilterBean();
-        filterBean.setLogin("ir");
-        return userService.findFiltered(filterBean);
+    public User getUser(){
+        User user = new User();
+        user.setLogin("TestUser");
+        user.setRole(new Role("123", "user"));
+        user.setStatus(new Status("123", "active"));
+        return user;
     }
 }
