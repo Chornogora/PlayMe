@@ -3,13 +3,16 @@ package com.dataart.playme.service.impl;
 import com.dataart.playme.dto.FilterBean;
 import com.dataart.playme.dto.UserDto;
 import com.dataart.playme.exception.NoSuchRecordException;
+import com.dataart.playme.model.Status;
 import com.dataart.playme.model.User;
 import com.dataart.playme.repository.UserRepository;
 import com.dataart.playme.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -43,6 +46,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User addUser(User user) {
+        String id = UUID.randomUUID().toString();
+        user.setId(id);
+        user.setCreationDate(new Date(System.currentTimeMillis()));
         return userRepository.save(user);
     }
 
@@ -58,6 +64,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User activateUser(User user) {
+        return null;
+    }
+
+    private User modifyUser(User original, UserDto dto) {
+        if (!dto.getEmail().equals(original.getEmail())) {
+            dto.setStatus(Status.StatusName.PENDING.getValue());
+        }
+
+        //User modified =
         return null;
     }
 }

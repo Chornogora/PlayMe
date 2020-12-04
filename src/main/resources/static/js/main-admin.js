@@ -20,38 +20,38 @@ function attachFiltersEventHandler(){
     });
 
     $("#clear-filters-button").on('click', ()=>{
-        location.href = "/PlayMe/admin/users";
+        location.href = "/admin/users";
     });
 }
 
 function applyFilterParameters(){
     const parameters = {
-        "login-filter": $("#login-filter").val(),
-        "email-filter": $("#email-filter").val(),
-        "first-name-filter": $("#first-name-filter").val(),
-        "last-name-filter": $("#last-name-filter").val(),
-        "birthdate-from-filter": $("#birthdate-filter-from").val(),
-        "birthdate-to-filter": $("#birthdate-filter-to").val(),
-        "creation-date-from-filter": $("#creation-date-filter-from").val(),
-        "creation-date-to-filter": $("#creation-date-filter-to").val(),
-        "role-filter": $("input[name='role-filter']:checked").map(function() {
+        "login": $("#login-filter").val(),
+        "email": $("#email-filter").val(),
+        "firstName": $("#first-name-filter").val(),
+        "lastName": $("#last-name-filter").val(),
+        "birthdateFrom": $("#birthdate-filter-from").val(),
+        "birthdateTo": $("#birthdate-filter-to").val(),
+        "creationDateFrom": $("#creation-date-filter-from").val(),
+        "creationDateTo": $("#creation-date-filter-to").val(),
+        "roles": $("input[name='role-filter']:checked").map(function() {
             return $(this).val();
         }).get(),
-        "status-filter": $("input[name='status-filter']:checked").map(function() {
+        "statuses": $("input[name='status-filter']:checked").map(function() {
             return $(this).val();
         }).get(),
-        "sorting-field": $("[data-status]").data('field') || '',
-        "sorting-type": $("[data-status]").attr('data-status') || '',
+        "sortingField": $("[data-status]").data('field') || '',
+        "sortingType": $("[data-status]").attr('data-status') || '',
         "limit": $("#limit-input").val(),
         "offset": $("#offset-input").val()
     }
-    location.href = "/PlayMe/admin/users?"+ new URLSearchParams(parameters);
+    location.href = "/admin/users?"+ new URLSearchParams(parameters);
 }
 
 function attachUserControlButtonsHandlers(){
     $('.edit-user-button').on('click', (event)=>{
         const userId = $(event.target).data(constants.USER_ID_ATTRIBUTE_NAME);
-        location.href = `/PlayMe/admin/user/edit/${userId}`;
+        location.href = `/admin/users/edit/${userId}`;
     });
 
     $('#delete-user-modal').on('show.bs.modal', function (event) {
@@ -62,7 +62,7 @@ function attachUserControlButtonsHandlers(){
       $("#modal-confirm-button").on('click', ()=>{
         const formData = new FormData();
         formData.append('userId', userId);
-        fetch("/PlayMe/admin/user/delete/" + userId, {
+        fetch("/admin/users/delete/" + userId, {
             method: 'DELETE',
         }).then(()=>location.reload());
       });

@@ -6,7 +6,7 @@
 </head>
 <body>
 <div th:fragment="edit-user-form" class="user-form col-md-4 offset-md-4">
-    <form th:attr="action=@{/admin/user/edit/} + ${user.id}" method="post">
+    <form th:attr="action=@{/admin/users/edit/} + ${user.id}" method="post">
         <div th:if="${#lists.contains(validationIssues, &quot;user_exists&quot;)}" class="error-message">
             User with such email already exists
         </div>

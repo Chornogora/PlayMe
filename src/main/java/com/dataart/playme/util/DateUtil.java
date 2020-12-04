@@ -9,8 +9,8 @@ import java.util.Date;
 public final class DateUtil {
 
     public static Date getDateFromString(String dateAsString) {
-        String datePattern = Constants.get(Constants.DATE_PATTERN_ID);
-        return getDateFromString(dateAsString, datePattern);
+        String defaultPattern = Constants.DEFAULT_DATETIME_FORMAT;
+        return getDateFromString(dateAsString, defaultPattern);
     }
 
     public static Date getDateFromString(String dateAsString, String pattern) {
@@ -23,8 +23,8 @@ public final class DateUtil {
     }
 
     public static String dateToString(Date date) {
-        String datePattern = Constants.get(Constants.DATE_PATTERN_ID);
-        SimpleDateFormat dateFormat = new SimpleDateFormat(datePattern);
+        String defaultPattern = Constants.DEFAULT_DATETIME_FORMAT;
+        SimpleDateFormat dateFormat = new SimpleDateFormat(defaultPattern);
         return dateFormat.format(date);
     }
 }

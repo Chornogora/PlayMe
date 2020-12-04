@@ -28,9 +28,13 @@ public final class Constants {
 
     public static final String ADMIN_ROLE_ID = "user.role.admin";
 
-    public static final String DATE_PATTERN_ID = "date.pattern";
-
     public static final String ROLE_ATTRIBUTE = "role";
+
+    public static final String NOW = "now";
+
+    public static final String REDIRECT_PREFIX = "redirect:";
+
+    public static final String DEFAULT_DATETIME_FORMAT = "yyyy-MM-dd_HH-mm-ss";
 
     public static final String SESSION_LIFETIME = "session.lifetime";
 
@@ -38,13 +42,13 @@ public final class Constants {
 
     public static final String OPERATION_STATUS_CONTEXT_PARAMETER = "operationStatus";
 
-    public static final String APPLICATION_PATH = "/PlayMe";
+    public static final String APPLICATION_PATH = "/";
 
-    public static final String LOGIN_PAGE_PATH = "/PlayMe/auth";
+    public static final String LOGIN_PAGE_PATH = "/auth";
 
-    public static final String USER_MAIN_PAGE = "/PlayMe/main.html";
+    public static final String USER_MAIN_PAGE = "/main.html";
 
-    public static final String ADMIN_MAIN_PAGE = "/PlayMe/admin/users";
+    public static final String ADMIN_MAIN_PAGE = "/admin/users";
 
     private static Properties properties;
 
@@ -63,28 +67,32 @@ public final class Constants {
         Constants.properties = properties;
     }
 
-    public enum Constraints {
-        MAX_LOGIN_LENGTH("constraints.max-login-length"),
-        MIN_LOGIN_LENGTH("constraints.min-login-length"),
-        LOGIN_PATTERN("constraints.login.regexp"),
-        MAX_PASSWORD_LENGTH("constraints.max-password-length"),
-        MIN_PASSWORD_LENGTH("constraints.min-password-length"),
-        EMAIL_PATTERN("constraints.email.regexp"),
-        MAX_NAME_LENGTH("constraints.max-name-length"),
-        MIN_NAME_LENGTH("constraints.min-name-length"),
-        NAME_PATTERN("constraints.name.regexp"),
-        MAX_BIRTHDATE("constraints.birthdate.max"),
-        MIN_BIRTHDATE("constraints.birthdate.min"),
-        MIN_CREATION_DATE("constraints.creation-date.min");
+    public static class Constraints {
 
-        private final String value;
+        public static final int MAX_LOGIN_LENGTH = 64;
 
-        Constraints(String value) {
-            this.value = value;
-        }
+        public static final int MIN_LOGIN_LENGTH = 8;
 
-        public String getValue() {
-            return value;
-        }
+        public static final String LOGIN_PATTERN = "[a-zA-Z0-9.-_@]*";
+
+        public static final int MAX_PASSWORD_LENGTH = 64;
+
+        public static final int  MIN_PASSWORD_LENGTH = 8;
+
+        public static final int MAX_EMAIL_LENGTH = 320;
+
+        public static final String  EMAIL_PATTERN = "^[A-Za-z0-9+%!-]+(\\.?[a-zA-Z0-9+%!-]*)*@[a-z0-9-]+(\\.[a-z0-9]+)*";
+
+        public static final int MAX_NAME_LENGTH = 64;
+
+        public static final int MIN_NAME_LENGTH = 2;
+
+        public static final String NAME_PATTERN = "[a-zA-Z-]*";
+
+        public static final String MAX_BIRTHDATE = "2014-11-01_00-00-00";
+
+        public static final String  MIN_BIRTHDATE = "1900-01-01_00-00-00";
+
+        public static final String MIN_CREATION_DATE = "2020-11-13_00-00-00";
     }
 }

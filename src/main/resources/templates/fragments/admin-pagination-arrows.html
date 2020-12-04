@@ -11,7 +11,7 @@
     <input type="image" th:attr="src=@{/images/arrows/arrow-left.png},disabled=${filterBean.offset == 0}"
            id="pagination-left-button" class="pagination-arrow">
     <span th:text="(${filterBean.offset} / ${filterBean.limit} + 1) + ' of ' + ${(usersCount / filterBean.limit) + (usersCount % filterBean.limit == 0 ? 0 : 1)}" class="pagination-text"></span>
-    <input type="image" th:attr="src=@{/images/arrows/arrow-right.png},disabled=${usersCount - filterBean.offset lte filterBean.limit}"
+    <input type="image" th:attr="src=@{/images/arrows/arrow-right.png},disabled=${usersCount - filterBean.offset <= filterBean.limit}"
            id="pagination-right-button" class="pagination-arrow">
 </div>
 </body>

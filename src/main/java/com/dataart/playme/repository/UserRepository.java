@@ -15,7 +15,15 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     Optional<User> findByLoginOrEmail(String login, String email);
 
-    @Query(value = "SELECT u FROM User u WHERE u.login LIKE :#{#filterBean.login}")
+    @Query(value = "SELECT u FROM User u WHERE u.login LIKE CONCAT('%%', :#{#filterBean.login}, '%%') " +
+            "AND u.email LIKE CONCAT('%%', :#{#filterBean.email}, '%%') " +
+            "AND u.firstName LIKE CONCAT('%%', :#{#filterBean.firstName}, '%%') " +
+            "AND u.lastName LIKE CONCAT('%%', :#{#filterBean.lastName}, '%%') " +
+            "AND u.birthdate BETWEEN :#{#filterBean.birthdateFrom} AND :#{#filterBean.birthdateTo} " +
+            "AND u.creationDate BETWEEN :#{#filterBean.creationDateFrom} AND :#{#filterBean.creationDateTo} " +
+            "AND u.role.name IN :#{#filterBean.roles} " +
+            "AND u.status.name IN :#{#filterBean.statuses} " +
+            "ORDER BY :#{#filterBean.sortingField} :#{#filterBean.sortingType}")
     List<User> findFiltered(@Param("filterBean") FilterBean filterBean);
 
     @Query(value = "SELECT COUNT(u) FROM User u WHERE u.login LIKE :#{#filterBean.login}")
