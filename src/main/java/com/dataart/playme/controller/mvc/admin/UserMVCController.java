@@ -10,13 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.validation.Valid;
 import javax.ws.rs.core.Response;
@@ -26,9 +23,6 @@ import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/admin/users")
-/*@SessionAttributes({UserMVCController.VALIDATION_ISSUES_MODEL_ATTRIBUTE,
-        UserMVCController.ENTERED_DATA_MODEL_ATTRIBUTE,
-        Constants.OPERATION_STATUS_CONTEXT_PARAMETER})*/
 public class UserMVCController {
 
     private static final String ALL_USERS_PATH = "/admin/users";
@@ -39,15 +33,21 @@ public class UserMVCController {
 
     private static final String ADD_USER_FILEPATH = "/admin/add-user.html";
 
+    private static final String EDIT_USER_PATH = "/admin/edit/";
+
+    private static final String EDIT_USER_FILEPATH = "/admin/edit-user.html";
+
     private static final String FILTER_BEAN_MODEL_ATTRIBUTE = "filterBean";
 
     private static final String USERS_MODEL_ATTRIBUTE = "users";
 
     private static final String USERS_COUNT_MODEL_ATTRIBUTE = "usersCount";
 
-    public static final String ENTERED_DATA_MODEL_ATTRIBUTE = "enteredData";
+    private static final String ENTERED_DATA_MODEL_ATTRIBUTE = "enteredData";
 
-    public static final String VALIDATION_ISSUES_MODEL_ATTRIBUTE = "validationIssues";
+    private static final String VALIDATION_ISSUES_MODEL_ATTRIBUTE = "validationIssues";
+
+    private static final String USER_MODEL_ATTRIBUTE = "user";
 
     private final UserService userService;
 
@@ -87,22 +87,43 @@ public class UserMVCController {
         return ADD_USER_FILEPATH;
     }
 
+    @GetMapping("/edit/{userId}")
+    public String getEditPage(@PathVariable String userId, Model model) {
+        User originalUser = userService.getById(userId);
+        model.addAttribute(USER_MODEL_ATTRIBUTE, originalUser);
+
+        if (model.getAttribute(VALIDATION_ISSUES_MODEL_ATTRIBUTE) == null) {
+            model.addAttribute(VALIDATION_ISSUES_MODEL_ATTRIBUTE, Collections.emptyList());
+        }
+
+        return EDIT_USER_FILEPATH;
+    }
+
     @PostMapping("/add")
-    public ModelAndView addUser(@Valid UserDto dto, BindingResult bindingResult, ModelMap model) {
+    public RedirectView addUser(@Valid UserDto dto, BindingResult bindingResult, RedirectAttributes redirect) {
         List<String> errors = bindingResult.getAllErrors()
                 .stream()
                 .map(DefaultMessageSourceResolvable::getDefaultMessage)
                 .collect(Collectors.toList());
         if (!errors.isEmpty()) {
             dto.setPassword(null);
-            model.addAttribute(ENTERED_DATA_MODEL_ATTRIBUTE, dto);
-            model.addAttribute(VALIDATION_ISSUES_MODEL_ATTRIBUTE, errors);
-            return new ModelAndView(Constants.REDIRECT_PREFIX + ADD_USER_PATH, model);
+            redirect.addFlashAttribute(ENTERED_DATA_MODEL_ATTRIBUTE, dto)
+                    .addFlashAttribute(VALIDATION_ISSUES_MODEL_ATTRIBUTE, errors);
+            return new RedirectView(ADD_USER_PATH);
         }
         User user = userDtoTransformationService.dtoToUser(dto);
         userService.addUser(user);
-        model.addAttribute(Constants.OPERATION_STATUS_CONTEXT_PARAMETER,
+        redirect.addFlashAttribute(Constants.OPERATION_STATUS_CONTEXT_PARAMETER,
                 String.valueOf(Response.Status.OK.getStatusCode()));
-        return new ModelAndView(Constants.REDIRECT_PREFIX + ALL_USERS_PATH, model);
+        return new RedirectView(ALL_USERS_PATH);
+    }
+
+    @DeleteMapping("/delete/{userId}")
+    public RedirectView deleteUser(@PathVariable String userId, RedirectAttributes redirect){
+        User user = userService.getById(userId);
+        userService.deleteUser(user);
+        redirect.addFlashAttribute(Constants.OPERATION_STATUS_CONTEXT_PARAMETER,
+                String.valueOf(Response.Status.OK.getStatusCode()));
+        return new RedirectView(ALL_USERS_PATH);
     }
 }

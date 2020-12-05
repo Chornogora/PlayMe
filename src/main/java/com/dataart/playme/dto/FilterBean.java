@@ -11,6 +11,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor
@@ -42,11 +44,11 @@ public class FilterBean {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date creationDateTo = new Date(System.currentTimeMillis());
 
-    private String[] roles = Arrays.stream(Role.RoleName.values())
-        .map(Role.RoleName::getValue).toArray(String[]::new);
+    private List<String> roles = Arrays.stream(Role.RoleName.values())
+        .map(Role.RoleName::getValue).collect(Collectors.toList());
 
-    private String[] statuses = Arrays.stream(Status.StatusName.values())
-            .map(Status.StatusName::getValue).toArray(String[]::new);
+    private List<String> statuses = Arrays.stream(Status.StatusName.values())
+            .map(Status.StatusName::getValue).collect(Collectors.toList());
 
     private String sortingField = DEFAULT_SORTING_FIELD;
 

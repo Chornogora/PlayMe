@@ -5,8 +5,12 @@ import com.dataart.playme.dto.UserDto;
 import com.dataart.playme.exception.NoSuchRecordException;
 import com.dataart.playme.model.Status;
 import com.dataart.playme.model.User;
+import com.dataart.playme.repository.StatusRepository;
 import com.dataart.playme.repository.UserRepository;
 import com.dataart.playme.service.UserService;
+import com.dataart.playme.util.Constants;
+import com.dataart.playme.util.DateUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,9 +23,12 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
+    private final StatusRepository statusRepository;
+
     @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, StatusRepository statusRepository) {
         this.userRepository = userRepository;
+        this.statusRepository = statusRepository;
     }
 
     @Override
@@ -41,7 +48,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int getUsersCount(FilterBean filterBean) {
-        return 0;
+        return userRepository.getUsersCount(filterBean);
     }
 
     @Override
@@ -59,12 +66,27 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User deleteUser(User user) {
-        return null;
+        String statusName = Status.StatusName.DELETED.getValue();
+        Status deletedStatus = statusRepository.findByName(statusName)
+                .orElseThrow(()->new NoSuchRecordException("Cannot find deleted status"));
+        if(!user.getStatus().equals(deletedStatus)) {
+            String dateFormatted = DateUtil.dateToString(new Date(System.currentTimeMillis()));
+            String modifiedLogin = user.getLogin() + Constants.DELETED_USER_MARK + dateFormatted;
+            user.setLogin(modifiedLogin);
+            user.setPassword(StringUtils.EMPTY);
+            user.setStatus(deletedStatus);
+            return updateUser(user);
+        }
+        return user;
     }
 
     @Override
     public User activateUser(User user) {
         return null;
+    }
+
+    private User updateUser(User user){
+        return userRepository.save(user);
     }
 
     private User modifyUser(User original, UserDto dto) {
