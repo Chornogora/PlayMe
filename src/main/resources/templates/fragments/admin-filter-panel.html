@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>admin-filter-panel</title>
+</head>
+<body>
+<div th:fragment="admin-filter-panel">
+    <input type="checkbox" id="filter-panel-toggle" hidden>
+    <div class="filter-panel">
+        <label for="filter-panel-toggle" class="filter-panel-toggle" onclick></label>
+
+        <div class="filter-panel-form">
+            <div class="form-group">
+                <label for="login-filter">Login</label>
+                <input name="login-filter" type="text" class="form-control" id="login-filter" placeholder="Login"
+                       th:attr="value=${filterBean.login}">
+            </div>
+            <div class="form-group">
+                <label for="email-filter">Email</label>
+                <input name="email-filter" type="email" class="form-control" id="email-filter"
+                       placeholder="example@gmail.com" th:attr="value=${filterBean.email}">
+            </div>
+            <div class="form-group">
+                <label for="first-name-filter">First name</label>
+                <input name="first-name-filter" type="text" class="form-control" id="first-name-filter"
+                       placeholder="First-Name" th:attr="value=${filterBean.firstName}">
+            </div>
+            <div class="form-group">
+                <label for="last-name-filter">Last name</label>
+                <input name="last-name-filter" type="text" class="form-control" id="last-name-filter"
+                       placeholder="Second-Name" th:attr="value=${filterBean.lastName}">
+            </div>
+            <div class="form-group table-form-group">
+                <div>Birthdate</div>
+                <div class="table-row-group">
+                    <label for="birthdate-filter-from" class="table-cell-group">From</label>
+                    <input name="birthdate-from-filter" type="date" class="form-control" id="birthdate-filter-from"
+                           th:attr="value=${#dates.format(filterBean.birthdateFrom, 'yyyy-MM-dd')}">
+                </div>
+                <div class="table-row-group">
+                    <label for="birthdate-filter-to" class="table-cell-group">To</label>
+                    <input name="birthdate-to-filter" type="date" class="form-control" id="birthdate-filter-to"
+                           th:attr="value=${#dates.format(filterBean.birthdateTo, 'yyyy-MM-dd')}">
+                </div>
+            </div>
+            <div class="form-group table-form-group">
+                <div>Creation date</div>
+                <div class="table-row-group">
+                    <label for="creation-date-filter-from" class="table-cell-group">From</label>
+                    <input name="creation-date-from-filter" type="date" class="form-control"
+                           id="creation-date-filter-from"
+                           th:attr="value=${#dates.format(filterBean.creationDateFrom, 'yyyy-MM-dd')}">
+                </div>
+                <div class="table-row-group">
+                    <label for="creation-date-filter-to" class="table-cell-group">To</label>
+                    <input name="creation-date-to-filter" type="date" class="form-control" id="creation-date-filter-to"
+                           th:attr="value=${#dates.format(filterBean.creationDateTo, 'yyyy-MM-dd')}">
+                </div>
+            </div>
+            <div class="form-group">
+                <div>Role</div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" name="role-filter" id="administrator-filter"
+                           value="administrator" th:attr="checked=${#arrays.contains(filterBean.roles, 'administrator')}">
+                    <label class="form-check-label" for="administrator-filter">
+                        Administrator
+                    </label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" name="role-filter" id="user-filter" value="user"
+                           th:attr="checked=${#arrays.contains(filterBean.roles, 'user')}">
+                    <label class="form-check-label" for="user-filter">
+                        User
+                    </label>
+                </div>
+            </div>
+            <span th:text="filterBean.roles"></span>
+            <div class="form-group">
+                <div>Status</div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="status-filter" id="active-status-filter"
+                           value="active" th:attr="checked=${#arrays.contains(filterBean.statuses, 'active')}">
+                    <label class="form-check-label" for="active-status-filter">
+                        Active
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="status-filter" id="pending-status-filter"
+                           value="pending" th:attr="checked=${#arrays.contains(filterBean.statuses, 'pending')}">
+                    <label class="form-check-label" for="user-filter">
+                        Pending
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="status-filter" id="disabled-status-filter"
+                           value="disabled" th:attr="checked=${#arrays.contains(filterBean.statuses, 'disabled')}">
+                    <label class="form-check-label" for="user-filter">
+                        Disabled
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="status-filter" id="deleted-status-filter"
+                           value="deleted" th:attr="checked=${#arrays.contains(filterBean.statuses, 'deleted')}">
+                    <label class="form-check-label" for="user-filter">
+                        Deleted
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div>
+            <button class="btn btn-outline-info" id="apply-filters-button">Apply</button>
+            <button class="btn btn-outline-info" id="clear-filters-button">Clear All</button>
+        </div>
+    </div>
+</div>
+</body>
+</html>

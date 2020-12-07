@@ -5,5 +5,7 @@ import com.dataart.playme.model.User;
 
 public interface UserDtoTransformationService {
 
-    User transform(UserDto userDto);
+    User dtoToUser(UserDto userDto);
+
+    UserDto userToDto(User user);
 }
