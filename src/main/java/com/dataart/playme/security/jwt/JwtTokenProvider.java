@@ -1,5 +1,6 @@
 package com.dataart.playme.security.jwt;
 
+import com.dataart.playme.exception.ApplicationRuntimeException;
 import com.dataart.playme.util.Constants;
 import io.jsonwebtoken.*;
 import org.apache.commons.lang3.StringUtils;
@@ -56,14 +57,18 @@ public class JwtTokenProvider {
                 .compact();
     }
 
+    public String recreateToken(Authentication authentication) {
+        String role = authentication.getAuthorities()
+                .stream().findFirst()
+                .orElseThrow(() -> new ApplicationRuntimeException("Token without role"))
+                .getAuthority();
+        return createToken(authentication.getName(), role);
+    }
+
     public Authentication getAuthentication(String token) {
         String login = getLogin(token);
         UserDetails userDetails = this.userDetailsService.loadUserByUsername(login);
         return new UsernamePasswordAuthenticationToken(userDetails, StringUtils.EMPTY, userDetails.getAuthorities());
-    }
-
-    public String getLogin(String token) {
-        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
     }
 
     public String resolveToken(HttpServletRequest req) {
@@ -94,5 +99,9 @@ public class JwtTokenProvider {
                     .orElse(null);
         }
         return null;
+    }
+
+    private String getLogin(String token) {
+        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
     }
 }

@@ -60,8 +60,7 @@ public class FilteredUserRepositoryImpl implements FilteredUserRepository {
                 .setParameter("creationDateFrom", filterBean.getCreationDateFrom())
                 .setParameter("creationDateTo", filterBean.getCreationDateTo())
                 .setParameter("roles", filterBean.getRoles())
-                .setParameter("statuses", filterBean.getStatuses())
-                ;
+                .setParameter("statuses", filterBean.getStatuses());
         return formed.getResultList();
     }
 
@@ -71,4 +70,3 @@ public class FilteredUserRepositoryImpl implements FilteredUserRepository {
         return String.format(FILTERED_SEARCH_QUERY_PATTERN, sortingField, sortingType);
     }
 }
-
