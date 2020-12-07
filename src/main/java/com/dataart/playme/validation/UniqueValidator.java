@@ -9,7 +9,7 @@ import javax.validation.ConstraintValidatorContext;
 
 @Component
 public class UniqueValidator implements ConstraintValidator<Unique, String> {
-    
+
     private final UserRepository userRepository;
 
     @Autowired

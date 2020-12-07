@@ -13,7 +13,7 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDto extends EditUserDto{
+public class UserDto extends EditUserDto {
 
     private String id;
 
@@ -36,7 +36,7 @@ public class UserDto extends EditUserDto{
 
     private String role;
 
-    public void setEmail(String email){
+    public void setEmail(String email) {
         super.setEmail(email);
         this.email = email;
     }

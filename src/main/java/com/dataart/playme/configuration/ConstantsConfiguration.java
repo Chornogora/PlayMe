@@ -16,7 +16,7 @@ public class ConstantsConfiguration {
     private static final String CONSTANTS_FILE = "./src/main/resources/constants.properties";
 
     @Autowired
-    public void loadConstants(){
+    public void loadConstants() {
         try (InputStream inputStream = new FileInputStream(CONSTANTS_FILE)) {
             Properties properties = new Properties();
             properties.load(inputStream);

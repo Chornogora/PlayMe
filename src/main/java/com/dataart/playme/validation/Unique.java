@@ -12,7 +12,7 @@ public @interface Unique {
 
     String message() default "user_exists";
 
-    Class<?>[] groups() default { };
+    Class<?>[] groups() default {};
 
-    Class<? extends Payload>[] payload() default { };
+    Class<? extends Payload>[] payload() default {};
 }

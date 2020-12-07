@@ -12,7 +12,7 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name="statuses")
+@Table(name = "statuses")
 public class Status {
 
     @Id
@@ -20,7 +20,7 @@ public class Status {
 
     private String name;
 
-    public enum StatusName{
+    public enum StatusName {
         ACTIVE("active"),
         PENDING("pending"),
         DISABLED("disabled"),

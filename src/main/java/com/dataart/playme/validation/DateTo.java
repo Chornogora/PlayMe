@@ -12,9 +12,9 @@ public @interface DateTo {
 
     String message() default "late_date";
 
-    Class<?>[] groups() default { };
+    Class<?>[] groups() default {};
 
-    Class<? extends Payload>[] payload() default { };
+    Class<? extends Payload>[] payload() default {};
 
     String to();
 }

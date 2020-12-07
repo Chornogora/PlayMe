@@ -13,7 +13,7 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name="roles")
+@Table(name = "roles")
 public class Role implements GrantedAuthority {
 
     @Id
@@ -26,7 +26,7 @@ public class Role implements GrantedAuthority {
         return "ROLE_" + getName();
     }
 
-    public enum RoleName{
+    public enum RoleName {
         USER("user"),
         ADMINISTRATOR("administrator");
 

@@ -45,10 +45,12 @@ public class FilterBean {
     private Date creationDateTo = new Date(System.currentTimeMillis());
 
     private List<String> roles = Arrays.stream(Role.RoleName.values())
-        .map(Role.RoleName::getValue).collect(Collectors.toList());
+            .map(Role.RoleName::getValue)
+            .collect(Collectors.toList());
 
     private List<String> statuses = Arrays.stream(Status.StatusName.values())
-            .map(Status.StatusName::getValue).collect(Collectors.toList());
+            .map(Status.StatusName::getValue)
+            .collect(Collectors.toList());
 
     private String sortingField = DEFAULT_SORTING_FIELD;
 

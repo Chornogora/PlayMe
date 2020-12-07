@@ -37,11 +37,11 @@ public class UserDtoTransformationServiceImpl implements UserDtoTransformationSe
         user.setLastName(userDto.getLastName());
 
         Role role = roleRepository.findByName(userDto.getRole())
-                .orElseThrow(()-> new NoSuchRecordException("Can't find role"));
+                .orElseThrow(() -> new NoSuchRecordException("Can't find role"));
         user.setRole(role);
 
         Status status = statusRepository.findByName(userDto.getStatus())
-                .orElseThrow(()-> new NoSuchRecordException("Can't find status"));
+                .orElseThrow(() -> new NoSuchRecordException("Can't find status"));
         user.setStatus(status);
         return user;
     }
