@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
@@ -35,12 +36,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic().disable()
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/auth").permitAll()
                 .antMatchers(HttpMethod.GET, "/admin/**").hasRole(Role.RoleName.ADMINISTRATOR.getValue())
                 .antMatchers(HttpMethod.GET, "/user").hasRole(Role.RoleName.USER.getValue())
                 .and()
                 .apply(new JwtSecurityConfigurer(jwtTokenProvider));
     }
 
-
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web
+                .ignoring().antMatchers("/js/**", "/css/**", "/images/**", "/webfonts/**")
+                .and()
+                .ignoring().antMatchers("/auth");
+    }
 }

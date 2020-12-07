@@ -26,7 +26,7 @@
         </div>
         <div class="form-group">
             <label for="first-name-input">First name</label>
-            <input type="text" name="first-name" class="form-control" id="first-name-input" placeholder="Bob"
+            <input type="text" name="firstName" class="form-control" id="first-name-input" placeholder="Bob"
                    th:attr="value=${user.firstName} ?: ''">
             <div th:if="${#lists.contains(validationIssues, &quot;no_name&quot;)}" class="error-message">
                 No first name provided
@@ -43,7 +43,7 @@
         </div>
         <div class="form-group">
             <label for="last-name-input">Last name</label>
-            <input type="text" name="last-name" class="form-control" id="last-name-input" placeholder="Marley"
+            <input type="text" name="lastName" class="form-control" id="last-name-input" placeholder="Marley"
                    th:attr="value=${user.lastName} ?: ''">
             <div th:if="${#lists.contains(validationIssues, &quot;no_surname&quot;)}" class="error-message">
                 No last name provided
@@ -75,13 +75,12 @@
         <div class="form-group">
             <label for="status-input"></label>
             <select name="status" id="status-input" class="form-control">
-                <option value="active" th:attr="selected=${user.status == 'active'}">active</option>
-                <option th:attr="selected=${user.status == 'disabled'}" value="disabled">disabled</option>
-                <option th:if="${user.status == 'pending'}"
-                        th:attr="selected=${user.status == 'pending'}" value="pending">pending</option>
+                <option value="active" th:attr="selected=${user.status.name == 'active'}">active</option>
+                <option th:attr="selected=${user.status.name == 'disabled'}" value="disabled">disabled</option>
+                <option th:if="${user.status.name == 'pending'}"
+                        th:attr="selected=${user.status.name == 'pending'}" value="pending">pending</option>
             </select>
         </div>
-        <input type="hidden" name="status" value="pending">
         <div class="row">
             <div class="col"></div>
             <input type="submit" class="btn btn-primary col" value="Submit">

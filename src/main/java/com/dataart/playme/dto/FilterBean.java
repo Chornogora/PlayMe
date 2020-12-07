@@ -22,7 +22,7 @@ public class FilterBean {
 
     private static final String DEFAULT_SORTING_TYPE = "ASC";
 
-    private static final int DEFAULT_LIMIT = 10;
+    private static final int DEFAULT_LIMIT = 9;
 
     private String login = StringUtils.EMPTY;
 

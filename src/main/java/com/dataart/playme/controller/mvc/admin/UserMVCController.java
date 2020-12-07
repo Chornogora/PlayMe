@@ -1,7 +1,9 @@
 package com.dataart.playme.controller.mvc.admin;
 
+import com.dataart.playme.dto.EditUserDto;
 import com.dataart.playme.dto.FilterBean;
 import com.dataart.playme.dto.UserDto;
+import com.dataart.playme.exception.NonUniqueException;
 import com.dataart.playme.model.User;
 import com.dataart.playme.service.UserService;
 import com.dataart.playme.service.dto.UserDtoTransformationService;
@@ -33,7 +35,7 @@ public class UserMVCController {
 
     private static final String ADD_USER_FILEPATH = "/admin/add-user.html";
 
-    private static final String EDIT_USER_PATH = "/admin/edit/";
+    private static final String EDIT_USER_PATH_PATTERN = "/admin/users/edit/%s";
 
     private static final String EDIT_USER_FILEPATH = "/admin/edit-user.html";
 
@@ -101,10 +103,7 @@ public class UserMVCController {
 
     @PostMapping("/add")
     public RedirectView addUser(@Valid UserDto dto, BindingResult bindingResult, RedirectAttributes redirect) {
-        List<String> errors = bindingResult.getAllErrors()
-                .stream()
-                .map(DefaultMessageSourceResolvable::getDefaultMessage)
-                .collect(Collectors.toList());
+        List<String> errors = getErrors(bindingResult);
         if (!errors.isEmpty()) {
             dto.setPassword(null);
             redirect.addFlashAttribute(ENTERED_DATA_MODEL_ATTRIBUTE, dto)
@@ -118,12 +117,43 @@ public class UserMVCController {
         return new RedirectView(ALL_USERS_PATH);
     }
 
+    @PostMapping("/edit/{userId}")
+    public RedirectView editUser(@PathVariable String userId, @Valid EditUserDto changes,
+                                 BindingResult bindingResult, RedirectAttributes redirect) {
+        List<String> errors = getErrors(bindingResult);
+        if (!errors.isEmpty()) {
+            redirect.addFlashAttribute(VALIDATION_ISSUES_MODEL_ATTRIBUTE, errors);
+            String redirectPath = String.format(EDIT_USER_PATH_PATTERN, userId);
+            return new RedirectView(redirectPath);
+        }
+
+        try {
+            userService.updateUser(userId, changes);
+        } catch (NonUniqueException e) {
+            redirect.addFlashAttribute(VALIDATION_ISSUES_MODEL_ATTRIBUTE,
+                    Collections.singletonList("user_exists"));
+            String redirectPath = String.format(EDIT_USER_PATH_PATTERN, userId);
+            return new RedirectView(redirectPath);
+        }
+
+        redirect.addFlashAttribute(Constants.OPERATION_STATUS_CONTEXT_PARAMETER,
+                String.valueOf(Response.Status.OK.getStatusCode()));
+        return new RedirectView(ALL_USERS_PATH);
+    }
+
     @DeleteMapping("/delete/{userId}")
-    public RedirectView deleteUser(@PathVariable String userId, RedirectAttributes redirect){
+    public RedirectView deleteUser(@PathVariable String userId, RedirectAttributes redirect) {
         User user = userService.getById(userId);
         userService.deleteUser(user);
         redirect.addFlashAttribute(Constants.OPERATION_STATUS_CONTEXT_PARAMETER,
                 String.valueOf(Response.Status.OK.getStatusCode()));
         return new RedirectView(ALL_USERS_PATH);
+    }
+
+    private List<String> getErrors(BindingResult bindingResult) {
+        return bindingResult.getAllErrors()
+                .stream()
+                .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                .collect(Collectors.toList());
     }
 }

@@ -1,5 +1,6 @@
 package com.dataart.playme.service;
 
+import com.dataart.playme.dto.EditUserDto;
 import com.dataart.playme.dto.FilterBean;
 import com.dataart.playme.dto.UserDto;
 import com.dataart.playme.model.User;
@@ -18,9 +19,7 @@ public interface UserService {
 
     User addUser(User user);
 
-    User updateUser(String userId, UserDto changes);
+    User updateUser(String userId, EditUserDto changes);
 
     User deleteUser(User user);
-
-    User activateUser(User user);
 }

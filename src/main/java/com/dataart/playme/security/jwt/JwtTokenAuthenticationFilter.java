@@ -1,5 +1,6 @@
 package com.dataart.playme.security.jwt;
 
+import com.dataart.playme.util.Constants;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;
@@ -9,6 +10,8 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.core.Response;
 import java.io.IOException;
 
 public class JwtTokenAuthenticationFilter extends GenericFilterBean {
@@ -29,7 +32,9 @@ public class JwtTokenAuthenticationFilter extends GenericFilterBean {
             if (auth != null) {
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }
+            filterChain.doFilter(req, res);
         }
-        filterChain.doFilter(req, res);
+        String authorizationPage = Constants.FRONTEND_AUTHORIZATION_PATH;
+        ((HttpServletResponse) res).sendRedirect(authorizationPage);
     }
 }

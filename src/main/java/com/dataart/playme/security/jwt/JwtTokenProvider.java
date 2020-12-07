@@ -1,5 +1,6 @@
 package com.dataart.playme.security.jwt;
 
+import com.dataart.playme.util.Constants;
 import io.jsonwebtoken.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,23 +25,19 @@ public class JwtTokenProvider {
 
     private static final String BEARER_MARK = "Bearer ";
 
-    private static final String JWT_TOKEN_COOKIE_NAME = "token";
-
-    private final JwtProperties jwtProperties;
-
     private final UserDetailsService userDetailsService;
 
     private String secretKey;
 
     @Autowired
-    public JwtTokenProvider(JwtProperties jwtProperties, @Qualifier("userSecurityService") UserDetailsService userDetailsService) {
-        this.jwtProperties = jwtProperties;
+    public JwtTokenProvider(@Qualifier("userSecurityService") UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
 
     @PostConstruct
     protected void init() {
-        secretKey = Base64.getEncoder().encodeToString(jwtProperties.getSecretKey().getBytes());
+        String secretKey = Constants.get(Constants.Security.HS256_SECRET_KEY);
+        this.secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 
     public String createToken(String username, String role) {
@@ -48,7 +45,8 @@ public class JwtTokenProvider {
         claims.put("role", role);
 
         Date now = new Date();
-        Date validity = new Date(now.getTime() + jwtProperties.getValidityInMs());
+        long validityTmeMillis = Long.parseLong(Constants.get(Constants.Security.SESSION_LIFETIME));
+        Date validity = new Date(now.getTime() + validityTmeMillis);
 
         return Jwts.builder()
                 .setClaims(claims)
@@ -86,10 +84,11 @@ public class JwtTokenProvider {
     }
 
     private String getTokenFromCookie(HttpServletRequest req) {
+        String cookieName = Constants.Security.JWT_TOKEN_COOKIE_NAME;
         Cookie[] cookies = req.getCookies();
-        if(cookies != null) {
+        if (cookies != null) {
             return Stream.of(cookies)
-                    .filter(cookie -> cookie.getName().equals(JWT_TOKEN_COOKIE_NAME))
+                    .filter(cookie -> cookie.getName().equals(cookieName))
                     .map(Cookie::getValue)
                     .findFirst()
                     .orElse(null);

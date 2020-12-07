@@ -17,6 +17,6 @@ public class DateFromValidator implements ConstraintValidator<DateFrom, Date> {
 
     @Override
     public boolean isValid(Date value, ConstraintValidatorContext context) {
-        return value != null && from.before(value);
+        return value != null && (from.before(value) || from.equals(value));
     }
 }

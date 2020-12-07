@@ -22,6 +22,6 @@ public class DateToValidator implements ConstraintValidator<DateTo, Date> {
 
     @Override
     public boolean isValid(Date value, ConstraintValidatorContext context) {
-        return value != null && to.after(value);
+        return value != null && (to.after(value) || to.equals(value));
     }
 }
