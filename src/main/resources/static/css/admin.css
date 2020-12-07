@@ -190,7 +190,7 @@
     height: 10px;
 }
 
-.arrow-image : hover {
+.arrow-image:hover {
     height: 14px;
     cursor: pointer;
 }

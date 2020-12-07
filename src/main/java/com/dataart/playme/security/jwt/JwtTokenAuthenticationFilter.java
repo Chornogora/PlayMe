@@ -33,8 +33,9 @@ public class JwtTokenAuthenticationFilter extends GenericFilterBean {
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }
             filterChain.doFilter(req, res);
+        }else {
+            String authorizationPage = Constants.FRONTEND_AUTHORIZATION_PATH;
+            ((HttpServletResponse) res).sendRedirect(authorizationPage);
         }
-        String authorizationPage = Constants.FRONTEND_AUTHORIZATION_PATH;
-        ((HttpServletResponse) res).sendRedirect(authorizationPage);
     }
 }
