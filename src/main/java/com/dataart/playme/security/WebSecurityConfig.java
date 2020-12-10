@@ -33,18 +33,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.httpBasic().disable()
-            .csrf().disable()
-            .authorizeRequests()
-            .antMatchers(HttpMethod.GET, "/admin/**").hasRole(Role.RoleName.ADMINISTRATOR.getValue())
-            .antMatchers(HttpMethod.GET, "/user").hasRole(Role.RoleName.USER.getValue())
-            .and()
-            .apply(new JwtSecurityConfigurer(jwtTokenProvider));
+                .csrf().disable()
+                .authorizeRequests()
+                .antMatchers(HttpMethod.GET, "/admin/**").hasRole(Role.RoleName.ADMINISTRATOR.getValue())
+                .antMatchers(HttpMethod.GET, "/user", "/bands/**", "/posts/**").hasRole(Role.RoleName.USER.getValue())
+                .and()
+                .apply(new JwtSecurityConfigurer(jwtTokenProvider));
     }
 
     @Override
     public void configure(WebSecurity web) {
         web.ignoring().antMatchers("/js/**", "/css/**", "/images/**", "/webfonts/**")
-            .and()
-            .ignoring().antMatchers("/auth");
+                .and()
+                .ignoring().antMatchers("/auth")
+                .and()
+                .ignoring().antMatchers(HttpMethod.OPTIONS, "/**");
     }
 }

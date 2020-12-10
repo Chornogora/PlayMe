@@ -1,0 +1,15 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2020-12-8-14-00-update-tables
+      author: liquibase-dbadmin
+      changes:
+        - addColumn:
+            tableName: comments
+            columns:
+              - column:
+                  name: creation_datetime
+                  type: timestamp
+        - modifyDataType:
+            columnName: creation_datetime
+            newDataType: timestamp
+            tableName: posts
