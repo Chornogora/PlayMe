@@ -6,10 +6,6 @@ public final class Constants {
 
     public static final String DELETED_USER_MARK = "_deleted_on_";
 
-    public static final String ENCODING_ID = "security.encoding";
-
-    public static final String USER_ROLE_ID = "user.role.user";
-
     public static final String NOW = "now";
 
     public static final String DEFAULT_DATETIME_FORMAT = "yyyy-MM-dd_HH-mm-ss";
@@ -19,6 +15,12 @@ public final class Constants {
     public static final String APPLICATION_PATH = "/";
 
     public static final String FRONTEND_AUTHORIZATION_PATH = "http://localhost:5000/login.html";
+
+    public static final String FILE_STORAGE_PATH_ID = "storage.path.root";
+
+    public static final String IMAGE_ROOT_DIRECTORY_ID = "storage.path.images";
+
+    public static final String FILE_ROOT_DIRECTORY_ID = "storage.path.files";
 
     private static Properties properties;
 
@@ -66,5 +68,7 @@ public final class Constants {
         public static final String HS256_SECRET_KEY = "security.hs256.secret";
 
         public static final String JWT_TOKEN_COOKIE_NAME = "token";
+
+        public static final String ENCODING_ID = "security.encoding";
     }
 }

@@ -15,7 +15,7 @@ public class Encoder implements PasswordEncoder {
     @Override
     public String encode(CharSequence line) {
         byte[] bytesOfMessage = line.toString().getBytes(StandardCharsets.UTF_8);
-        String encoding = Constants.get(Constants.ENCODING_ID);
+        String encoding = Constants.get(Constants.Security.ENCODING_ID);
 
         MessageDigest md;
         try {
