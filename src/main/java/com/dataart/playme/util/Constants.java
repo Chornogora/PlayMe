@@ -8,6 +8,8 @@ public final class Constants {
 
     public static final String NOW = "now";
 
+    public static final String MESSAGE_PROPERTY = "message";
+
     public static final String DEFAULT_DATETIME_FORMAT = "yyyy-MM-dd_HH-mm-ss";
 
     public static final String OPERATION_STATUS_CONTEXT_PARAMETER = "operationStatus";

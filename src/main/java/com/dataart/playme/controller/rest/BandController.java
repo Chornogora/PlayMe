@@ -1,19 +1,17 @@
 package com.dataart.playme.controller.rest;
 
 import com.dataart.playme.controller.binding.annotation.CurrentMusician;
-import com.dataart.playme.dto.CreatePostDto;
-import com.dataart.playme.dto.PostRequestDto;
-import com.dataart.playme.dto.PostResponseDto;
+import com.dataart.playme.dto.*;
 import com.dataart.playme.model.Band;
+import com.dataart.playme.model.Membership;
 import com.dataart.playme.model.Musician;
 import com.dataart.playme.model.Post;
+import com.dataart.playme.service.BandService;
 import com.dataart.playme.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.ws.rs.BadRequestException;
 import java.util.Collections;
 import java.util.List;
 
@@ -21,11 +19,30 @@ import java.util.List;
 @RequestMapping("/bands")
 public class BandController {
 
+    private final BandService bandService;
+
     private final PostService postService;
 
     @Autowired
-    public BandController(PostService postService) {
+    public BandController(BandService bandService, PostService postService) {
+        this.bandService = bandService;
         this.postService = postService;
+    }
+
+    @GetMapping
+    public List<Band> getBands(BandFilterBean filterBean) {
+        return bandService.findBands(filterBean);
+    }
+
+    @GetMapping("/{band}")
+    public Band getBand(@PathVariable Band band) {
+        band.setMembers(getMembers(band));
+        return band;
+    }
+
+    @GetMapping("/{band}/members")
+    public List<Membership> getMembers(@PathVariable Band band) {
+        return band.getMembers();
     }
 
     @GetMapping("/{band}/posts")
@@ -36,14 +53,42 @@ public class BandController {
         return new PostResponseDto(posts, postAmount);
     }
 
+    @PostMapping
+    public Band createBand(@RequestBody @Valid BandCreatingDto dto, @CurrentMusician Musician musician) {
+        return bandService.createBand(dto, musician);
+    }
+
+    @PostMapping("/{band}/members")
+    public Membership addMember(@Valid @RequestBody MemberDto dto,
+                                @PathVariable Band band, @CurrentMusician Musician addedBy) {
+        dto.setBand(band);
+        return bandService.addMember(dto, addedBy);
+    }
+
     @PostMapping("/{band}/posts")
     public Post createPost(@RequestBody @Valid CreatePostDto dto,
-                           BindingResult bindingResult,
                            @PathVariable Band band,
                            @CurrentMusician Musician currentMusician) {
-        if (bindingResult.hasErrors()) {
-            throw new BadRequestException("Invalid parameters");
-        }
         return postService.createPost(dto, band, currentMusician);
+    }
+
+    @PutMapping("/{band}/members")
+    public Membership updateMember(@Valid @RequestBody MemberDto dto,
+                                   @PathVariable Band band, @CurrentMusician Musician changedBy) {
+        dto.setBand(band);
+        return bandService.updateMember(dto, changedBy);
+    }
+
+    @PatchMapping("/{band}/")
+    public Band updateBand(@Valid BandCreatingDto bandCreatingDto, @PathVariable Band band,
+                           @CurrentMusician Musician changedBy) {
+        return bandService.updateBand(bandCreatingDto, band, changedBy);
+    }
+
+    @DeleteMapping("/{band}/members/{musician}")
+    public void deleteMember(@PathVariable Band band,
+                             @PathVariable Musician musician,
+                             @CurrentMusician Musician deletedBy) {
+        bandService.deleteMember(band, musician, deletedBy);
     }
 }
