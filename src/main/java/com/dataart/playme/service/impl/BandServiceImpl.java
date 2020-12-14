@@ -5,14 +5,8 @@ import com.dataart.playme.dto.BandFilterBean;
 import com.dataart.playme.dto.MemberDto;
 import com.dataart.playme.exception.NoSuchRecordException;
 import com.dataart.playme.exception.NoSufficientPrivilegesException;
-import com.dataart.playme.model.Band;
-import com.dataart.playme.model.MemberStatus;
-import com.dataart.playme.model.Membership;
-import com.dataart.playme.model.Musician;
-import com.dataart.playme.repository.BandRepository;
-import com.dataart.playme.repository.MemberStatusRepository;
-import com.dataart.playme.repository.MembershipRepository;
-import com.dataart.playme.repository.MusicianRepository;
+import com.dataart.playme.model.*;
+import com.dataart.playme.repository.*;
 import com.dataart.playme.service.BandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,12 +29,17 @@ public class BandServiceImpl implements BandService {
 
     private final MusicianRepository musicianRepository;
 
+    private final BandStatusRepository bandStatusRepository;
+
     @Autowired
-    public BandServiceImpl(BandRepository bandRepository, MemberStatusRepository memberStatusRepository, MembershipRepository membershipRepository, MusicianRepository musicianRepository) {
+    public BandServiceImpl(BandRepository bandRepository, MemberStatusRepository memberStatusRepository,
+                           MembershipRepository membershipRepository, MusicianRepository musicianRepository,
+                           BandStatusRepository bandStatusRepository) {
         this.bandRepository = bandRepository;
         this.memberStatusRepository = memberStatusRepository;
         this.membershipRepository = membershipRepository;
         this.musicianRepository = musicianRepository;
+        this.bandStatusRepository = bandStatusRepository;
     }
 
     @Override
@@ -112,6 +111,22 @@ public class BandServiceImpl implements BandService {
     }
 
     @Override
+    public Band disableBand(Band band) {
+        String disabledStatusName = BandStatus.StatusName.DISABLED.getValue();
+        BandStatus bandStatus = bandStatusRepository.findByName(disabledStatusName);
+        band.setBandStatus(bandStatus);
+        return bandRepository.save(band);
+    }
+
+    @Override
+    public Band activateBand(Band band) {
+        String activeStatusName = BandStatus.StatusName.ACTIVE.getValue();
+        BandStatus bandStatus = bandStatusRepository.findByName(activeStatusName);
+        band.setBandStatus(bandStatus);
+        return bandRepository.save(band);
+    }
+
+    @Override
     public boolean isMemberOf(Band band, Musician musician) {
         return band.getMembers().stream()
                 .anyMatch(bandMembership -> musician.getMemberships().stream()
@@ -126,6 +141,12 @@ public class BandServiceImpl implements BandService {
     @Override
     public List<Band> getByMultipleId(List<String> bandIds) {
         return bandRepository.findByMultipleId(bandIds);
+    }
+
+    @Override
+    public boolean isActiveBand(Band band) {
+        String activeStatusName = BandStatus.StatusName.ACTIVE.getValue();
+        return band.getBandStatus().getName().equals(activeStatusName);
     }
 
     private Band constructBand(BandCreatingDto dto) {

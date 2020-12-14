@@ -1,6 +1,5 @@
 package com.dataart.playme.model;
 
-import com.dataart.playme.util.Constants;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -15,6 +15,8 @@ public interface BandService {
 
     boolean canChangePost(Band band, Musician musician);
 
+    boolean isActiveBand(Band band);
+
     List<Band> getByMultipleId(List<String> bandIds);
 
     List<Band> findBands(BandFilterBean filterBean);
@@ -28,4 +30,8 @@ public interface BandService {
     Membership updateMember(MemberDto dto, Musician changedBy);
 
     void deleteMember(Band band, Musician musician, Musician deletedBy);
+
+    Band disableBand(Band band);
+
+    Band activateBand(Band band);
 }

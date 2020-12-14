@@ -35,8 +35,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.httpBasic().disable()
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/admin/**").hasRole(Role.RoleName.ADMINISTRATOR.getValue())
                 .antMatchers(HttpMethod.GET, "/user", "/bands/**", "/posts/**").hasRole(Role.RoleName.USER.getValue())
+                .antMatchers(HttpMethod.GET, "/admin/**", "/bands/{\\d+}/_disable",
+                        "/bands/{\\d+}/_enable").hasRole(Role.RoleName.ADMINISTRATOR.getValue())
                 .and()
                 .apply(new JwtSecurityConfigurer(jwtTokenProvider));
     }

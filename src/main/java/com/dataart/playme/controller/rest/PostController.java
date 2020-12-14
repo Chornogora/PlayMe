@@ -4,6 +4,7 @@ import com.dataart.playme.controller.binding.annotation.CurrentMusician;
 import com.dataart.playme.dto.CreateCommentDto;
 import com.dataart.playme.dto.PostRequestDto;
 import com.dataart.playme.dto.PostResponseDto;
+import com.dataart.playme.exception.ConflictException;
 import com.dataart.playme.model.Band;
 import com.dataart.playme.model.Comment;
 import com.dataart.playme.model.Musician;
@@ -65,7 +66,10 @@ public class PostController {
     @DeleteMapping("/{post}")
     public Post deletePost(@PathVariable Post post,
                            @CurrentMusician Musician musician) {
-        return postService.deletePost(post, musician);
+        if (bandService.isActiveBand(post.getBand())) {
+            return postService.deletePost(post, musician);
+        }
+        throw new ConflictException("Band is disabled");
     }
 
     @DeleteMapping("/{post}/comments/{comment}")

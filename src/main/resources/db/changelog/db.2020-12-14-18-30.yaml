@@ -1,0 +1,55 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2020-12-14-18-30-update-tables
+      author: liquibase-dbadmin
+      changes:
+        - createTable:
+            tableName: band_statuses
+            columns:
+              - column:
+                  name: id
+                  type: varchar(36)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(64)
+                  constraints:
+                    unique: true
+                    nullable: false
+        - insert:
+            tableName: band_statuses
+            columns:
+              - column:
+                  name: id
+                  value: 75a70bee-495f-423e-b630-db4f7f978a30
+              - column:
+                  name: name
+                  value: active
+        - insert:
+            tableName: band_statuses
+            columns:
+              - column:
+                  name: id
+                  value: 55756726-19c1-4db5-a151-bcdbfcda72c0
+              - column:
+                  name: name
+                  value: disabled
+        - addColumn:
+            tableName: bands
+            columns:
+              - column:
+                  name: status_id
+                  type: varchar(36)
+                  constraints:
+                    foreignKeyName: fk_bands_statuses
+                    references: band_statuses(id)
+        - addNotNullConstraint:
+            tableName: bands
+            columnName: status_id
+            defaultNullValue: 75a70bee-495f-423e-b630-db4f7f978a30
+        - addDefaultValue:
+            tableName: bands
+            columnName: status_id
+            defaultValue: 75a70bee-495f-423e-b630-db4f7f978a30
