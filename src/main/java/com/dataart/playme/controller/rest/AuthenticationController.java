@@ -45,7 +45,7 @@ public class AuthenticationController {
             model.put("token", token);
             return new ResponseEntity<>(model, HttpStatus.OK);
         } catch (AuthenticationException e) {
-            throw new BadCredentialsException("Invalid username/password supplied");
+            throw new BadCredentialsException("Invalid username/password supplied or account is locked");
         }
     }
 }

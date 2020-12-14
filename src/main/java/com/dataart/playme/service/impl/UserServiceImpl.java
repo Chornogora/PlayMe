@@ -8,6 +8,7 @@ import com.dataart.playme.model.Status;
 import com.dataart.playme.model.User;
 import com.dataart.playme.repository.StatusRepository;
 import com.dataart.playme.repository.UserRepository;
+import com.dataart.playme.security.Encoder;
 import com.dataart.playme.service.UserService;
 import com.dataart.playme.util.Constants;
 import com.dataart.playme.util.DateUtil;
@@ -16,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -28,10 +28,13 @@ public class UserServiceImpl implements UserService {
 
     private final StatusRepository statusRepository;
 
+    private final Encoder encoder;
+
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, StatusRepository statusRepository) {
+    public UserServiceImpl(UserRepository userRepository, StatusRepository statusRepository, Encoder encoder) {
         this.userRepository = userRepository;
         this.statusRepository = statusRepository;
+        this.encoder = encoder;
     }
 
     @Override
@@ -58,6 +61,7 @@ public class UserServiceImpl implements UserService {
     public User addUser(User user) {
         String id = UUID.randomUUID().toString();
         user.setId(id);
+        user.setPassword(encoder.encode(user.getPassword()));
         user.setCreationDate(new Date(System.currentTimeMillis()));
         return userRepository.save(user);
     }
