@@ -60,7 +60,7 @@ public class BandServiceImpl implements BandService {
 
     @Override
     public Band updateBand(BandCreatingDto dto, Band band, Musician changedBy) {
-        if(isLeader(band, changedBy)){
+        if (isLeader(band, changedBy)) {
             band.setName(dto.getName());
             return bandRepository.save(band);
         }
@@ -72,7 +72,7 @@ public class BandServiceImpl implements BandService {
         Musician musician = musicianRepository.findById(dto.getMusicianId())
                 .orElseThrow(() -> new NoSuchRecordException("Can't find musician"));
         if (isLeader(dto.getBand(), addedBy) && !isMemberOf(dto.getBand(), musician)) {
-            if(!dto.getStatusName().equals(MemberStatus.ExistedStatus.LEADER.getValue())) {
+            if (!dto.getStatusName().equals(MemberStatus.ExistedStatus.LEADER.getValue())) {
                 return saveMember(dto.getBand(), musician, dto.getStatusName());
             }
             throw new BadRequestException("Can't add one more leader");
@@ -86,7 +86,7 @@ public class BandServiceImpl implements BandService {
         Musician musician = musicianRepository.findById(dto.getMusicianId())
                 .orElseThrow(() -> new NoSuchRecordException("Can't find musician"));
         if (isLeader(dto.getBand(), changedBy) && isMemberOf(dto.getBand(), musician)) {
-            if(dto.getStatusName().equals(MemberStatus.ExistedStatus.LEADER.getValue())){
+            if (dto.getStatusName().equals(MemberStatus.ExistedStatus.LEADER.getValue())) {
                 String administratorStatusName = MemberStatus.ExistedStatus.ADMINISTRATOR.getValue();
                 saveMember(dto.getBand(), changedBy, administratorStatusName);
             }
@@ -97,15 +97,19 @@ public class BandServiceImpl implements BandService {
 
     @Override
     public void deleteMember(Band band, Musician musician, Musician deletedBy) {
-        if(isLeader(band, deletedBy)){
-            if(!musician.equals(deletedBy)){
-                Membership membership = membershipRepository
-                        .findById(new Membership.MembershipId(musician.getId(), band.getId()))
-                        .orElseThrow(() -> new NoSuchRecordException("Can't find membership"));
-                membershipRepository.delete(membership);
+        if (isLeader(band, deletedBy)) {
+            if (!musician.equals(deletedBy)) {
+                deleteMember(musician.getId(), band.getId());
+                return;
+            } else if (band.getMembers().size() == 1){
+                disableBand(band);
                 return;
             }
             throw new BadRequestException("Can't delete user: need to change leader");
+        }
+        if (musician.equals(deletedBy)) {
+            deleteMember(musician.getId(), band.getId());
+            return;
         }
         throw new NoSufficientPrivilegesException("Can't delete member: user is not a band leader");
     }
@@ -154,14 +158,19 @@ public class BandServiceImpl implements BandService {
         band.setId(UUID.randomUUID().toString());
         band.setName(dto.getName());
         band.setCreationDate(new Date(System.currentTimeMillis()));
+
+        String bandStatusName = BandStatus.StatusName.ACTIVE.getValue();
+        BandStatus bandStatus = bandStatusRepository.findByName(bandStatusName);
+        band.setBandStatus(bandStatus);
+
         return band;
     }
 
     private Membership saveMember(Band band, Musician musician, String statusName) {
-            MemberStatus memberStatus = memberStatusRepository.findByName(statusName)
-                    .orElseThrow(() -> new NoSuchRecordException("Cannot find member status"));
-            return membershipRepository.save(new Membership(new Membership.MembershipId(musician.getId(), band.getId()),
-                    musician, band, memberStatus));
+        MemberStatus memberStatus = memberStatusRepository.findByName(statusName)
+                .orElseThrow(() -> new NoSuchRecordException("Cannot find member status"));
+        return membershipRepository.save(new Membership(new Membership.MembershipId(musician.getId(), band.getId()),
+                musician, band, memberStatus));
     }
 
     private Membership createLeader(Band band, Musician leader) {
@@ -190,5 +199,12 @@ public class BandServiceImpl implements BandService {
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("musician is not a member of a current band"));
         return membership.getStatus().getName();
+    }
+
+    private void deleteMember(String musicianId, String bandId) {
+        Membership membership = membershipRepository
+                .findById(new Membership.MembershipId(musicianId, bandId))
+                .orElseThrow(() -> new NoSuchRecordException("Can't find membership"));
+        membershipRepository.delete(membership);
     }
 }

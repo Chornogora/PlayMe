@@ -10,6 +10,7 @@ import com.dataart.playme.model.Post;
 import com.dataart.playme.service.BandService;
 import com.dataart.playme.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -79,11 +80,13 @@ public class BandController {
         throw new ConflictException("Band is disabled");
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_administrator')")
     @PostMapping("/{band}/_disable")
     public Band disableBand(@PathVariable Band band) {
         return bandService.disableBand(band);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_administrator')")
     @PostMapping("/{band}/_enable")
     public Band activateBand(@PathVariable Band band) {
         return bandService.activateBand(band);
@@ -99,8 +102,8 @@ public class BandController {
         throw new ConflictException("Band is disabled");
     }
 
-    @PatchMapping("/{band}/")
-    public Band updateBand(@Valid BandCreatingDto bandCreatingDto, @PathVariable Band band,
+    @PatchMapping("/{band}")
+    public Band updateBand(@RequestBody @Valid BandCreatingDto bandCreatingDto, @PathVariable Band band,
                            @CurrentMusician Musician changedBy) {
         if (bandService.isActiveBand(band)) {
             return bandService.updateBand(bandCreatingDto, band, changedBy);
@@ -114,6 +117,7 @@ public class BandController {
                              @CurrentMusician Musician deletedBy) {
         if (bandService.isActiveBand(band)) {
             bandService.deleteMember(band, musician, deletedBy);
+            return;
         }
         throw new ConflictException("Band is disabled");
     }
