@@ -21,7 +21,8 @@ public class MemberStatus {
     public enum ExistedStatus {
         LEADER("leader"),
         ADMINISTRATOR("administrator"),
-        PLAYER("player");
+        PLAYER("player"),
+        SUBSCRIBER("subscriber");
 
         private final String value;
 
