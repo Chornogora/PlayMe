@@ -58,7 +58,10 @@ public class PostController {
                               @Valid @RequestBody CreateCommentDto dto,
                               BindingResult bindingResult) {
         if (!bindingResult.hasErrors()) {
-            return postService.createComment(post, musician, dto);
+            if (bandService.isActiveBand(post.getBand())) {
+                return postService.createComment(post, musician, dto);
+            }
+            throw new ConflictException("Band is disabled");
         }
         throw new BadRequestException("Invalid data");
     }

@@ -1,8 +1,8 @@
 package com.dataart.playme.controller.rest;
 
+import com.dataart.playme.controller.binding.annotation.ActiveBand;
 import com.dataart.playme.controller.binding.annotation.CurrentMusician;
 import com.dataart.playme.dto.*;
-import com.dataart.playme.exception.ConflictException;
 import com.dataart.playme.model.Band;
 import com.dataart.playme.model.Membership;
 import com.dataart.playme.model.Musician;
@@ -62,22 +62,16 @@ public class BandController {
 
     @PostMapping("/{band}/members")
     public Membership addMember(@Valid @RequestBody MemberDto dto,
-                                @PathVariable Band band, @CurrentMusician Musician addedBy) {
-        if (bandService.isActiveBand(band)) {
-            dto.setBand(band);
-            return bandService.addMember(dto, addedBy);
-        }
-        throw new ConflictException("Band is disabled");
+                                @ActiveBand Band band, @CurrentMusician Musician addedBy) {
+        dto.setBand(band);
+        return bandService.addMember(dto, addedBy);
     }
 
     @PostMapping("/{band}/posts")
     public Post createPost(@RequestBody @Valid CreatePostDto dto,
-                           @PathVariable Band band,
+                           @ActiveBand Band band,
                            @CurrentMusician Musician currentMusician) {
-        if (bandService.isActiveBand(band)) {
-            return postService.createPost(dto, band, currentMusician);
-        }
-        throw new ConflictException("Band is disabled");
+        return postService.createPost(dto, band, currentMusician);
     }
 
     @PreAuthorize("hasAnyRole('ROLE_administrator')")
@@ -94,31 +88,21 @@ public class BandController {
 
     @PutMapping("/{band}/members")
     public Membership updateMember(@Valid @RequestBody MemberDto dto,
-                                   @PathVariable Band band, @CurrentMusician Musician changedBy) {
-        if (bandService.isActiveBand(band)) {
-            dto.setBand(band);
-            return bandService.updateMember(dto, changedBy);
-        }
-        throw new ConflictException("Band is disabled");
+                                   @ActiveBand Band band, @CurrentMusician Musician changedBy) {
+        dto.setBand(band);
+        return bandService.updateMember(dto, changedBy);
     }
 
     @PatchMapping("/{band}")
-    public Band updateBand(@RequestBody @Valid BandCreatingDto bandCreatingDto, @PathVariable Band band,
+    public Band updateBand(@RequestBody @Valid BandCreatingDto bandCreatingDto, @ActiveBand Band band,
                            @CurrentMusician Musician changedBy) {
-        if (bandService.isActiveBand(band)) {
-            return bandService.updateBand(bandCreatingDto, band, changedBy);
-        }
-        throw new ConflictException("Band is disabled");
+        return bandService.updateBand(bandCreatingDto, band, changedBy);
     }
 
     @DeleteMapping("/{band}/members/{musician}")
-    public void deleteMember(@PathVariable Band band,
+    public void deleteMember(@ActiveBand Band band,
                              @PathVariable Musician musician,
                              @CurrentMusician Musician deletedBy) {
-        if (bandService.isActiveBand(band)) {
-            bandService.deleteMember(band, musician, deletedBy);
-            return;
-        }
-        throw new ConflictException("Band is disabled");
+        bandService.deleteMember(band, musician, deletedBy);
     }
 }

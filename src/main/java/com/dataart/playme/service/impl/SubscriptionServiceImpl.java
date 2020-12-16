@@ -1,7 +1,11 @@
 package com.dataart.playme.service.impl;
 
+import com.dataart.playme.exception.ConflictException;
 import com.dataart.playme.exception.NoSuchRecordException;
-import com.dataart.playme.model.*;
+import com.dataart.playme.model.Band;
+import com.dataart.playme.model.MemberStatus;
+import com.dataart.playme.model.Membership;
+import com.dataart.playme.model.Musician;
 import com.dataart.playme.repository.MemberStatusRepository;
 import com.dataart.playme.repository.MembershipRepository;
 import com.dataart.playme.service.BandService;
@@ -9,7 +13,6 @@ import com.dataart.playme.service.SubscriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.ws.rs.BadRequestException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,7 +51,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
                     musician, band, memberStatus));
             return;
         }
-        throw new BadRequestException("User is a subscriber or a member of this group");
+        throw new ConflictException("User is a subscriber or a member of this group");
     }
 
     @Override
@@ -61,6 +64,6 @@ public class SubscriptionServiceImpl implements SubscriptionService {
             membershipRepository.delete(membership);
             return;
         }
-        throw new BadRequestException("User is not a subscriber");
+        throw new ConflictException("User is not a subscriber");
     }
 }

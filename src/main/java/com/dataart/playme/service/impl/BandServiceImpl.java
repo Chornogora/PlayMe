@@ -3,6 +3,7 @@ package com.dataart.playme.service.impl;
 import com.dataart.playme.dto.BandCreatingDto;
 import com.dataart.playme.dto.BandFilterBean;
 import com.dataart.playme.dto.MemberDto;
+import com.dataart.playme.exception.ConflictException;
 import com.dataart.playme.exception.NoSuchRecordException;
 import com.dataart.playme.exception.NoSufficientPrivilegesException;
 import com.dataart.playme.model.*;
@@ -12,11 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.ws.rs.BadRequestException;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class BandServiceImpl implements BandService {
@@ -72,12 +73,15 @@ public class BandServiceImpl implements BandService {
         Musician musician = musicianRepository.findById(dto.getMusicianId())
                 .orElseThrow(() -> new NoSuchRecordException("Can't find musician"));
         if (isLeader(dto.getBand(), addedBy) && !isMemberOf(dto.getBand(), musician)) {
-            if (!dto.getStatusName().equals(MemberStatus.ExistedStatus.LEADER.getValue())) {
-                return saveMember(dto.getBand(), musician, dto.getStatusName());
+            if (dto.getStatusName().equals(MemberStatus.ExistedStatus.LEADER.getValue())) {
+                throw new ConflictException("Can't add one more leader");
             }
-            throw new BadRequestException("Can't add one more leader");
+            if (dto.getStatusName().equals(MemberStatus.ExistedStatus.SUBSCRIBER.getValue())) {
+                throw new ConflictException("Can't add subscriber");
+            }
+            return saveMember(dto.getBand(), musician, dto.getStatusName());
         }
-        throw new BadRequestException("Can't add member: member has already added or user is not a leader");
+        throw new ConflictException("Can't add member: member has already added or user is not a leader");
     }
 
     @Override
@@ -85,6 +89,11 @@ public class BandServiceImpl implements BandService {
     public Membership updateMember(MemberDto dto, Musician changedBy) {
         Musician musician = musicianRepository.findById(dto.getMusicianId())
                 .orElseThrow(() -> new NoSuchRecordException("Can't find musician"));
+
+        if (dto.getStatusName().equals(MemberStatus.ExistedStatus.SUBSCRIBER.getValue())) {
+            throw new ConflictException("Cannot change status to subscriber");
+        }
+
         if (isLeader(dto.getBand(), changedBy) && isMemberOf(dto.getBand(), musician)) {
             if (dto.getStatusName().equals(MemberStatus.ExistedStatus.LEADER.getValue())) {
                 String administratorStatusName = MemberStatus.ExistedStatus.ADMINISTRATOR.getValue();
@@ -92,7 +101,7 @@ public class BandServiceImpl implements BandService {
             }
             return saveMember(dto.getBand(), musician, dto.getStatusName());
         }
-        throw new BadRequestException("Can't update member: musician is not a member or user is not a leader");
+        throw new ConflictException("Can't update member: musician is not a member or user is not a leader");
     }
 
     @Override
@@ -101,11 +110,11 @@ public class BandServiceImpl implements BandService {
             if (!musician.equals(deletedBy)) {
                 deleteMember(musician.getId(), band.getId());
                 return;
-            } else if (band.getMembers().size() == 1){
+            } else if (getBandMembers(band).size() == 1) {
                 disableBand(band);
                 return;
             }
-            throw new BadRequestException("Can't delete user: need to change leader");
+            throw new ConflictException("Can't delete user: need to change leader");
         }
         if (musician.equals(deletedBy)) {
             deleteMember(musician.getId(), band.getId());
@@ -197,14 +206,25 @@ public class BandServiceImpl implements BandService {
                 .filter(bandMembership -> musician.getMemberships().stream()
                         .anyMatch(musicianMembership -> musicianMembership.equals(bandMembership)))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("musician is not a member of a current band"));
+                .orElseThrow(() -> new ConflictException("musician is not a member of a current band"));
         return membership.getStatus().getName();
+    }
+
+    private List<Membership> getBandMembers(Band band) {
+        String subscriberStatusName = MemberStatus.ExistedStatus.SUBSCRIBER.getValue();
+        return band.getMembers().stream()
+                .filter(membership -> !membership.getStatus().getName().equals(subscriberStatusName))
+                .collect(Collectors.toList());
     }
 
     private void deleteMember(String musicianId, String bandId) {
         Membership membership = membershipRepository
                 .findById(new Membership.MembershipId(musicianId, bandId))
                 .orElseThrow(() -> new NoSuchRecordException("Can't find membership"));
-        membershipRepository.delete(membership);
+        if (!membership.getStatus().getName().equals(MemberStatus.ExistedStatus.SUBSCRIBER.getValue())) {
+            membershipRepository.delete(membership);
+            return;
+        }
+        throw new ConflictException("Cannot delete subscriber");
     }
 }

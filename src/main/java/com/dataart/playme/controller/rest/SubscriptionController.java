@@ -1,10 +1,9 @@
 package com.dataart.playme.controller.rest;
 
+import com.dataart.playme.controller.binding.annotation.ActiveBand;
 import com.dataart.playme.controller.binding.annotation.CurrentMusician;
-import com.dataart.playme.exception.ConflictException;
 import com.dataart.playme.model.Band;
 import com.dataart.playme.model.Musician;
-import com.dataart.playme.service.BandService;
 import com.dataart.playme.service.SubscriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,12 +18,9 @@ public class SubscriptionController {
 
     private final SubscriptionService subscriptionService;
 
-    private final BandService bandService;
-
     @Autowired
-    public SubscriptionController(SubscriptionService subscriptionService, BandService bandService) {
+    public SubscriptionController(SubscriptionService subscriptionService) {
         this.subscriptionService = subscriptionService;
-        this.bandService = bandService;
     }
 
     @GetMapping("/subscriptions")
@@ -33,12 +29,8 @@ public class SubscriptionController {
     }
 
     @PostMapping("/bands/{band}/_subscribe")
-    public void subscribe(@PathVariable Band band, @CurrentMusician Musician musician) {
-        if (bandService.isActiveBand(band)) {
-            subscriptionService.addSubscription(band, musician);
-            return;
-        }
-        throw new ConflictException("Band is disabled");
+    public void subscribe(@ActiveBand Band band, @CurrentMusician Musician musician) {
+        subscriptionService.addSubscription(band, musician);
     }
 
     @PostMapping("/bands/{band}/_unsubscribe")
