@@ -40,7 +40,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
     @Override
     public void addSubscription(Band band, Musician musician) {
-        if(!bandService.isMemberOf(band, musician)) {
+        if (!bandService.isMemberOf(band, musician)) {
             String statusName = MemberStatus.ExistedStatus.SUBSCRIBER.getValue();
             MemberStatus memberStatus = memberStatusRepository.findByName(statusName)
                     .orElseThrow(() -> new NoSuchRecordException("Cannot find member status"));
@@ -56,8 +56,8 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         String statusName = MemberStatus.ExistedStatus.SUBSCRIBER.getValue();
         Membership.MembershipId membershipId = new Membership.MembershipId(musician.getId(), band.getId());
         Membership membership = membershipRepository.findById(membershipId)
-                .orElseThrow(()-> new NoSuchRecordException("Can't find member"));
-        if(membership.getStatus().getName().equals(statusName)){
+                .orElseThrow(() -> new NoSuchRecordException("Can't find member"));
+        if (membership.getStatus().getName().equals(statusName)) {
             membershipRepository.delete(membership);
             return;
         }
