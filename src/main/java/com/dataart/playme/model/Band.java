@@ -24,4 +24,8 @@ public class Band {
     @JsonManagedReference
     @OneToMany(mappedBy = "band", fetch = FetchType.LAZY)
     private List<Membership> members;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "status_id")
+    private BandStatus bandStatus;
 }

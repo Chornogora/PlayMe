@@ -1,6 +1,10 @@
 package com.dataart.playme.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,12 +15,13 @@ import java.io.Serializable;
 @Table(name = "musicians_bands")
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class Membership {
 
     @EmbeddedId
     private MembershipId id;
 
-    @JsonBackReference
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     @ManyToOne
     @JoinColumn(name = "musician_id", insertable = false, updatable = false)
     private Musician musician;
@@ -31,7 +36,10 @@ public class Membership {
     private MemberStatus status;
 
     @Embeddable
-    private static class MembershipId implements Serializable {
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class MembershipId implements Serializable {
 
         @Column(name = "musician_id")
         private String musicianId;

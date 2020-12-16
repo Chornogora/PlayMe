@@ -26,7 +26,6 @@ public class Musician {
     @OneToMany(mappedBy = "musician", fetch = FetchType.LAZY)
     private List<MusicianSkill> musicianSkills;
 
-    @JsonManagedReference
     @OneToMany(mappedBy = "musician", fetch = FetchType.LAZY)
     private List<Membership> memberships;
 }

@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
-public class FilteredUserRepositoryImpl implements FilteredUserRepository {
+public class FilteredUserRepositoryImpl extends AbstractConstraintRepository implements FilteredUserRepository {
 
     private static final Map<String, String> SORTING_PARAMETERS = Map.of(
             "id", "u.id",
@@ -22,10 +22,6 @@ public class FilteredUserRepositoryImpl implements FilteredUserRepository {
             "lastName", "u.lastName",
             "birthdate", "u.birthdate",
             "creationDate", "u.creationDate");
-
-    private final Map<String, String> SORTING_TYPES = Map.of(
-            "ASC", "ASC",
-            "DESC", "DESC");
 
     private static final String FILTERED_SEARCH_QUERY_PATTERN = "SELECT u FROM User u " +
             "WHERE u.login LIKE CONCAT('%%', :login, '%%') " +

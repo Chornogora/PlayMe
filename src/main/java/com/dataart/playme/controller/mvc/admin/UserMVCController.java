@@ -8,8 +8,8 @@ import com.dataart.playme.model.User;
 import com.dataart.playme.service.UserService;
 import com.dataart.playme.service.dto.UserDtoTransformationService;
 import com.dataart.playme.util.Constants;
+import com.dataart.playme.util.ErrorUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -103,7 +103,7 @@ public class UserMVCController {
 
     @PostMapping("/add")
     public RedirectView addUser(@Valid UserDto dto, BindingResult bindingResult, RedirectAttributes redirect) {
-        List<String> errors = getErrors(bindingResult);
+        List<String> errors = ErrorUtil.getErrors(bindingResult);
         if (!errors.isEmpty()) {
             dto.setPassword(null);
             redirect.addFlashAttribute(ENTERED_DATA_MODEL_ATTRIBUTE, dto)
@@ -120,7 +120,7 @@ public class UserMVCController {
     @PostMapping("/edit/{userId}")
     public RedirectView editUser(@PathVariable String userId, @Valid EditUserDto changes,
                                  BindingResult bindingResult, RedirectAttributes redirect) {
-        List<String> errors = getErrors(bindingResult);
+        List<String> errors = ErrorUtil.getErrors(bindingResult);
         if (!errors.isEmpty()) {
             redirect.addFlashAttribute(VALIDATION_ISSUES_MODEL_ATTRIBUTE, errors);
             String redirectPath = String.format(EDIT_USER_PATH_PATTERN, userId);
@@ -148,12 +148,5 @@ public class UserMVCController {
         redirect.addFlashAttribute(Constants.OPERATION_STATUS_CONTEXT_PARAMETER,
                 String.valueOf(Response.Status.OK.getStatusCode()));
         return new RedirectView(ALL_USERS_PATH);
-    }
-
-    private List<String> getErrors(BindingResult bindingResult) {
-        return bindingResult.getAllErrors()
-                .stream()
-                .map(DefaultMessageSourceResolvable::getDefaultMessage)
-                .collect(Collectors.toList());
     }
 }

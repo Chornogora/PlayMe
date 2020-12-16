@@ -1,6 +1,6 @@
 package com.dataart.playme.model;
 
-import com.dataart.playme.util.Constants;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,6 +24,7 @@ public class User implements UserDetails {
 
     private String login;
 
+    @JsonIgnore
     private String password;
 
     private String email;

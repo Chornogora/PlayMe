@@ -5,3 +5,7 @@ databaseChangeLog:
       file: classpath:/db/changelog/db.2020-12-8-11-00.yaml
   - include:
       file: classpath:/db/changelog/db.2020-12-8-14-00.yaml
+  - include:
+      file: classpath:/db/changelog/db.2020-12-14-18-30.yaml
+  - include:
+      file: classpath:/db/changelog/db.2020-12-15-21-30.yaml

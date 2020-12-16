@@ -8,10 +8,10 @@
 <div th:fragment="pagination-arrows" class="col-md-2 offset-md-5 pagination-arrows">
     <input type="hidden" id="limit-input" th:attr="value=${filterBean.limit}">
     <input type="hidden" id="offset-input" th:attr="value=${filterBean.offset}">
-    <input type="image" th:attr="src=@{/images/arrows/arrow-left.png},disabled=${filterBean.offset == 0}"
+    <input type="image" th:attr="src=@{/image/arrows/arrow-left.png},disabled=${filterBean.offset == 0}"
            id="pagination-left-button" class="pagination-arrow">
     <span th:text="(${filterBean.offset} / ${filterBean.limit} + 1) + ' of ' + ${(usersCount / filterBean.limit) + (usersCount % filterBean.limit == 0 ? 0 : 1)}" class="pagination-text"></span>
-    <input type="image" th:attr="src=@{/images/arrows/arrow-right.png},disabled=${usersCount - filterBean.offset <= filterBean.limit}"
+    <input type="image" th:attr="src=@{/image/arrows/arrow-right.png},disabled=${usersCount - filterBean.offset <= filterBean.limit}"
            id="pagination-right-button" class="pagination-arrow">
 </div>
 </body>

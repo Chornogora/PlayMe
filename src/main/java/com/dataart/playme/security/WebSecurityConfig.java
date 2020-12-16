@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -15,6 +16,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtTokenProvider jwtTokenProvider;
@@ -35,15 +37,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.httpBasic().disable()
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/admin/**").hasRole(Role.RoleName.ADMINISTRATOR.getValue())
                 .antMatchers(HttpMethod.GET, "/user", "/bands/**", "/posts/**").hasRole(Role.RoleName.USER.getValue())
+                .antMatchers(HttpMethod.GET, "/admin/**", "/bands/{\\d+}/_disable",
+                        "/bands/{\\d+}/_enable").hasRole(Role.RoleName.ADMINISTRATOR.getValue())
                 .and()
                 .apply(new JwtSecurityConfigurer(jwtTokenProvider));
     }
 
     @Override
     public void configure(WebSecurity web) {
-        web.ignoring().antMatchers("/js/**", "/css/**", "/images/**", "/webfonts/**")
+        web.ignoring().antMatchers("/js/**", "/css/**", "/images/**", "/image/**", "/webfonts/**")
                 .and()
                 .ignoring().antMatchers("/auth")
                 .and()

@@ -1,5 +1,6 @@
 package com.dataart.playme.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -7,26 +8,25 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@Entity
-@Table(name = "member_statuses")
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
-public class MemberStatus {
+@Entity
+@Table(name = "band_statuses")
+public class BandStatus {
 
     @Id
     private String id;
 
     private String name;
 
-    public enum ExistedStatus {
-        LEADER("leader"),
-        ADMINISTRATOR("administrator"),
-        PLAYER("player"),
-        SUBSCRIBER("subscriber");
+    public enum StatusName {
+        ACTIVE("active"),
+        DISABLED("disabled");
 
         private final String value;
 
-        ExistedStatus(String value) {
+        StatusName(String value) {
             this.value = value;
         }
 
