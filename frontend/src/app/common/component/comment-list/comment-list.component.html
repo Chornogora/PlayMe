@@ -1,0 +1,18 @@
+<div class="comment-list rounded-bottom">
+  <div *ngFor="let comment of comments" class = "comment">
+    <div>
+      <i class="fas fa-user"></i>
+      <span>{{comment.author.user.firstName}} {{comment.author.user.lastName}}</span>
+      <span *ngIf="comment.author.nickname">({{comment.author.nickname}})</span>
+      <span class="comment-date">{{dateService.formatDate(comment.creationDatetime)}}
+        <span *ngIf="comment.author.user.id === user.id" class="comment-delete-button"
+        (click)="deleteComment(comment)">×</span>
+      </span>
+    </div>
+    <div>{{comment.text}}</div>
+  </div>
+  <div>
+    <input type="text" [(ngModel)]="newText" placeholder="Enter new comment here" class="new-comment-text"/>
+    <input type="submit" (click)="createComment()" value="Create comment" class="new-comment-button">
+  </div>
+</div>

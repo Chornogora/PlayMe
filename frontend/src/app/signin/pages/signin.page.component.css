@@ -1,0 +1,4 @@
+::ng-deep body {
+  background: url("/assets/img/authorization-background.jpg") no-repeat;
+  background-size: 100%;
+}

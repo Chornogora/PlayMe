@@ -1,0 +1,17 @@
+<div class="band-list">
+  <div *ngFor="let band of bands" class="band">
+    <div class="band-title col-md-10">
+      <i class="fas fa-users"></i>
+      <a href="band/{{band.id}}"><span>{{band.name}}</span></a>
+    </div>
+    <div class="band-button rounded-circle offset-md-11" (click)="changeSubscription(band)"
+         *ngIf="!bandService.isMemberOf(musician, band)">
+      <i [ngClass]="{fas:true, 'fa-user-plus':!subscriptionService.isSubscriberOf(musician, band),
+      'fa-user-minus':subscriptionService.isSubscriberOf(musician, band)}"></i>
+    </div>
+    <div>
+      <small>Created {{dateService.formatDateOnly(band.creationDate)}}</small>
+    </div>
+    <hr/>
+  </div>
+</div>

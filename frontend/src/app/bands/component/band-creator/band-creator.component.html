@@ -1,0 +1,29 @@
+<div class="band-creator">
+  <label for="new-band-name">Band name</label>
+  <input type="text" id="new-band-name" class="form-control" placeholder="Enter band name" [(ngModel)]="name">
+  <hr>
+  <div class="band-members">
+    <div *ngFor="let musician of musicians">
+      <input type="text" class="col-md-7"
+             value="{{musician.firstName}} {{musician.lastName}} ({{musician.login}})" disabled>
+      <select [(ngModel)]="musician.statusName" class="line-element">
+        <!--<option [selected]="musician.statusName === 'administrator'">administrator</option>
+        <option [selected]="musician.statusName === 'player'">player</option>-->
+        <option value="administrator">administrator</option>
+        <option value="player">player</option>
+      </select>
+      <div class="rounded-circle member-button line-element" (click)="deleteMusician(musician)">-</div>
+    </div>
+    <div class="add-member" (click)="addMusician()">
+      <div class="rounded-circle member-button">+</div>
+      <span>Add member</span>
+    </div>
+  </div>
+  <div>
+    <button class="offset-md-3" (click)="createBand()">Create Band</button>
+    <button class="offset-md-2">Cancel</button>
+  </div>
+</div>
+
+<app-member-choose-component *ngIf="isMemberChoice" [musician]="musician" [selectedMusicians]="musicians"
+                             (addMemberEvent)="addMember($event)"></app-member-choose-component>

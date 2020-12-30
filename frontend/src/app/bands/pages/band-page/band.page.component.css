@@ -1,0 +1,53 @@
+::ng-deep body {
+  background-color: #18191A;
+  background-size: 100%;
+}
+
+.band-page-content {
+  position: absolute;
+  left: 20%;
+  width: 60%;
+  top: 15%;
+  color: #e9ecef;
+  background-color: #242526;
+}
+
+.band-title {
+  font-size: 16pt;
+  text-align: center;
+}
+
+.band-image {
+  width: 30%;
+  height: 300px;
+  margin-left: 3%;
+  margin-top: 15px;
+  padding-top: 5px;
+  background-color: white;
+  border: 1px solid black;
+}
+
+.band-info {
+  display: inline-block;
+  left: 35%;
+  width: 60%;
+  height: 300px;
+  margin-left: 5%;
+  font-size: 14pt;
+}
+
+.members-title {
+  text-align: center;
+}
+
+.gold {
+  color: gold;
+}
+
+.silver {
+  color: silver;
+}
+
+.member-icon {
+  margin-right: 5px;
+}

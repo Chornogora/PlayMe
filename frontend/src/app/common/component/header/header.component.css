@@ -1,0 +1,27 @@
+.custom-navbar {
+  background-color: #242526;
+}
+
+.navbar-container {
+  display: inherit !important;
+}
+
+.navbar-element {
+  background-color: #3A3B3C;
+  color: white;
+  padding: 5px;
+  height: 50px;
+  vertical-align: middle;
+}
+
+.logo-image {
+  width: 30px;
+}
+
+.sign-out {
+  width: 27%;
+}
+
+.user-name {
+  margin-right: 5px;
+}

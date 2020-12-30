@@ -1,0 +1,32 @@
+.band-list {
+  position: relative;
+  color: #e9ecef;
+  background-color: #242526;
+  margin-top: 20px;
+  left: 30%;
+  width: 40%;
+}
+
+.band {
+  padding-top: 5px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.band-title {
+  font-size: 16pt;
+}
+
+.band-button {
+  width: 30px;
+  height: 30px;
+  top: 35%;
+  padding: 5px;
+  display: inline-block;
+  background-color: white;
+  color: black;
+}
+
+.band-button:hover {
+  cursor: pointer;
+}
