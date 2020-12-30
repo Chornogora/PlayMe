@@ -1,0 +1,60 @@
+.news-line {
+  position: relative;
+  color: black;
+  background-color: #242526;
+  margin-top: 20px;
+  left:10%;
+  width: 80%;
+}
+
+.post-delete-button {
+  margin-left: 20px;
+}
+
+.post-delete-button:hover {
+  color: red;
+  cursor: pointer;
+}
+
+.post-title {
+  color: white;
+}
+
+.band-icon {
+  margin-right: 3px;
+}
+
+.post-date {
+  display: inline-block;
+  font-size: 8pt;
+  right: 5%;
+  position: absolute;
+}
+
+.post {
+  padding-top: 5px;
+  padding-bottom: 15px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.post-description {
+  padding-top: 0;
+}
+
+.comment-link {
+  left: 75%;
+  bottom: 22px;
+  position: relative;
+}
+
+.comment-link:hover {
+  color: red;
+  cursor: pointer;
+}
+
+.end-of-news {
+  position: center;
+  background-color: white;
+  text-align: center;
+}

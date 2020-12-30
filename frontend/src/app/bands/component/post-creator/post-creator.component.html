@@ -1,0 +1,34 @@
+<div *ngIf="isCreationActive" class="post-creator">
+  <div class="post-form">
+    <label class="post-form-title" for="post-text">Text of the post</label>
+    <textarea class="form-control post-text" id="post-text" [(ngModel)]="postText"></textarea>
+    <div class="table-files">
+      <div class="files-group">
+        <div class="image-upload">
+          <label for="image-input">
+            <img src="assets/img/image-upload.png" alt="image upload"/>
+          </label>
+          <input id="image-input" type="file" (change)="setPostImage($event.target.files)"/>
+          <div *ngIf="postImage">Image chosen</div>
+        </div>
+
+        <div class="file-upload">
+          <label for="file-input">
+            <img src="assets/img/file-upload.png" alt="image upload"/>
+          </label>
+          <input id="file-input" type="file" (change)="setPostFile($event.target.files)"/>
+          <div *ngIf="postFile">File chosen</div>
+        </div>
+      </div>
+    </div>
+    <div class="text-center">
+      <button (click)="createPost()" class="post-creation-button">Create post</button>
+      <button (click)="deactivateCreator()" class="post-creation-button">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="!isCreationActive" class="create-block" (click)="activateCreator()">
+  <div class="rounded-circle create-button">+</div>
+  <div class="create-text">Add post</div>
+</div>

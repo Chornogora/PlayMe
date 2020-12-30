@@ -1,0 +1,26 @@
+<app-header (signOutEvent)="signOut()" [user]="user"></app-header>
+<div *ngIf="band" class="band-page-content">
+  <img src="/assets/img/camera.png" class="band-image">
+  <div class="band-info">
+    <div class="band-title">{{band.name}}</div>
+    <hr>
+    <div class="band-created">Created {{dateService.formatDateOnly(band.creationDate)}}</div>
+    <hr>
+    <div class="members-title">Members</div>
+    <div class="band-members">
+      <div *ngFor="let membership of members">
+        <span [ngSwitch]="membership.status.name">
+          <i *ngSwitchCase="'leader'" class="member-icon gold fas fa-crown"></i>
+          <i *ngSwitchCase="'administrator'" class="member-icon silver fas fa-crown"></i>
+          <i *ngSwitchCase="'player'" class="member-icon fas fa-user"></i>
+        </span>
+        <span>{{membership.musician.user.firstName}} {{membership.musician.user.lastName}} </span>
+        <span *ngIf="membership.musician.nickname">{{membership.musician.nickname}}</span>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="musician && this.bandService.isAdministrator(musician, band)">
+    <app-post-creator [band]="band"></app-post-creator>
+  </div>
+  <app-band-posts *ngIf="musician" [band]="band" [musician]="musician"></app-band-posts>
+</div>

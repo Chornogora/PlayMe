@@ -1,0 +1,20 @@
+<div class="background-hide">
+  <div class="member-choose-form">
+    <label for="first-name">First name</label>
+    <input type="text" id="first-name" [(ngModel)]="userData.firstName" class="form-control">
+    <label for="last-name">Last name</label>
+    <input type="text" id="last-name" [(ngModel)]="userData.lastName" class="form-control">
+    <label for="login">Login</label>
+    <input type="text" id="login" [(ngModel)]="userData.login" class="form-control">
+    <button class="member-choose-button" (click)="findMusicians()">Find musicians</button>
+    <hr>
+    <select class="form-control musicians-found" size="{{getSize()}}" [(ngModel)]="selectedMusician">
+      <option *ngFor="let musician of users" [ngValue]="musician">
+        {{musician.user.firstName}} {{musician.user.lastName}} ({{musician.user.login}})
+      </option>
+    </select>
+    <div class="text-center">
+      <button class="member-choose-button confirm-button" (click)="addMember()">Done</button>
+    </div>
+  </div>
+</div>

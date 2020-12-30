@@ -1,0 +1,40 @@
+::ng-deep body {
+  background-color: #18191A;
+  background-size: 100%;
+}
+
+.filter-panel {
+  position: absolute;
+  left: 4%;
+  top: 15%;
+  width: 20%;
+  background-color: #242526;
+  color: white;
+  padding: 5px;
+}
+
+.filter-element {
+  background-color: #3A3B3C;
+  color: white;
+  margin-right: 5px;
+}
+
+.active {
+  background-color: white;
+  color: black;
+}
+
+.filter-string:hover {
+  cursor: pointer;
+}
+
+.add-band-button {
+  position: relative;
+  left: 12%;
+  width: 70%;
+  text-align: center;
+  border: 2px solid white;
+  background-color: #242526;
+  border-radius: 10px;
+  color: white;
+}

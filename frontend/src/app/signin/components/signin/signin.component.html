@@ -1,0 +1,31 @@
+<div class="container">
+  <div class="card card-login mx-auto text-center bg-dark">
+    <div class="card-header mx-auto bg-dark">
+      <span class="logo_title mt-5 playme-name">PlayMe</span>
+    </div>
+    <div class="card-body">
+      <div class="input-group form-group">
+        <div class="input-group-prepend text-input">
+          <span class="input-group-text"><i class="fas fa-user"></i></span>
+          <input type="text" id="login" name="login" class="form-control" placeholder="Login"
+                 [(ngModel)]="authorizationData.login">
+        </div>
+      </div>
+
+      <div class="input-group form-group">
+        <div class="input-group-prepend text-input">
+          <span class="input-group-text"><i class="fas fa-key"></i></span>
+          <input type="password" id="password" name="password" class="form-control" placeholder="Password"
+                 [(ngModel)]="authorizationData.password">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <input type="submit" id="submit-button" value="Login" class="btn btn-outline-danger login_btn"
+               (click)="authorize()">
+      </div>
+
+      <div class="invalid-message" *ngIf="error">{{error}}</div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,23 @@
+<app-header (signOutEvent)="signOut()" [user]="user" [tab]="'bands'"></app-header>
+<app-bands-list *ngIf="mode !== 'creator'"
+  [bands]="bands" [musician]="musician" (updateEvent)="reload()"></app-bands-list>
+<app-bands-creator *ngIf="mode === 'creator'" [musician]="musician"></app-bands-creator>
+
+<div class="filter-panel">
+  <div class="form-inline mb-2">
+    <input type="text" class="form-control filter-element" [(ngModel)]="namePattern" placeholder="🔍 Find band">
+    <input type="submit" class="form-control filter-element" value="Find" (click)="setBands()">
+  </div>
+  <hr>
+  <div [ngClass]="{active:(mode === 'memberships'), 'filter-string':true}"
+       (click)="setMode('memberships')">Memberships
+  </div>
+  <div [ngClass]="{active:(mode === 'subscriptions'), 'filter-string':true}"
+       (click)="setMode('subscriptions')">Subscriptions
+  </div>
+  <div [ngClass]="{active:(mode === 'all'), 'filter-string':true}"
+       (click)="setMode('all')">All groups
+  </div>
+  <hr>
+  <button class="add-band-button" (click)="setCreationMode()">Create new band</button>
+</div>

@@ -1,0 +1,57 @@
+.band-creator {
+  position: relative;
+  color: #e9ecef;
+  background-color: #242526;
+  margin-top: 20px;
+  left: 30%;
+  width: 40%;
+  padding: 2%;
+}
+
+input, select {
+  border: 2px solid white;
+  background-color: #242526;
+  color: white;
+}
+
+label {
+  color: white;
+}
+
+.band-members {
+  border: 1px solid white;
+  border-radius: 10px;
+  padding: 2%;
+  margin-bottom: 5px;
+}
+
+.member-button {
+  background-color: white;
+  color: black;
+  display: inline-block;
+  margin-right: 3px;
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  font-size: 15pt;
+}
+
+.member-button:hover {
+  cursor: pointer;
+}
+
+button {
+  background-color: #242526;
+  border: 1px solid white;
+  border-radius: 5px;
+  color: white;
+  width: 20%;
+}
+
+.line-element {
+  margin-left: 5%;
+}
+
+.add-member {
+  margin-top: 5px;
+}
