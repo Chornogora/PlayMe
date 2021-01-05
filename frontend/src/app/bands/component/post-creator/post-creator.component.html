@@ -6,7 +6,7 @@
       <div class="files-group">
         <div class="image-upload">
           <label for="image-input">
-            <img src="assets/img/image-upload.png" alt="image upload"/>
+            <img src="assets/img/image-upload.png" alt="image upload" #avatar/>
           </label>
           <input id="image-input" type="file" (change)="setPostImage($event.target.files)"/>
           <div *ngIf="postImage">Image chosen</div>

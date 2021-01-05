@@ -1,0 +1,55 @@
+<app-header (signOutEvent)="signOut()" [user]="user"></app-header>
+<div *ngIf="band" class="band-page-content">
+  <div class="avatar-pick w3-center">
+    <div class="image-upload">
+      <img class="current-image" src="assets/img/camera.png" #avatar>
+      <div class="new-image">
+        <input id="image-input" type="file" (change)="setAvatar($event.target.files)"/>
+        <label for="image-input">
+          <img class="image-button" src="assets/img/image-upload.png">
+        </label>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <div class="band-data">
+    <label for="band-name">Name</label>
+    <div>
+      <input class="band-name" type="text" [(ngModel)]="band.name" value="{{band.name}}" id="band-name">
+      <i class="fas fa-save save-name-button" (click)="changeName()"></i>
+    </div>
+  </div>
+  <hr>
+  <div class="band-members">
+    <div *ngFor="let member of getMembers()">
+      <input type="text" class="col-md-7"
+             value="{{member.musician.user.firstName}} {{member.musician.user.lastName}} ({{member.musician.user.login}})"
+             disabled>
+      <select [ngModel]="member.status.name" class="line-element" (change)="changeMemberStatus(member, $event)">
+        <option value="leader">leader</option>
+        <option value="administrator">administrator</option>
+        <option value="player">player</option>
+      </select>
+      <div class="rounded-circle member-button line-element" (click)="openDeleteConfirmation(member)">-</div>
+    </div>
+    <div class="add-member" (click)="activateMemberChoiceMode()">
+      <div class="rounded-circle member-button">+</div>
+      <span>Add member</span>
+    </div>
+  </div>
+</div>
+
+<app-member-choose-component *ngIf="isMemberChoice" [musician]="musician" [selectedMusicians]="getMusicians()"
+                             (addMemberEvent)="addMember($event)"></app-member-choose-component>
+
+<app-modal *ngIf="memberToDelete" [title]="'Member deleting confirmation'"
+           [text]="'Are you sure want to delete this member?'"
+           (deleteEvent)="deleteMusician()"
+           (cancelEvent)="cancelDeleting()"></app-modal>
+
+<app-modal *ngIf="memberToBecomeLeader" [title]="'Member update confirmation'"
+           [text]="'Are you sure want this member to become a new leader? Your status will be changed to administrator'"
+           (deleteEvent)="updateMember(memberToBecomeLeader, 'leader')"
+           (cancelEvent)="cancelDeleting()"></app-modal>
+
+<app-toasts></app-toasts>

@@ -51,3 +51,21 @@
 .member-icon {
   margin-right: 5px;
 }
+
+.band-edit {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  height: 30px;
+  width: 30px;
+  border-radius: 7px;
+  color: white;
+  text-align: center;
+  padding: 5px;
+  transition: color 0.25s ease-in-out;
+}
+
+.band-edit:hover {
+  color: yellow;
+  cursor: pointer;
+}
