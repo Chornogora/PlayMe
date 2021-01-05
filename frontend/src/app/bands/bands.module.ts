@@ -10,11 +10,15 @@ import {BandPageComponent} from './pages/band-page/band.page.component';
 import {PostCreatorComponent} from './component/post-creator/post-creator.component';
 import {BandPostsComponent} from './component/band-posts/band-posts.component';
 import {HomeModule} from '../home/home.module';
+import {BandEditPageComponent} from './pages/band-edit-page/band-edit.page.component';
+import {AbstractBandPageComponent} from './pages/abstract-band-page/abstract-band.page.component';
 
 @NgModule({
   declarations:
     [
+      AbstractBandPageComponent,
       BandPageComponent,
+      BandEditPageComponent,
       BandsPageComponent,
       BandsListComponent,
       BandsCreatorComponent,
@@ -22,13 +26,13 @@ import {HomeModule} from '../home/home.module';
       PostCreatorComponent,
       BandPostsComponent
     ],
-  imports:
-    [
-      BrowserModule,
-      FormsModule,
-      AppCommonModule,
-      HomeModule
-    ],
+    imports:
+        [
+            BrowserModule,
+            FormsModule,
+            AppCommonModule,
+            HomeModule
+        ],
   exports: [BandsPageComponent, BandPageComponent]
 })
 export class BandsModule {

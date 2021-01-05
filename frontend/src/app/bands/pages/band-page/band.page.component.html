@@ -2,6 +2,9 @@
 <div *ngIf="band" class="band-page-content">
   <img src="/assets/img/camera.png" class="band-image">
   <div class="band-info">
+    <div *ngIf="bandService.isLeader(musician, band)" class="band-edit">
+      <a href="band/{{id}}/edit"><i class="fas fa-cog"></i></a>
+    </div>
     <div class="band-title">{{band.name}}</div>
     <hr>
     <div class="band-created">Created {{dateService.formatDateOnly(band.creationDate)}}</div>

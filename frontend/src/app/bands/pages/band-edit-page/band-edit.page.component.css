@@ -1,0 +1,112 @@
+::ng-deep body {
+  background-color: #18191A;
+  background-size: 100%;
+}
+
+.band-page-content {
+  position: absolute;
+  left: 20%;
+  width: 60%;
+  top: 15%;
+  color: #e9ecef;
+  background-color: #242526;
+  padding: 20px;
+  margin-bottom: 20px;
+  z-index: -1;
+}
+
+.current-image {
+  width: 300px;
+  height: 300px;
+}
+
+.image-upload:hover .new-image {
+  display: block;
+  cursor: pointer;
+}
+
+.new-image {
+  display: none;
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  top: 0;
+  left: 310px;
+  background-color: rgba(49, 50, 57, 0.5);
+}
+
+.band-members {
+  border: 1px solid white;
+  border-radius: 10px;
+  padding: 2%;
+  margin-bottom: 5px;
+}
+
+.member-button {
+  background-color: white;
+  color: black;
+  display: inline-block;
+  margin-right: 3px;
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  font-size: 15pt;
+}
+
+.member-button:hover {
+  cursor: pointer;
+}
+
+button {
+  background-color: #242526;
+  border: 1px solid white;
+  border-radius: 5px;
+  color: white;
+  width: 20%;
+}
+
+.line-element {
+  margin-left: 5%;
+}
+
+.add-member {
+  margin-top: 5px;
+}
+
+input, select {
+  margin-bottom: 5px;
+  background-color: #242526;
+  border: 1px solid white;
+  border-radius: 5px;
+  color: white;
+}
+
+.image-upload {
+  text-align: center;
+}
+
+.new-image > input, .file-upload > input {
+  display: none;
+}
+
+.image-upload label {
+  cursor: pointer;
+}
+
+.image-upload img, .file-upload img {
+  width: 300px;
+  height: 300px;
+}
+
+.save-name-button {
+  margin-left: 10px;
+}
+
+.save-name-button:hover {
+  cursor: pointer;
+}
+
+.band-name {
+  display: inline-block;
+  width: 80%;
+}

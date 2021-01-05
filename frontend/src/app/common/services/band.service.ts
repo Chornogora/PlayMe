@@ -3,6 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {MusicianDto} from '../dto/musician.dto';
 import {BandDto} from '../dto/band.dto';
 import {MemberDto} from '../dto/member.dto';
+import {MembershipDto} from '../dto/membership.dto';
 
 @Injectable()
 export class BandService {
@@ -54,6 +55,21 @@ export class BandService {
 
   addMember(band: BandDto, musician: MemberDto): any {
     return this.httpClient.post(`http://localhost:8080/bands/${band.id}/members`, musician,
+      {withCredentials: true});
+  }
+
+  updateBand(band: BandDto): any {
+    return this.httpClient.patch(`http://localhost:8080/bands/${band.id}`, {name: band.name},
+      {withCredentials: true});
+  }
+
+  deleteMember(band: BandDto, member: MembershipDto): any {
+    return this.httpClient.delete(`http://localhost:8080/bands/${band.id}/members/${member.musician.id}`,
+      {withCredentials: true});
+  }
+
+  updateMember(band: BandDto, member: MemberDto): any {
+    return this.httpClient.put(`http://localhost:8080/bands/${band.id}/members`, member,
       {withCredentials: true});
   }
 }

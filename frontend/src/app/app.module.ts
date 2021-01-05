@@ -12,12 +12,14 @@ import {SignInPageComponent} from './signin/pages/signin.page.component';
 import {BandsPageComponent} from './bands/pages/bands-page/bands.page.component';
 import {BandsModule} from './bands/bands.module';
 import {BandPageComponent} from './bands/pages/band-page/band.page.component';
+import {BandEditPageComponent} from './bands/pages/band-edit-page/band-edit.page.component';
 
 const appRoutes: Routes = [
   {path: '', component: HomePageComponent},
   {path: 'auth', component: SignInPageComponent},
   {path: 'bands', component: BandsPageComponent},
-  {path: 'band/:id', component: BandPageComponent}
+  {path: 'band/:id', component: BandPageComponent},
+  {path: 'band/:id/edit', component: BandEditPageComponent},
 ];
 
 @NgModule({
