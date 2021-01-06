@@ -1,5 +1,7 @@
+import {FileDto} from './file.dto';
+
 export class CreatePostDto {
   text: string;
-  file: string;
-  photo: string;
+  files: FileDto[];
+  photos: FileDto[];
 }

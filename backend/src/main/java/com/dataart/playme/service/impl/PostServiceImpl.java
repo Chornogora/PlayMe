@@ -11,6 +11,8 @@ import com.dataart.playme.model.Comment;
 import com.dataart.playme.model.Musician;
 import com.dataart.playme.model.Post;
 import com.dataart.playme.repository.CommentRepository;
+import com.dataart.playme.repository.FileRepository;
+import com.dataart.playme.repository.PhotoRepository;
 import com.dataart.playme.repository.PostRepository;
 import com.dataart.playme.service.BandService;
 import com.dataart.playme.service.FileService;
@@ -20,6 +22,7 @@ import com.dataart.playme.util.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.Base64;
 import java.util.Date;
@@ -39,14 +42,20 @@ public class PostServiceImpl implements PostService {
 
     private final CommentRepository commentRepository;
 
+    private final FileRepository fileRepository;
+
+    private final PhotoRepository photoRepository;
+
     @Autowired
     public PostServiceImpl(BandService bandService, PostDtoTransformationService postDtoTransformationService,
-                           FileService fileService, PostRepository postRepository, CommentRepository commentRepository) {
+                           FileService fileService, PostRepository postRepository, CommentRepository commentRepository, FileRepository fileRepository, PhotoRepository photoRepository) {
         this.bandService = bandService;
         this.postDtoTransformationService = postDtoTransformationService;
         this.fileService = fileService;
         this.postRepository = postRepository;
         this.commentRepository = commentRepository;
+        this.fileRepository = fileRepository;
+        this.photoRepository = photoRepository;
     }
 
     @Override
@@ -61,7 +70,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<Post> getByBands(PostRequestDto dto) {
-        if(dto.getStartsWith() == null){
+        if (dto.getStartsWith() == null) {
             return postRepository.findByBand(dto);
         }
         return postRepository.findByBandBefore(dto, dto.getStartsWith());
@@ -74,11 +83,11 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Post deletePost(Post post, Musician currentMusician) {
+    public void deletePost(Post post, Musician currentMusician) {
         if (bandService.isMemberOf(post.getBand(), currentMusician)) {
             if (bandService.canChangePost(post.getBand(), currentMusician)) {
                 postRepository.delete(post);
-                return post;
+                return;
             }
         }
         throw new NoSufficientPrivilegesException("Musician is not a member of current band");
@@ -114,38 +123,69 @@ public class PostServiceImpl implements PostService {
         return postRepository.getPostsAmount(bands);
     }
 
-    private Post savePost(CreatePostDto dto, Band band, Musician musician) {
-        if(dto.getPhoto() != null) {
-            String imageUrl = createImage(dto.getPhoto());
-            dto.setPhoto(imageUrl);
-        }
-        if(dto.getFile() != null) {
-            String fileUrl = createFile(dto.getFile());
-            dto.setFile(fileUrl);
-        }
-        Post post = postDtoTransformationService.creationDtoToPost(dto);
-        post.setBand(band);
-        post.setCreator(musician);
-        post.setId(UUID.randomUUID().toString());
-        post.setCreationDatetime(new Date(System.currentTimeMillis()));
+    @Transactional
+    protected Post savePost(Post post) {
+        photoRepository.saveAll(post.getPhotos());
+        fileRepository.saveAll(post.getFiles());
         return postRepository.save(post);
     }
 
-    private String createImage(String imageEncoded) {
+    private Post savePost(CreatePostDto dto, Band band, Musician musician) {
+        savePostPhotos(dto);
+        savePostFiles(dto);
+        Post post = postDtoTransformationService.creationDtoToPost(dto);
+        setPostBand(post, band);
+        post.setCreator(musician);
+        setPostId(post);
+        post.setCreationDatetime(new Date(System.currentTimeMillis()));
+        return savePost(post);
+    }
+
+    private void setPostId(Post post) {
+        post.setId(UUID.randomUUID().toString());
+        post.getPhotos().forEach(photo -> photo.setId(UUID.randomUUID().toString()));
+        post.getFiles().forEach(file -> file.setId(UUID.randomUUID().toString()));
+    }
+
+    private void savePostPhotos(CreatePostDto dto) {
+        if (dto.getPhotos() != null) {
+            dto.getPhotos().forEach(photo -> {
+                String imageUrl = createImage(photo.getFileContent(), photo.getFileName());
+                photo.setFileUrl(imageUrl);
+            });
+        }
+    }
+
+    private void savePostFiles(CreatePostDto dto) {
+        if (dto.getFiles() != null) {
+            dto.getFiles().forEach(file -> {
+                String fileUrl = createFile(file.getFileContent(), file.getFileName());
+                file.setFileUrl(fileUrl);
+            });
+        }
+    }
+
+    private void setPostBand(Post post, Band band) {
+        post.setBand(band);
+        post.getPhotos().forEach(photo -> photo.setOwner(band));
+        post.getFiles().forEach(file -> file.setOwner(band));
+    }
+
+    private String createImage(String imageEncoded, String fileName) {
         try {
             byte[] data = Base64.getDecoder().decode(imageEncoded.split(",")[1]);
             String imageDirectory = Constants.get(Constants.IMAGE_ROOT_DIRECTORY_ID);
-            return fileService.writeToFile(imageDirectory, data);
+            return fileService.writeToFile(imageDirectory, fileName, data);
         } catch (IOException e) {
             throw new ApplicationRuntimeException("Cannot write image to file");
         }
     }
 
-    private String createFile(String fileEncoded) {
+    private String createFile(String fileEncoded, String fileName) {
         try {
             byte[] data = Base64.getDecoder().decode(fileEncoded.split(",")[1]);
             String fileDirectory = Constants.get(Constants.FILE_ROOT_DIRECTORY_ID);
-            return fileService.writeToFile(fileDirectory, data);
+            return fileService.writeToFile(fileDirectory, fileName, data);
         } catch (IOException e) {
             throw new ApplicationRuntimeException("Cannot write file");
         }

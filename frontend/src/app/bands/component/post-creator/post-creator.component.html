@@ -9,7 +9,7 @@
             <img src="assets/img/image-upload.png" alt="image upload" #avatar/>
           </label>
           <input id="image-input" type="file" (change)="setPostImage($event.target.files)"/>
-          <div *ngIf="postImage">Image chosen</div>
+          <div *ngIf="postImages.length">{{postImages.length}} Image(s) chosen</div>
         </div>
 
         <div class="file-upload">
@@ -17,7 +17,7 @@
             <img src="assets/img/file-upload.png" alt="image upload"/>
           </label>
           <input id="file-input" type="file" (change)="setPostFile($event.target.files)"/>
-          <div *ngIf="postFile">File chosen</div>
+          <div *ngIf="postFiles.length">{{postFiles.length}} File(s) chosen</div>
         </div>
       </div>
     </div>

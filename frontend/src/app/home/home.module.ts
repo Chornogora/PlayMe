@@ -6,6 +6,7 @@ import {AppCommonModule} from '../common/app-common.module';
 import {NewsLineComponent} from './components/news-line/news-line.component';
 import {CommentListComponent} from '../common/component/comment-list/comment-list.component';
 import {IntersectionObserverModule} from '@ng-web-apis/intersection-observer';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -13,12 +14,13 @@ import {IntersectionObserverModule} from '@ng-web-apis/intersection-observer';
     NewsLineComponent,
     CommentListComponent
   ],
-  imports: [
-    BrowserModule,
-    FormsModule,
-    AppCommonModule,
-    IntersectionObserverModule
-  ],
+    imports: [
+        BrowserModule,
+        FormsModule,
+        AppCommonModule,
+        IntersectionObserverModule,
+        NgbModule
+    ],
   exports: [HomePageComponent, CommentListComponent]
 })
 export class HomeModule {

@@ -28,4 +28,12 @@ public class Band {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "status_id")
     private BandStatus bandStatus;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
+    private List<File> files;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
+    private List<Photo> photos;
 }
