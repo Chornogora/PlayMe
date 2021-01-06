@@ -12,6 +12,7 @@ import {BandPostsComponent} from './component/band-posts/band-posts.component';
 import {HomeModule} from '../home/home.module';
 import {BandEditPageComponent} from './pages/band-edit-page/band-edit.page.component';
 import {AbstractBandPageComponent} from './pages/abstract-band-page/abstract-band.page.component';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations:
@@ -31,7 +32,8 @@ import {AbstractBandPageComponent} from './pages/abstract-band-page/abstract-ban
             BrowserModule,
             FormsModule,
             AppCommonModule,
-            HomeModule
+            HomeModule,
+            NgbModule
         ],
   exports: [BandsPageComponent, BandPageComponent]
 })

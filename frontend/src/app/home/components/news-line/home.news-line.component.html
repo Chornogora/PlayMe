@@ -7,13 +7,25 @@
         <span class="post-date">{{dateService.formatDate(post.creationDatetime)}}</span>
       </div>
       <div class="card">
-        <img *ngIf="post.photoURL" class="card-img-top" src="{{'http://localhost:8080/images/' + post.photoURL}}"
-             alt="{{post.photoURL}}">
-        <div class="card-body post-description" *ngIf="post.text || post.fileURL">
+        <div *ngIf="post.photos.length" class="card-img-top">
+          <ngb-carousel class="carousel slide carousel-fade custom-carousel">
+            <ng-template ngbSlide *ngFor="let photo of post.photos">
+              <div class="wrapper">
+                <img class="d-block w-100" src="{{'http://localhost:8080/images/' + photo.photoUrl}}"
+                     alt="{{photo.photoUrl}}">
+                <div class="foreground"></div>
+              </div>
+            </ng-template>
+          </ngb-carousel>
+        </div>
+
+        <div class="card-body post-description" *ngIf="post.text || post.files.length">
           <p *ngIf="post.text" class="card-text">{{post.text}}</p>
-          <div *ngIf="post.fileURL">
-            <i class="fas fa-compact-disc"></i>
-            <a href="{{'http://localhost:8080/file/' + post.fileURL}}">File</a>
+          <div *ngIf="post.files.length">
+            <div *ngFor="let file of post.files">
+              <i class="fas fa-compact-disc"></i>
+              <a href="{{'http://localhost:8080/file/' + file.fileUrl}}">{{file.fileUrl}}</a>
+            </div>
           </div>
         </div>
         <span class="comment-link" (click)="openComments(post)">Comments</span>

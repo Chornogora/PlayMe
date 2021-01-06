@@ -6,5 +6,5 @@ public interface FileService {
 
     byte[] readFromFile(String fileName, String folderName) throws IOException;
 
-    String writeToFile(String folderPath, byte[] data) throws IOException;
+    String writeToFile(String folderPath, String fileName, byte[] data) throws IOException;
 }

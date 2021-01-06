@@ -26,7 +26,6 @@ public class Membership {
     @JoinColumn(name = "musician_id", insertable = false, updatable = false)
     private Musician musician;
 
-    //@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "band_id", insertable = false, updatable = false)

@@ -17,12 +17,6 @@ public class Post {
     @Id
     private String id;
 
-    @Column(name = "photo_url")
-    private String photoURL;
-
-    @Column(name = "file_url")
-    private String fileURL;
-
     @Column(name = "text")
     private String text;
 
@@ -31,6 +25,18 @@ public class Post {
     @ManyToOne
     @JoinColumn(name = "band_id")
     private Band band;
+
+    @ManyToMany
+    @JoinTable(name = "posts_files",
+            joinColumns = @JoinColumn(name = "post_id"),
+            inverseJoinColumns = @JoinColumn(name = "file_id"))
+    private List<File> files;
+
+    @ManyToMany
+    @JoinTable(name = "posts_photos",
+            joinColumns = @JoinColumn(name = "post_id"),
+            inverseJoinColumns = @JoinColumn(name = "photo_id"))
+    private List<Photo> photos;
 
     @ManyToOne
     @JoinColumn(name = "creator_id")

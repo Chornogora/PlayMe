@@ -72,8 +72,8 @@ public class BandController {
     public Post createPost(@RequestBody @Valid CreatePostDto dto,
                            @ActiveBand Band band,
                            @CurrentMusician Musician currentMusician) {
-        if (dto.getFile() == null && dto.getPhoto() == null && dto.getText() == null
-                || dto.getFile() == null && dto.getPhoto() == null && dto.getText().length() == 0) {
+        if (dto.getFiles() == null && dto.getPhotos() == null && dto.getText() == null
+                || dto.getFiles() == null && dto.getPhotos() == null && dto.getText().length() == 0) {
             throw new BadRequestException("No data provided");
         }
         return postService.createPost(dto, band, currentMusician);

@@ -2,7 +2,7 @@ import {Component, Input} from '@angular/core';
 import {BandDto} from '../../../common/dto/band.dto';
 import {PostService} from '../../../common/services/post.service';
 import {CreatePostDto} from '../../../common/dto/create-post.dto';
-import {EncoderService} from '../../../common/services/encoder.service';
+import {FileDto} from '../../../common/dto/file.dto';
 
 @Component({
   selector: 'app-post-creator',
@@ -17,11 +17,11 @@ export class PostCreatorComponent {
 
   postText = '';
 
-  postImage: string;
+  postImages: FileDto[] = [];
 
-  postFile: string;
+  postFiles: FileDto[] = [];
 
-  constructor(private postService: PostService, private encoderService: EncoderService) {
+  constructor(private postService: PostService) {
   }
 
   activateCreator(): void {
@@ -33,24 +33,30 @@ export class PostCreatorComponent {
   }
 
   setPostImage(files: FileList): void {
-    const image = files.item(0);
-    const reader = new FileReader();
-    reader.onload = () => this.postImage = reader.result.toString();
-    reader.readAsDataURL(image);
+    this.setFile(files, this.postImages);
   }
 
   setPostFile(files: FileList): void {
+    this.setFile(files, this.postFiles);
+  }
+
+  setFile(files: FileList, collection: any): void {
     const file = files.item(0);
     const reader = new FileReader();
-    reader.onload = () => this.postFile = reader.result.toString();
+    reader.onload = () => {
+      const dto = new FileDto();
+      dto.fileContent = reader.result.toString();
+      dto.fileName = file.name;
+      collection.push(dto);
+    };
     reader.readAsDataURL(file);
   }
 
   createPost(): void {
     const dto: CreatePostDto = {
       text: this.postText,
-      photo: this.postImage,
-      file: this.postFile
+      photos: this.postImages,
+      files: this.postFiles
     };
     this.postService.createPost(dto, this.band.id)
       .subscribe(() => {

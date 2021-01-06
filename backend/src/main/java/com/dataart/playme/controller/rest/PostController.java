@@ -67,10 +67,11 @@ public class PostController {
     }
 
     @DeleteMapping("/{post}")
-    public Post deletePost(@PathVariable Post post,
+    public void deletePost(@PathVariable Post post,
                            @CurrentMusician Musician musician) {
         if (bandService.isActiveBand(post.getBand())) {
-            return postService.deletePost(post, musician);
+            postService.deletePost(post, musician);
+            return;
         }
         throw new ConflictException("Band is disabled");
     }

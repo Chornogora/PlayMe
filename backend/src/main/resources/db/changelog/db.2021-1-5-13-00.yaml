@@ -1,0 +1,19 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2021-1-5-13-00-switch-to-multipart-files
+      author: liquibase-dbadmin
+      changes:
+        - sqlFile:
+            dbms: postgresql
+            path: /sql/files-migration.sql
+        - sqlFile:
+            dbms: postgresql
+            path: /sql/images-migration.sql
+        - dropColumn:
+            columns:
+              - column:
+                  name: file_url
+              - column:
+                  name: photo_url
+            schemaName: public
+            tableName: posts

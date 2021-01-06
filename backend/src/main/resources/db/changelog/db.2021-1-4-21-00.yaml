@@ -1,0 +1,93 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2021-1-4-21-00-update-tables
+      author: liquibase-dbadmin
+      changes:
+        - createTable:
+            tableName: photos
+            columns:
+              - column:
+                  name: id
+                  type: varchar(36)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: photo_url
+                  type: varchar(260)
+                  constraints:
+                    unique: true
+                    nullable: false
+              - column:
+                  name: owner_id
+                  type: varchar(36)
+                  constraints:
+                    foreignKeyName: fk_photos_owner
+                    references: bands(id)
+                    nullable: false
+        - createTable:
+            tableName: files
+            columns:
+              - column:
+                  name: id
+                  type: varchar(36)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: file_url
+                  type: varchar(260)
+                  constraints:
+                    unique: true
+                    nullable: false
+              - column:
+                  name: owner_id
+                  type: varchar(36)
+                  constraints:
+                    foreignKeyName: fk_photos_owner
+                    references: bands(id)
+                    nullable: false
+        - createTable:
+            tableName: posts_photos
+            columns:
+              - column:
+                  name: post_id
+                  type: varchar(36)
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_posts_photos_post
+                    references: posts(id)
+              - column:
+                  name: photo_id
+                  type: varchar(36)
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_posts_photos_photo
+                    references: photos(id)
+        - addPrimaryKey:
+            constraintName: pk_posts_photos
+            tableName: posts_photos
+            columnNames: post_id, photo_id
+            validate: true
+        - createTable:
+            tableName: posts_files
+            columns:
+              - column:
+                  name: post_id
+                  type: varchar(36)
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_posts_files_post
+                    references: posts(id)
+              - column:
+                  name: file_id
+                  type: varchar(36)
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_posts_files_file
+                    references: files(id)
+        - addPrimaryKey:
+            constraintName: pk_posts_files
+            tableName: posts_files
+            columnNames: post_id, file_id
+            validate: true

@@ -18,7 +18,7 @@ public interface PostService {
 
     Post getPost(String postId);
 
-    Post deletePost(Post post, Musician currentMusician);
+    void deletePost(Post post, Musician currentMusician);
 
     Comment createComment(Post post, Musician musician, CreateCommentDto dto);
 
