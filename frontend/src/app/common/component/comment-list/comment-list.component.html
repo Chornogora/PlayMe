@@ -1,7 +1,7 @@
 <div class="comment-list rounded-bottom">
   <div *ngFor="let comment of comments" class = "comment">
     <div>
-      <i class="fas fa-user"></i>
+      <i class="fas fa-user user-icon"></i>
       <span>{{comment.author.user.firstName}} {{comment.author.user.lastName}}</span>
       <span *ngIf="comment.author.nickname">({{comment.author.nickname}})</span>
       <span class="comment-date">{{dateService.formatDate(comment.creationDatetime)}}
@@ -13,6 +13,8 @@
   </div>
   <div>
     <input type="text" [(ngModel)]="newText" placeholder="Enter new comment here" class="new-comment-text"/>
-    <input type="submit" (click)="createComment()" value="Create comment" class="new-comment-button">
+    <button (click)="createComment()" class="new-comment-button">
+      <i class="fas fa-arrow-alt-circle-right"></i>
+    </button>
   </div>
 </div>

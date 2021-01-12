@@ -98,3 +98,12 @@ input:focus {
   border: 1px red solid;
   padding: 2%;
 }
+
+.sign-up-link {
+  color: #3366BB;
+  transition: color 0.25s ease-in-out;
+}
+
+.sign-up-link:hover {
+  color: red;
+}

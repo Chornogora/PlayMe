@@ -6,9 +6,9 @@
         <a href="band/{{post.band.id}}"><span>{{post.band.name}}</span></a>
         <span class="post-date">{{dateService.formatDate(post.creationDatetime)}}</span>
       </div>
-      <div class="card">
+      <div class="card post-card">
         <div *ngIf="post.photos.length" class="card-img-top">
-          <ngb-carousel class="carousel slide carousel-fade custom-carousel">
+          <ngb-carousel class="carousel slide carousel-fade custom-carousel" [interval]="0">
             <ng-template ngbSlide *ngFor="let photo of post.photos">
               <div class="wrapper">
                 <img class="d-block w-100" src="{{'http://localhost:8080/images/' + photo.photoUrl}}"
@@ -19,19 +19,23 @@
           </ngb-carousel>
         </div>
 
-        <div class="card-body post-description" *ngIf="post.text || post.files.length">
-          <p *ngIf="post.text" class="card-text">{{post.text}}</p>
-          <div *ngIf="post.files.length">
-            <div *ngFor="let file of post.files">
-              <i class="fas fa-compact-disc"></i>
-              <a href="{{'http://localhost:8080/file/' + file.fileUrl}}">{{file.fileUrl}}</a>
+        <div class="card-description">
+          <div class="card-body post-description" *ngIf="post.text || post.files.length">
+            <p *ngIf="post.text" class="card-text">{{post.text}}</p>
+            <div *ngIf="post.files.length">
+              <div *ngFor="let file of post.files">
+                <i class="fas fa-compact-disc"></i>
+                <a href="{{'http://localhost:8080/file/' + file.fileUrl}}">
+                  {{file.fileUrl.substr(0, file.fileUrl.length - 36)}}
+                </a>
+              </div>
             </div>
           </div>
+          <span class="comment-link" (click)="openComments(post)">Comments</span>
+          <app-comments-list *ngIf="commentOpened[post.id]" [comments]="post.comments" [user]="user"
+                             (commentCreationEvent)="createComment($event, post)"
+                             (commentDeletingEvent)="deleteComment($event, post)"></app-comments-list>
         </div>
-        <span class="comment-link" (click)="openComments(post)">Comments</span>
-        <app-comments-list *ngIf="commentOpened[post.id]" [comments]="post.comments" [user]="user"
-                           (commentCreationEvent)="createComment($event, post)"
-                           (commentDeletingEvent)="deleteComment($event, post)"></app-comments-list>
       </div>
     </div>
     <section waIntersectionObserver waIntersectionThreshold="0.7">

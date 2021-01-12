@@ -12,12 +12,16 @@ import {SubscriptionService} from './services/subscription.service';
 import {EncoderService} from './services/encoder.service';
 import {ModalComponent} from './component/modal-component/modal.component';
 import {ToastComponent} from './component/toast/toast.component';
-import {NgbModule, NgbToastModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {ToastService} from './services/toast.service';
+import {NonAuthorizedPageComponent} from './pages/non-authorized-page.component';
+import {RegistrationService} from './services/registration.service';
+import {CaptchaService} from './services/captcha.service';
 
 @NgModule({
   declarations: [
     UserRolePageComponent,
+    NonAuthorizedPageComponent,
     HeaderComponent,
     ModalComponent,
     ToastComponent
@@ -34,7 +38,7 @@ import {ToastService} from './services/toast.service';
   ],
   providers: [AuthorizationService, UserService, PostService,
     DateService, BandService, SubscriptionService, EncoderService,
-    ToastService]
+    ToastService, RegistrationService, CaptchaService]
 })
 export class AppCommonModule {
 }

@@ -44,7 +44,6 @@
 
 .comment-link {
   left: 75%;
-  bottom: 22px;
   position: relative;
 }
 
@@ -71,4 +70,35 @@
   top: 0;
   left: 0;
   background: rgba(128, 128, 128, 0.25);
+}
+
+.post-card {
+  border-radius: 10px;
+}
+
+.custom-carousel {
+  height: 40%;
+  text-align: center;
+  background-color: #242526;
+}
+
+.custom-carousel img {
+  height: 300px;
+  width:auto!important;
+  object-fit: cover;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.card-description {
+  background-color: #242526;
+  color: white;
+}
+
+a {
+  transition: color 0.25s ease-in-out;
+}
+
+a:hover {
+  color: aqua;
 }

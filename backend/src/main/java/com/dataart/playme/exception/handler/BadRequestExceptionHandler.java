@@ -35,7 +35,10 @@ public class BadRequestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(BadRequestException.class)
-    public ResponseEntity<Map<String, String>> handleConverterExceptions(BadRequestException exception) {
+    public ResponseEntity<Object> handleConverterExceptions(BadRequestException exception) {
+        if (exception.getResponse() != null && exception.getResponse().getEntity() != null) {
+            return new ResponseEntity<>(exception.getResponse().getEntity(), HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<>(Map.of(Constants.MESSAGE_PROPERTY, exception.getMessage()), HttpStatus.BAD_REQUEST);
     }
 }

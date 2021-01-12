@@ -1,0 +1,8 @@
+<div class="w3-center captcha-block">
+  <div>
+    <img src="{{image}}" alt="captcha image">
+  </div>
+  <label>
+    <input [(ngModel)]="number" (ngModelChange)="sendChange()" type="text" class="form-control captcha-field">
+  </label>
+</div>

@@ -10,7 +10,7 @@
                 (click)="showDeleteForm(post)">×</span>
         </div>
       </div>
-      <div class="card">
+      <div class="card post-card">
         <div *ngIf="post.photos.length" class="card-img-top">
           <ngb-carousel class="carousel slide carousel-fade custom-carousel" interval="2000"
                         pauseOnHover="true">
@@ -24,24 +24,26 @@
           </ngb-carousel>
         </div>
 
-        <div class="card-body post-description" *ngIf="post.text || post.files.length">
-          <p class="card-text" *ngIf="post.text">{{post.text}}</p>
-          <div *ngIf="post.files.length">
-            <div *ngFor="let file of post.files">
-              <i class="fas fa-compact-disc"></i>
-              <a href="{{'http://localhost:8080/file/' + file.fileUrl}}">{{file.fileUrl}}</a>
+        <div class="card-description">
+          <div class="card-body post-description" *ngIf="post.text || post.files.length">
+            <p class="card-text" *ngIf="post.text">{{post.text}}</p>
+            <div *ngIf="post.files.length">
+              <div *ngFor="let file of post.files">
+                <i class="fas fa-compact-disc"></i>
+                <a href="{{'http://localhost:8080/file/' + file.fileUrl}}">{{file.fileUrl}}</a>
+              </div>
             </div>
           </div>
+          <span class="comment-link" (click)="openComments(post)">Comments</span>
+          <app-comments-list *ngIf="commentOpened[post.id]" [comments]="post.comments" [user]="musician.user"
+                             (commentCreationEvent)="createComment($event, post)"
+                             (commentDeletingEvent)="deleteComment($event, post)"></app-comments-list>
         </div>
-        <span class="comment-link" (click)="openComments(post)">Comments</span>
-        <app-comments-list *ngIf="commentOpened[post.id]" [comments]="post.comments" [user]="musician.user"
-                           (commentCreationEvent)="createComment($event, post)"
-                           (commentDeletingEvent)="deleteComment($event, post)"></app-comments-list>
       </div>
-      <section waIntersectionObserver waIntersectionThreshold="0.7">
-        <div class="end-of-news rounded" (waIntersectionObservee)="addNews()">End of news</div>
-      </section>
     </div>
+    <section waIntersectionObserver waIntersectionThreshold="0.7">
+      <div class="end-of-news rounded" (waIntersectionObservee)="addNews()">End of news</div>
+    </section>
   </div>
 </div>
 

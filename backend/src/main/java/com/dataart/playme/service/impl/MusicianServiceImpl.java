@@ -8,6 +8,8 @@ import com.dataart.playme.service.MusicianService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class MusicianServiceImpl implements MusicianService {
 
@@ -22,5 +24,13 @@ public class MusicianServiceImpl implements MusicianService {
     public Musician findByUser(User user) {
         return musicianRepository.findByUser(user)
                 .orElseThrow(() -> new NoSuchRecordException("Can't find musician"));
+    }
+
+    @Override
+    public Musician createMusician(User user) {
+        Musician musician = new Musician();
+        musician.setId(UUID.randomUUID().toString());
+        musician.setUser(user);
+        return musicianRepository.save(musician);
     }
 }

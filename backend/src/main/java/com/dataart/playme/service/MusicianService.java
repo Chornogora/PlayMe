@@ -6,4 +6,6 @@ import com.dataart.playme.model.User;
 public interface MusicianService {
 
     Musician findByUser(User user);
+
+    Musician createMusician(User user);
 }

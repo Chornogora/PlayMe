@@ -1,0 +1,39 @@
+.user-form {
+  border-radius: 25px;
+  color: #e9ecef;
+  background-color: #242526;
+  padding: 20px;
+  margin-top: 3%;
+}
+
+.sign-up-btn {
+  width: 130px;
+}
+
+.sign-up-btn:hover {
+  color: #fff;
+  background-color: #ff0000;
+}
+
+.btn-outline-danger {
+  color: #fff;
+  font-size: 18px;
+  background-color: #28a745;
+  background-image: none;
+  border-color: #28a745;
+}
+
+.cancel-btn {
+  font-size: 14pt;
+}
+
+.error-message {
+  background: rgba(256, 0, 0, 0.8);
+  border-radius: 10px;
+  margin-top: 5px;
+  padding: 5px;
+  font-size: 10pt;
+  margin-left: 5%;
+  margin-right: 5%;
+  color: white;
+}

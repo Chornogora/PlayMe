@@ -1,0 +1,25 @@
+::ng-deep body {
+  background: url("/assets/img/authorization-background.jpg") no-repeat;
+  background-size: 100%;
+}
+
+.email-confirmation-message {
+  border: 1px solid #28a745;
+  margin-top: 15%;
+  padding: 18px;
+  max-width: 30rem;
+  color: white;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.done-button {
+  color: #fff;
+  font-size: 18px;
+  background-color: #28a745;
+  background-image: none;
+  border-color: #28a745;
+  padding: 2px;
+  margin-top: 5px;
+}
