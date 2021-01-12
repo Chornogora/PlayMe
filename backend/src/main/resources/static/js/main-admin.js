@@ -110,7 +110,8 @@ function attachPaginationButtonsHandlers() {
     });
 
     $("#pagination-right-button").on('click', () => {
-        $("#offset-input").val(offset + limit);
+        const newOffset = parseInt(offset) + parseInt(limit);
+        $("#offset-input").val(newOffset);
         applyFilterParameters();
     });
 }

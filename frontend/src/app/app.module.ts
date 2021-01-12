@@ -13,10 +13,14 @@ import {BandsPageComponent} from './bands/pages/bands-page/bands.page.component'
 import {BandsModule} from './bands/bands.module';
 import {BandPageComponent} from './bands/pages/band-page/band.page.component';
 import {BandEditPageComponent} from './bands/pages/band-edit-page/band-edit.page.component';
+import {SignUpPageComponent} from './signup/pages/signup-page/signup.page.component';
+import {EmailConfirmedPageComponent} from './signup/pages/email-confirmed/email-confirmed.page.component';
 
 const appRoutes: Routes = [
   {path: '', component: HomePageComponent},
   {path: 'auth', component: SignInPageComponent},
+  {path: 'signup', component: SignUpPageComponent},
+  {path: 'email_confirmed', component: EmailConfirmedPageComponent},
   {path: 'bands', component: BandsPageComponent},
   {path: 'band/:id', component: BandPageComponent},
   {path: 'band/:id/edit', component: BandEditPageComponent},

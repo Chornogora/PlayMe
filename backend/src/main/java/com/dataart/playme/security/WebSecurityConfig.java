@@ -49,7 +49,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) {
         web.ignoring().antMatchers("/js/**", "/css/**", "/images/**", "/image/**", "/webfonts/**")
                 .and()
-                .ignoring().antMatchers("/auth")
+                .ignoring().antMatchers("/auth", "/signup/**", "/signup", "/signup/captcha", "/email/confirmation/**")
                 .and()
                 .ignoring().antMatchers(HttpMethod.OPTIONS, "/**");
     }

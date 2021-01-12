@@ -1,0 +1,7 @@
+<app-signup-form *ngIf="!createdEmail" (userCreatedEvent)="createdEmail=$event"></app-signup-form>
+<div *ngIf="createdEmail" class="email-confirmation-message bg-dark">
+  <span>Message was sent to your email address {{createdEmail}}. Check your mail box and complete registration to use our app.</span>
+  <div class="w3-center">
+    <a href="auth" class="done-button btn">Got it!</a>
+  </div>
+</div>

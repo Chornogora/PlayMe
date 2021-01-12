@@ -7,7 +7,7 @@ import {RoleDto} from '../dto/role.dto';
 @Component({template: ''})
 export class UserRolePageComponent implements OnInit {
 
-  user: UserDto = {id: '', login: '', role: new RoleDto(' ', ' '), firstName: ' ', lastName: ' '};
+  user: UserDto = {id: '', login: '', role: new RoleDto(' ', ' '), firstName: ' ', lastName: ' ', email: ' '};
 
   constructor(protected cookieService: CookieService, protected userService: UserService) {
     this.cookieService = cookieService;

@@ -4,6 +4,7 @@ import {FormsModule} from '@angular/forms';
 
 import {SignInPageComponent} from './pages/signin.page.component';
 import {SignInComponent} from './components/signin/signin.component';
+import {SignUpModule} from '../signup/signup.module';
 
 @NgModule({
   declarations: [
@@ -12,7 +13,8 @@ import {SignInComponent} from './components/signin/signin.component';
   ],
   imports: [
     BrowserModule,
-    FormsModule
+    FormsModule,
+    SignUpModule
   ],
   exports: [SignInPageComponent]
 })

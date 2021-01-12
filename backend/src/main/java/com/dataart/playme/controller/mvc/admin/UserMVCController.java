@@ -5,6 +5,7 @@ import com.dataart.playme.dto.FilterBean;
 import com.dataart.playme.dto.UserDto;
 import com.dataart.playme.exception.NonUniqueException;
 import com.dataart.playme.model.User;
+import com.dataart.playme.service.UserRegistrationService;
 import com.dataart.playme.service.UserService;
 import com.dataart.playme.service.dto.UserDtoTransformationService;
 import com.dataart.playme.util.Constants;
@@ -53,11 +54,14 @@ public class UserMVCController {
 
     private final UserService userService;
 
+    private final UserRegistrationService userRegistrationService;
+
     private final UserDtoTransformationService userDtoTransformationService;
 
     @Autowired
-    public UserMVCController(UserService userService, UserDtoTransformationService userDtoTransformationService) {
+    public UserMVCController(UserService userService, UserRegistrationService userRegistrationService, UserDtoTransformationService userDtoTransformationService) {
         this.userService = userService;
+        this.userRegistrationService = userRegistrationService;
         this.userDtoTransformationService = userDtoTransformationService;
     }
 
@@ -111,7 +115,8 @@ public class UserMVCController {
             return new RedirectView(ADD_USER_PATH);
         }
         User user = userDtoTransformationService.dtoToUser(dto);
-        userService.addUser(user);
+        userRegistrationService.registerUser(user);
+
         redirect.addFlashAttribute(Constants.OPERATION_STATUS_CONTEXT_PARAMETER,
                 String.valueOf(Response.Status.OK.getStatusCode()));
         return new RedirectView(ALL_USERS_PATH);

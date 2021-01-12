@@ -34,7 +34,13 @@ dependencies {
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.11'
     implementation group: 'org.slf4j', name: 'slf4j-api', version: slf4jVersion
     implementation group: 'javax.ws.rs', name: 'javax.ws.rs-api', version: '2.1.1'
+    implementation('com.octo.captcha:jcaptcha-all:1.0-RC6') {
+        exclude group: 'org.springframework'
+    }
+
+    implementation group: 'javax.mail', name: 'mail', version: '1.4.5'
+    implementation group: 'com.sun.mail', name: 'smtp', version: '1.4.4'
+    implementation group: 'javax.activation', name: 'activation', version: '1.1'
 
     testImplementation group: 'junit', name: 'junit', version: '4.12'
-
 }

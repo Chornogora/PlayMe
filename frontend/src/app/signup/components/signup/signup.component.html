@@ -1,0 +1,85 @@
+<div class="user-form col-md-4 offset-md-4">
+  <div>
+    <div *ngIf="validationIssues.includes('user_exists')" class="error-message">User with such login or email already
+      exists
+    </div>
+    <div class="form-group">
+      <label for="login-input">Login</label>
+      <input type="text" name="login" class="form-control" id="login-input" placeholder="Login"
+             [(ngModel)]="newUser.login">
+      <div *ngIf="validationIssues.includes('no_login')" class="error-message">Login is empty</div>
+      <div *ngIf="validationIssues.includes('short_login')" class="error-message">Login is too short</div>
+      <div *ngIf="validationIssues.includes('long_login')" class="error-message">Login is too long</div>
+      <div *ngIf="validationIssues.includes('wrong_login')" class="error-message">Invalid symbols found in login, only
+        alpha-numeric and .-_@ symbols are acceptable
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="password-input">Password</label>
+      <input type="password" name="password" class="form-control" id="password-input" placeholder="Password"
+             [(ngModel)]="newUser.password">
+      <div *ngIf="validationIssues.includes('no_password')" class="error-message">Password is empty</div>
+      <div *ngIf="validationIssues.includes('short_password')" class="error-message">Password is too short</div>
+      <div *ngIf="validationIssues.includes('long_password')" class="error-message">Password is too long</div>
+    </div>
+    <div class="form-group">
+      <label for="password-confirmation">Repeat password</label>
+      <input type="password" name="password" class="form-control" id="password-confirmation"
+             placeholder="Password confirmation" [(ngModel)]="passwordConfirmation">
+      <div *ngIf="validationIssues.includes('no_password')" class="error-message">Password is empty</div>
+      <div *ngIf="validationIssues.includes('short_password')" class="error-message">Password is too short</div>
+      <div *ngIf="validationIssues.includes('long_password')" class="error-message">Password is too long</div>
+      <div *ngIf="validationIssues.includes('password_not_matches')" class="error-message">Password doesn't match
+        confirmation
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="email-input">Email</label>
+      <input type="email" name="email" class="form-control" id="email-input" placeholder="example@gmail.com"
+             [(ngModel)]="newUser.email">
+      <div *ngIf="validationIssues.includes('no_email')" class="error-message">No email provided</div>
+      <div *ngIf="validationIssues.includes('long_email')" class="error-message">Email is too long</div>
+      <div *ngIf="validationIssues.includes('email_format')" class="error-message">Incorrect format of email</div>
+    </div>
+    <div class="form-group">
+      <label for="first-name-input">First name</label>
+      <input type="text" name="firstName" class="form-control" id="first-name-input" placeholder="First-Name"
+             [(ngModel)]="newUser.firstName">
+      <div *ngIf="validationIssues.includes('no_name')" class="error-message">No first name provided</div>
+      <div *ngIf="validationIssues.includes('short_name')" class="error-message">First name is too short</div>
+      <div *ngIf="validationIssues.includes('long_name')" class="error-message">First name is too long</div>
+      <div *ngIf="validationIssues.includes('wrong_name')" class="error-message">Invalid symbols found in first name,
+        only alphabetical symbols and "-" are acceptable
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="last-name-input">Last name</label>
+      <input type="text" name="lastName" class="form-control" id="last-name-input" placeholder="Last-Name"
+             [(ngModel)]="newUser.lastName">
+      <div *ngIf="validationIssues.includes('no_surname')" class="error-message">No last name provided</div>
+      <div *ngIf="validationIssues.includes('short_surname')" class="error-message">Last name is too short</div>
+      <div *ngIf="validationIssues.includes('long_surname')" class="error-message">Last name is too long</div>
+      <div *ngIf="validationIssues.includes('wrong_surname')" class="error-message">Invalid symbols found in last name,
+        only alphabetical symbols and "-" are acceptable
+      </div>
+    </div>
+    <div class="form-group table-form-group">
+      <label for="birthdate-input">Birthdate</label>
+      <input type="date" name="birthdate" class="form-control" id="birthdate-input"
+             [value]="newUser.birthdate | date:'yyyy-MM-dd'"
+             (input)="newUser.birthdate=parseDate($event.target.value)" />
+      <div *ngIf="validationIssues.includes('no_birthdate')" class="error-message">No birthdate provided</div>
+      <div *ngIf="validationIssues.includes('early_birthdate')" class="error-message">Too early birthdate provided</div>
+      <div *ngIf="validationIssues.includes('late_birthdate')" class="error-message">Too late birthdate provided</div>
+    </div>
+    <app-captcha (captchaChangedEvent)="updateCaptcha($event)" [events]="eventsSubject.asObservable()"></app-captcha>
+    <div *ngIf="validationIssues.includes('wrong_captcha')" class="error-message">Captcha is wrong</div>
+    <div class="row">
+      <div class="col"></div>
+      <input type="submit" class="btn btn-outline-danger sign-up-btn col" value="Submit" (click)="signup()">
+      <div class="col"></div>
+      <a href="auth" class="btn btn-light cancel-btn col">Cancel</a>
+      <div class="col"></div>
+    </div>
+  </div>
+</div>

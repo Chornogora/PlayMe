@@ -1,5 +1,6 @@
 .custom-navbar {
   background-color: #242526;
+  box-shadow: 0 5px 25px 0 rgba(0,0,0,0.75);
 }
 
 .navbar-container {
@@ -19,9 +20,11 @@
 }
 
 .sign-out {
-  width: 27%;
+  width: auto;
+  white-space: nowrap;
 }
 
 .user-name {
   margin-right: 5px;
+  margin-top: auto;
 }
