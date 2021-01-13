@@ -69,3 +69,7 @@
   color: yellow;
   cursor: pointer;
 }
+
+.leave-group-button {
+  margin-top: 5px;
+}

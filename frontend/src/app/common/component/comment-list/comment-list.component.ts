@@ -27,7 +27,10 @@ export class CommentListComponent {
   }
 
   createComment(): void {
-    this.commentCreationEvent.emit(this.newText);
+    if (this.newText.trim() !== '') {
+      this.commentCreationEvent.emit(this.newText);
+      this.newText = '';
+    }
   }
 
   deleteComment(comment: CommentDto): void {

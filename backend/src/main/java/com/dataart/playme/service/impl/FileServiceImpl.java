@@ -26,10 +26,10 @@ public class FileServiceImpl implements FileService {
     public String writeToFile(String folderPath, String fileName, byte[] data) throws IOException {
         String resourceId = UUID.randomUUID().toString();
         String filePath = Constants.get(Constants.FILE_STORAGE_PATH_ID) +
-                folderPath + "\\" + FILE_MARK + fileName + resourceId;
+                folderPath + "\\" + FILE_MARK + resourceId + fileName;
         try (FileOutputStream fos = new FileOutputStream(filePath)) {
             fos.write(data);
         }
-        return FILE_MARK + fileName + resourceId;
+        return FILE_MARK + resourceId + fileName;
     }
 }

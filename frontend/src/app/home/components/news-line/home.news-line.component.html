@@ -26,7 +26,7 @@
               <div *ngFor="let file of post.files">
                 <i class="fas fa-compact-disc"></i>
                 <a href="{{'http://localhost:8080/file/' + file.fileUrl}}">
-                  {{file.fileUrl.substr(0, file.fileUrl.length - 36)}}
+                  {{file.fileUrl.substr( 41)}}
                 </a>
               </div>
             </div>
