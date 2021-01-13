@@ -7,8 +7,6 @@
       <input type="text" class="col-md-7"
              value="{{musician.firstName}} {{musician.lastName}} ({{musician.login}})" disabled>
       <select [(ngModel)]="musician.statusName" class="line-element">
-        <!--<option [selected]="musician.statusName === 'administrator'">administrator</option>
-        <option [selected]="musician.statusName === 'player'">player</option>-->
         <option value="administrator">administrator</option>
         <option value="player">player</option>
       </select>

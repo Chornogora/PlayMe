@@ -3,19 +3,20 @@ import {CookieService} from 'ngx-cookie-service';
 import {UserService} from '../services/user.service';
 import {UserDto} from '../dto/user.dto';
 import {RoleDto} from '../dto/role.dto';
+import {browser} from 'protractor';
 
 @Component({template: ''})
 export class UserRolePageComponent implements OnInit {
-
-  user: UserDto = {id: '', login: '', role: new RoleDto(' ', ' '), firstName: ' ', lastName: ' ', email: ' '};
 
   constructor(protected cookieService: CookieService, protected userService: UserService) {
     this.cookieService = cookieService;
     this.userService = userService;
   }
 
+  user: UserDto = {id: '', login: '', role: new RoleDto(' ', ' '), firstName: ' ', lastName: ' ', email: ' '};
+
   signOut(): void {
-    this.cookieService.delete('token');
+    this.cookieService.delete('token', '/', 'localhost');
     document.location.href = 'auth';
   }
 

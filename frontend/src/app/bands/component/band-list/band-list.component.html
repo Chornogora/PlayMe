@@ -5,7 +5,7 @@
       <a href="band/{{band.id}}"><span>{{band.name}}</span></a>
     </div>
     <div class="band-button rounded-circle offset-md-11" (click)="changeSubscription(band)"
-         *ngIf="!bandService.isMemberOf(musician, band)">
+         *ngIf="!bandService.isMemberOf(musician, band) && band.bandStatus.name === 'active'">
       <i [ngClass]="{fas:true, 'fa-user-plus':!subscriptionService.isSubscriberOf(musician, band),
       'fa-user-minus':subscriptionService.isSubscriberOf(musician, band)}"></i>
     </div>

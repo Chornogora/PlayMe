@@ -6,7 +6,8 @@
         <span>{{post.band.name}}</span>
         <div class="post-date">
           <span>{{dateService.formatDate(post.creationDatetime)}}</span>
-          <span *ngIf="bandService.isAdministrator(musician, band)" class="post-delete-button"
+          <span *ngIf="musician && band && bandService.isAdministrator(musician, band)
+          && band.bandStatus.name === 'active'" class="post-delete-button"
                 (click)="showDeleteForm(post)">×</span>
         </div>
       </div>
@@ -30,7 +31,9 @@
             <div *ngIf="post.files.length">
               <div *ngFor="let file of post.files">
                 <i class="fas fa-compact-disc"></i>
-                <a href="{{'http://localhost:8080/file/' + file.fileUrl}}">{{file.fileUrl}}</a>
+                <a href="{{'http://localhost:8080/file/' + file.fileUrl}}">
+                  {{file.fileUrl.substr( 41)}}
+                </a>
               </div>
             </div>
           </div>
