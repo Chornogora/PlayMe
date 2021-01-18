@@ -1,0 +1,30 @@
+<div class="rehearsal-creator">
+  <label for="new-rehearsal-name">rehearsal name</label>
+  <input type="text" id="new-rehearsal-name" class="form-control" placeholder="Enter rehearsal description"
+         [(ngModel)]="updatedRehearsal.description">
+  <label for="new-rehearsal-start-datetime">Start datetime</label>
+  <input type="datetime-local" id="new-rehearsal-start-datetime" class="form-control"
+         placeholder="Enter rehearsal start datetime" [(ngModel)]="updatedRehearsal.startDatetime">
+  <label for="new-rehearsal-finish-datetime">Finish datetime</label>
+  <input type="datetime-local" id="new-rehearsal-finish-datetime" class="form-control"
+         placeholder="Enter rehearsal finish datetime" [(ngModel)]="updatedRehearsal.finishDatetime">
+  <hr>
+  <div class="rehearsal-members">
+    <div *ngFor="let musician of updatedRehearsal.members">
+      <input type="text" class="col-md-10"
+             value="{{musician.user.firstName}} {{musician.user.lastName}} ({{musician.user.login}})" disabled>
+      <div class="rounded-circle member-button line-element" (click)="deleteMember(musician)">-</div>
+    </div>
+    <div class="add-member" (click)="addMusician()">
+      <div class="rounded-circle member-button">+</div>
+      <span>Add member</span>
+    </div>
+  </div>
+  <div>
+    <button class="offset-md-2 w-25 single-line" (click)="updateRehearsal()">Save changes</button>
+    <button class="offset-md-2" (click)="cancelUpdating()">Cancel</button>
+  </div>
+</div>
+
+<app-member-choose-component *ngIf="isMemberChoice" [musician]="musician" [selectedMusicians]="updatedRehearsal.members"
+                             (addMemberEvent)="addMember($event)"></app-member-choose-component>

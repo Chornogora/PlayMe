@@ -3,7 +3,6 @@ import {CookieService} from 'ngx-cookie-service';
 import {UserService} from '../services/user.service';
 import {UserDto} from '../dto/user.dto';
 import {RoleDto} from '../dto/role.dto';
-import {browser} from 'protractor';
 
 @Component({template: ''})
 export class UserRolePageComponent implements OnInit {

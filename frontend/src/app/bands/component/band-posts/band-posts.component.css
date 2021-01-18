@@ -84,7 +84,7 @@
 
 .custom-carousel img {
   height: 300px;
-  width:auto!important;
+  width: auto !important;
   object-fit: cover;
   margin-left: auto;
   margin-right: auto;
@@ -93,12 +93,4 @@
 .card-description {
   background-color: #242526;
   color: white;
-}
-
-a {
-  transition: color 0.25s ease-in-out;
-}
-
-a:hover {
-  color: aqua;
 }

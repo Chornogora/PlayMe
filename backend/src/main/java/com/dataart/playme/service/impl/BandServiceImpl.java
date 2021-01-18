@@ -72,7 +72,7 @@ public class BandServiceImpl implements BandService {
     public Membership addMember(MemberDto dto, Musician addedBy) {
         Musician musician = musicianRepository.findById(dto.getMusicianId())
                 .orElseThrow(() -> new NoSuchRecordException("Can't find musician"));
-        if (isLeader(dto.getBand(), addedBy) && !isMemberOf(dto.getBand(), musician)) {
+        if (isLeader(dto.getBand(), addedBy) && !isPlayerOf(dto.getBand(), musician)) {
             if (dto.getStatusName().equals(MemberStatus.ExistedStatus.LEADER.getValue())) {
                 throw new ConflictException("Can't add one more leader");
             }
@@ -215,6 +215,12 @@ public class BandServiceImpl implements BandService {
         return band.getMembers().stream()
                 .filter(membership -> !membership.getStatus().getName().equals(subscriberStatusName))
                 .collect(Collectors.toList());
+    }
+
+    private boolean isPlayerOf(Band band, Musician musician) {
+        return getBandMembers(band).stream()
+                .map(membership -> membership.getMusician().getId())
+                .anyMatch(id -> id.equals(musician.getId()));
     }
 
     private void deleteMember(String musicianId, String bandId) {

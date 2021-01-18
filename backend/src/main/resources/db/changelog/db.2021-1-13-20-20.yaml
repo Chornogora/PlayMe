@@ -1,0 +1,19 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2021-1-13-20-20-change-rehearsals-tables
+      author: liquibase-dbadmin
+      changes:
+        - dropColumn:
+            columns:
+              - column:
+                  name: approved
+            schemaName: public
+            tableName: rehearsals_musicians
+        - modifyDataType:
+            columnName: start_datetime
+            newDataType: timestamp
+            tableName: rehearsals
+        - modifyDataType:
+            columnName: finish_datetime
+            newDataType: timestamp
+            tableName: rehearsals

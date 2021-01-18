@@ -15,6 +15,8 @@ import {BandPageComponent} from './bands/pages/band-page/band.page.component';
 import {BandEditPageComponent} from './bands/pages/band-edit-page/band-edit.page.component';
 import {SignUpPageComponent} from './signup/pages/signup-page/signup.page.component';
 import {EmailConfirmedPageComponent} from './signup/pages/email-confirmed/email-confirmed.page.component';
+import {RehearsalsModule} from './rehearsals/rehearsals.module';
+import {RehearsalsPageComponent} from './rehearsals/pages/rehearsals-page/rehearsals.page.component';
 
 const appRoutes: Routes = [
   {path: '', component: HomePageComponent},
@@ -24,6 +26,7 @@ const appRoutes: Routes = [
   {path: 'bands', component: BandsPageComponent},
   {path: 'band/:id', component: BandPageComponent},
   {path: 'band/:id/edit', component: BandEditPageComponent},
+  {path: 'rehearsals', component: RehearsalsPageComponent}
 ];
 
 @NgModule({
@@ -38,6 +41,7 @@ const appRoutes: Routes = [
     HomeModule,
     BandsModule,
     AppCommonModule,
+    RehearsalsModule,
     NgbModule
   ],
   bootstrap: [AppComponent]

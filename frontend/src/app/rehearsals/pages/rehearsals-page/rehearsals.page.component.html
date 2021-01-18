@@ -1,0 +1,32 @@
+<app-header (signOutEvent)="signOut()" [user]="user"></app-header>
+
+<app-toasts class="toast-block"></app-toasts>
+
+<app-rehearsal-creator *ngIf="mode === 'creator'" [musician]="musician"
+                       (rehearsalCreatedEvent)="reloadRehearsals()"
+                       (cancelEvent)="cancelCreatingEvent()"></app-rehearsal-creator>
+
+<app-rehearsal-editor *ngIf="mode === 'update' && rehearsalToUpdate"
+                      [musician]="musician"
+                      [rehearsalToUpdate]="rehearsalToUpdate"
+                      (backEvent)="reloadRehearsals()"
+                      (rehearsalUpdatedEvent)="rehearsalUpdated($event)"
+></app-rehearsal-editor>
+
+<app-rehearsal-list *ngIf="mode === 'scheduled' || mode === 'past'"
+                    [musician]="musician"
+                    [rehearsals]="rehearsals"
+                    [actualRehearsals]="this.mode === 'scheduled'"
+                    (deleteRehearsalEvent)="deleteRehearsal($event)"
+                    (updateRehearsalEvent)="updateRehearsal($event)"></app-rehearsal-list>
+
+<div class="filter-panel">
+  <div [ngClass]="{active:(mode === 'scheduled'), 'filter-string':true}"
+       (click)="setMode('scheduled')">Scheduled rehearsals
+  </div>
+  <div [ngClass]="{active:(mode === 'past'), 'filter-string':true}"
+       (click)="setMode('past')">Past rehearsals
+  </div>
+  <hr>
+  <button class="add-rehearsal-button" (click)="setMode('creator')">Create new rehearsal</button>
+</div>

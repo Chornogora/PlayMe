@@ -1,3 +1,5 @@
+/* TODO refactor css*/
+
 .filter-panel {
   position: absolute;
   left: 4%;
@@ -23,7 +25,7 @@
   cursor: pointer;
 }
 
-.add-band-button {
+.add-rehearsal-button {
   position: relative;
   left: 12%;
   width: 70%;
@@ -32,4 +34,9 @@
   background-color: #242526;
   border-radius: 10px;
   color: white;
+}
+
+.toast-block {
+  position: absolute;
+  right: 5%;
 }

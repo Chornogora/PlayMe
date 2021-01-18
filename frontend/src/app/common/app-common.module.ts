@@ -17,28 +17,39 @@ import {ToastService} from './services/toast.service';
 import {NonAuthorizedPageComponent} from './pages/non-authorized-page.component';
 import {RegistrationService} from './services/registration.service';
 import {CaptchaService} from './services/captcha.service';
+import {RehearsalService} from './services/rehearsal.service';
+import {MemberChooseComponent} from './component/member-choose/member-choose.component';
+import {MusicianPageComponent} from './pages/musician-page.component';
+import {FormsModule} from '@angular/forms';
+import {BandChoiceComponent} from './component/band-choice/band-choice.component';
 
 @NgModule({
   declarations: [
     UserRolePageComponent,
     NonAuthorizedPageComponent,
+    MusicianPageComponent,
     HeaderComponent,
     ModalComponent,
-    ToastComponent
+    ToastComponent,
+    MemberChooseComponent,
+    BandChoiceComponent
   ],
   imports: [
     HttpClientModule,
     CommonModule,
+    FormsModule,
     NgbModule
   ],
   exports: [
     HeaderComponent,
     ModalComponent,
-    ToastComponent
+    ToastComponent,
+    MemberChooseComponent,
+    BandChoiceComponent
   ],
   providers: [AuthorizationService, UserService, PostService,
     DateService, BandService, SubscriptionService, EncoderService,
-    ToastService, RegistrationService, CaptchaService]
+    ToastService, RegistrationService, CaptchaService, RehearsalService]
 })
 export class AppCommonModule {
 }
