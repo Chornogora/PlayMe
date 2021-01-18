@@ -1,0 +1,20 @@
+<div class="band-choice-form">
+  <div class="w3-center choose-box">
+    <div>
+      <label for="band-select">Select band for a new rehearsal</label>
+    </div>
+    <select [(ngModel)]="selectedBand" id="band-select">
+      <option *ngFor="let band of bands; let i = index" [ngValue]="band">
+        {{band.name}}
+      </option>
+    </select>
+  </div>
+
+  <div class="row">
+    <div class="col"></div>
+    <button (click)="submit()">Submit</button>
+    <div class="col"></div>
+    <button (click)="noChoice()">Continue without band</button>
+    <div class="col"></div>
+  </div>
+</div>

@@ -7,6 +7,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -26,11 +27,7 @@ public class BadRequestExceptionHandler extends ResponseEntityExceptionHandler {
             MethodArgumentNotValidException ex, HttpHeaders headers,
             HttpStatus status, WebRequest request) {
         Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
-        });
+        ex.getBindingResult().getAllErrors().forEach((error) -> processError(error, errors));
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
@@ -40,5 +37,16 @@ public class BadRequestExceptionHandler extends ResponseEntityExceptionHandler {
             return new ResponseEntity<>(exception.getResponse().getEntity(), HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(Map.of(Constants.MESSAGE_PROPERTY, exception.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+
+    private void processError(ObjectError error, Map<String, String> errors) {
+        String errorMessage = error.getDefaultMessage();
+        if (error instanceof FieldError) {
+            String fieldName = ((FieldError) error).getField();
+            errors.put(fieldName, errorMessage);
+        } else {
+            String objectName = error.getObjectName();
+            errors.put(objectName, errorMessage);
+        }
     }
 }

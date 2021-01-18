@@ -7,7 +7,6 @@ import {ActivatedRoute} from '@angular/router';
 import {AbstractBandPageComponent} from '../abstract-band-page/abstract-band.page.component';
 import {MusicianDto} from '../../../common/dto/musician.dto';
 import {MembershipDto} from '../../../common/dto/membership.dto';
-import {ToastComponent} from '../../../common/component/toast/toast.component';
 import {ToastService} from '../../../common/services/toast.service';
 
 @Component({

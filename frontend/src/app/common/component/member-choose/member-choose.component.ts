@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {UserDto} from '../../../common/dto/user.dto';
-import {UserService} from '../../../common/services/user.service';
-import {MusicianDto} from '../../../common/dto/musician.dto';
+import {UserDto} from '../../dto/user.dto';
+import {UserService} from '../../services/user.service';
+import {MusicianDto} from '../../dto/musician.dto';
 
 @Component({
   selector: 'app-member-choose-component',

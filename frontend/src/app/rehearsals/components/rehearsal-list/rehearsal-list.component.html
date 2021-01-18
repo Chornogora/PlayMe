@@ -1,0 +1,37 @@
+<div class="rehearsal-list">
+  <div *ngFor="let rehearsal of rehearsals" class="rehearsal">
+
+    <div *ngIf="actualRehearsals && canBeUpdated(rehearsal)" class="action-block">
+      <i class="fa fa-edit pointer-element edit-user-button"
+         (click)="editRehearsal(rehearsal)"></i>
+      <i class="fa fa-trash pointer-element delete-user-button"
+         (click)="deleteRehearsal(rehearsal)"
+         data-toggle="modal" data-target="#delete-user-modal"></i>
+    </div>
+
+    <div class="rehearsal-title col-md-10">
+      <i class="fas fa-guitar"></i><i class="far fa-clock"></i>
+      <a href="rehearsal/{{rehearsal.id}}">
+        <span> {{dateService.formatDateOnly(rehearsal.startDatetime)}}</span>
+      </a>
+    </div>
+    <div>
+      <span>{{rehearsal.description}}</span>
+    </div>
+    <div>{{rehearsal.members.length + 1}} members</div>
+    <div>
+      <small>{{dateService.formatDate(rehearsal.startDatetime)}}
+        - {{dateService.formatDate(rehearsal.finishDatetime)}}</small>
+    </div>
+    <hr/>
+  </div>
+  <div *ngIf="!rehearsals || rehearsals.length === 0" class="w3-center">
+    No rehearsals found
+  </div>
+</div>
+
+<app-modal *ngIf="rehearsalToDelete"
+           [title]="'Rehearsal deleting'"
+           [text]="'Are you sure want to delete this rehearsal?'"
+           (cancelEvent)="cancelDeleting()"
+           (deleteEvent)="submitDeleting()"></app-modal>

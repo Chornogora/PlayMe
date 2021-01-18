@@ -5,7 +5,6 @@ import {AppCommonModule} from '../common/app-common.module';
 import {BandsPageComponent} from './pages/bands-page/bands.page.component';
 import {BandsListComponent} from './component/band-list/band-list.component';
 import {BandsCreatorComponent} from './component/band-creator/band-creator.component';
-import {MemberChooseComponent} from './component/member-choose/member-choose.component';
 import {BandPageComponent} from './pages/band-page/band.page.component';
 import {PostCreatorComponent} from './component/post-creator/post-creator.component';
 import {BandPostsComponent} from './component/band-posts/band-posts.component';
@@ -23,18 +22,17 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
       BandsPageComponent,
       BandsListComponent,
       BandsCreatorComponent,
-      MemberChooseComponent,
       PostCreatorComponent,
       BandPostsComponent
     ],
-    imports:
-        [
-            BrowserModule,
-            FormsModule,
-            AppCommonModule,
-            HomeModule,
-            NgbModule
-        ],
+  imports:
+    [
+      BrowserModule,
+      FormsModule,
+      AppCommonModule,
+      HomeModule,
+      NgbModule
+    ],
   exports: [BandsPageComponent, BandPageComponent]
 })
 export class BandsModule {

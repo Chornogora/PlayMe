@@ -35,7 +35,7 @@ export class DateService {
 
   private static getDay(date: Date): string {
     const todayStart = DateService.getTodayStart();
-    if (date > todayStart) {
+    if (date > todayStart && date.getDate() === todayStart.getDate()) {
       return 'today';
     }
     return date.getDate() + ' ' + this.months[date.getMonth()] + ' ' + date.getFullYear();
