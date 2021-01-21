@@ -22,6 +22,7 @@ import {MemberChooseComponent} from './component/member-choose/member-choose.com
 import {MusicianPageComponent} from './pages/musician-page.component';
 import {FormsModule} from '@angular/forms';
 import {BandChoiceComponent} from './component/band-choice/band-choice.component';
+import {SocketConnector} from './services/socket-connector';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import {BandChoiceComponent} from './component/band-choice/band-choice.component
   ],
   providers: [AuthorizationService, UserService, PostService,
     DateService, BandService, SubscriptionService, EncoderService,
-    ToastService, RegistrationService, CaptchaService, RehearsalService]
+    ToastService, RegistrationService, CaptchaService, RehearsalService,
+    SocketConnector]
 })
 export class AppCommonModule {
 }

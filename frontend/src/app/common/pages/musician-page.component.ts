@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, Output, EventEmitter} from '@angular/core';
 import {CookieService} from 'ngx-cookie-service';
 import {UserService} from '../services/user.service';
 import {UserRolePageComponent} from './user-role-page.component';
@@ -9,6 +9,8 @@ export class MusicianPageComponent extends UserRolePageComponent implements OnIn
 
   musician: MusicianDto;
 
+  @Output() musicianInitializedEvent = new EventEmitter<void>();
+
   constructor(protected cookieService: CookieService, protected userService: UserService) {
     super(cookieService, userService);
   }
@@ -18,6 +20,7 @@ export class MusicianPageComponent extends UserRolePageComponent implements OnIn
     this.userService.getMusician()
       .subscribe((musician: MusicianDto) => {
         this.musician = musician;
+        this.musicianInitializedEvent.emit();
       });
   }
 }
