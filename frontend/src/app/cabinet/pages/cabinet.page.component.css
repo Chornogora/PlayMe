@@ -1,0 +1,59 @@
+.rehearsal-description {
+  position: absolute;
+  left: 25%;
+  width: 45%;
+  text-align: center;
+  top: 14%;
+  max-height: 26%;
+  color: white;
+}
+
+.rehearsal-countdown {
+  position: absolute;
+  left: 25%;
+  width: 45%;
+  text-align: center;
+  font-size: 30vh;
+  color: white;
+  top: 30%;
+  height: 20%;
+}
+
+.btn-outline-danger {
+  color: #fff;
+  font-size: 26px;
+  background-color: #28a745;
+  background-image: none;
+  border-color: #28a745;
+  padding: 5px 10px 5px 10px;
+}
+
+.start-button {
+  position: absolute;
+  top: 80%;
+  left: 45%;
+  transition: color 0.3s ease-in-out;
+}
+
+.start-button:hover {
+  cursor: pointer;
+  color: aqua;
+}
+
+.metronome-button {
+  position: absolute;
+  left: 80%;
+  top: 60%;
+  border-radius: 100%;
+  border: 3px solid white;
+  height: 100px;
+  width: 100px;
+  background: url("/assets/img/metronome2.png") no-repeat;
+  background-size: 100%;
+  transition: border-color 0.25s ease-in-out;
+}
+
+.metronome-button:hover {
+  border-color: aqua;
+  cursor: pointer;
+}

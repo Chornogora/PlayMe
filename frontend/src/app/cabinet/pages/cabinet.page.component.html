@@ -1,0 +1,21 @@
+<app-header (signOutEvent)="signOut()" [user]="user"></app-header>
+<app-rehearsal-members-list [members]="members" [musician]="musician"
+                            (switchMicrophoneEvent)="switchMicrophone($event)"></app-rehearsal-members-list>
+<div class="rehearsal-description" *ngIf="rehearsal && rehearsal.description">{{rehearsal.description}}</div>
+
+<div class="rehearsal-countdown">{{countdownText}}</div>
+
+<button *ngIf="this.rehearsalState === 'STOPPED' && isCreator(musician)" class="btn-outline-danger start-button"
+        (click)="sendStartCountdownCommand()" #startButton>Start
+</button>
+
+<div *ngIf="isCreator(musician)" class="metronome-button"></div>
+
+<audio *ngIf="rehearsalState === 'COUNTDOWN'" src="assets/sound/ring1.mp3" autoplay></audio>
+
+<app-modal *ngIf="alreadyConnected"
+           [title]="'Rehearsal is already opened'"
+           [text]="'It seems you have already opened this rehearsal in another window or tab. ' +
+            'Only one tab is accessible.'"
+           (cancelEvent)="exit()"
+           (deleteEvent)="exit()"></app-modal>

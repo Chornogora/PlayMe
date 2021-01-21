@@ -18,8 +18,8 @@ public class StringToMusicianConverter implements Converter<String, Musician> {
     }
 
     @Override
-    public Musician convert(String bandId) {
-        return musicianRepository.findById(bandId)
+    public Musician convert(String musicianId) {
+        return musicianRepository.findById(musicianId)
                 .orElseThrow(() -> new NoSuchRecordException("Can't find musician by id"));
     }
 }

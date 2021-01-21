@@ -41,4 +41,9 @@ export class RehearsalService {
     return this.httpClient.put(`http://localhost:8080/rehearsals/`, param,
       {withCredentials: true});
   }
+
+  getById(rehearsalId: string): any {
+    return this.httpClient.get(`http://localhost:8080/rehearsals/${rehearsalId}`,
+      {withCredentials: true});
+  }
 }

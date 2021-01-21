@@ -1,0 +1,27 @@
+.member-panel {
+  position: absolute;
+  top: 12%;
+  left: 0;
+  width: 20%;
+  height: 80%;
+  background-color: #242526;
+  color: rgb(128, 128, 128);
+  box-shadow: 6px 0 12px 0 rgba(0,0,0,0.75);
+}
+
+.member .active {
+  color: white;
+}
+
+.member-name {
+  max-width: 50%;
+}
+
+.changeable {
+  transition: color 0.3s ease-in-out;
+}
+
+.changeable:hover {
+  cursor: pointer;
+  color: aqua;
+}

@@ -17,6 +17,8 @@ import {SignUpPageComponent} from './signup/pages/signup-page/signup.page.compon
 import {EmailConfirmedPageComponent} from './signup/pages/email-confirmed/email-confirmed.page.component';
 import {RehearsalsModule} from './rehearsals/rehearsals.module';
 import {RehearsalsPageComponent} from './rehearsals/pages/rehearsals-page/rehearsals.page.component';
+import {CabinetPageComponent} from './cabinet/pages/cabinet.page.component';
+import {CabinetModule} from './cabinet/cabinet.module';
 
 const appRoutes: Routes = [
   {path: '', component: HomePageComponent},
@@ -26,7 +28,8 @@ const appRoutes: Routes = [
   {path: 'bands', component: BandsPageComponent},
   {path: 'band/:id', component: BandPageComponent},
   {path: 'band/:id/edit', component: BandEditPageComponent},
-  {path: 'rehearsals', component: RehearsalsPageComponent}
+  {path: 'rehearsals', component: RehearsalsPageComponent},
+  {path: 'rehearsal/:id', component: CabinetPageComponent}
 ];
 
 @NgModule({
@@ -37,12 +40,13 @@ const appRoutes: Routes = [
     RouterModule.forRoot(appRoutes),
     BrowserModule,
     FormsModule,
+    NgbModule,
     SignInModule,
     HomeModule,
     BandsModule,
     AppCommonModule,
     RehearsalsModule,
-    NgbModule
+    CabinetModule,
   ],
   bootstrap: [AppComponent]
 })

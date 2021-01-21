@@ -1,0 +1,12 @@
+<div class="member-panel">
+  <div *ngFor="let member of members" class="member">
+    <span [ngClass]="{active:member.sessionId}">
+      <span class="member-name">
+        {{member.musician.user.firstName}} {{member.musician.user.lastName}} ({{member.musician.user.login}})
+      </span>
+      <i *ngIf="member.sessionId" [ngClass]="{fas:true,
+          'fa-microphone':microphoneEnabled(member), 'fa-microphone-slash':!(microphoneEnabled(member)),
+          'changeable':isMyself(member)}" (click)="switchMicrophone(member)"></i>
+    </span>
+  </div>
+</div>
