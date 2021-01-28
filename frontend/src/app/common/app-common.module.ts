@@ -23,6 +23,8 @@ import {MusicianPageComponent} from './pages/musician-page.component';
 import {FormsModule} from '@angular/forms';
 import {BandChoiceComponent} from './component/band-choice/band-choice.component';
 import {SocketConnector} from './services/socket-connector';
+import {MetronomeService} from './services/metronome.service';
+import {AudioService} from './services/audio.service';
 
 @NgModule({
   declarations: [
@@ -51,7 +53,7 @@ import {SocketConnector} from './services/socket-connector';
   providers: [AuthorizationService, UserService, PostService,
     DateService, BandService, SubscriptionService, EncoderService,
     ToastService, RegistrationService, CaptchaService, RehearsalService,
-    SocketConnector]
+    SocketConnector, MetronomeService, AudioService]
 })
 export class AppCommonModule {
 }

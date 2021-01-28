@@ -21,7 +21,8 @@ export class RehearsalCreatorComponent {
     startDatetime: new Date(),
     finishDatetime: new Date(),
     members: [],
-    creator: null
+    creator: null,
+    metronomes: []
   };
 
   isBandChoice = true;

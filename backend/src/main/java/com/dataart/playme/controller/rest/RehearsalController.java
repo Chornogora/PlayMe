@@ -1,10 +1,12 @@
 package com.dataart.playme.controller.rest;
 
 import com.dataart.playme.controller.binding.annotation.CurrentMusician;
+import com.dataart.playme.dto.CreateMetronomeDto;
 import com.dataart.playme.dto.CreateRehearsalDto;
 import com.dataart.playme.dto.UpdateRehearsalDto;
 import com.dataart.playme.model.Musician;
 import com.dataart.playme.model.Rehearsal;
+import com.dataart.playme.service.CabinetService;
 import com.dataart.playme.service.RehearsalService;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,15 +40,32 @@ public class RehearsalController {
         return rehearsalService.createRehearsal(dto);
     }
 
+    @PostMapping("/{rehearsalId}/metronome")
+    public Rehearsal createMetronome(@PathVariable String rehearsalId,
+                                     @RequestBody CreateMetronomeDto dto) {
+        return rehearsalService.addMetronome(rehearsalId, dto.getTempo());
+    }
+
     @PutMapping
     public Rehearsal updateRehearsal(@Valid @RequestBody UpdateRehearsalDto dto,
                                      @CurrentMusician Musician currentMusician) {
         return rehearsalService.updateRehearsal(dto, currentMusician);
     }
 
+    @PutMapping("/metronome/{metronomeId}")
+    public Rehearsal updateMetronome(@PathVariable String metronomeId,
+                                     @RequestBody CreateMetronomeDto dto) {
+        return rehearsalService.updateMetronome(metronomeId, dto.getTempo());
+    }
+
     @DeleteMapping("/{id}")
     public void deleteRehearsal(@PathVariable String id,
                                 @CurrentMusician Musician currentMusician) {
         rehearsalService.deleteRehearsal(id, currentMusician);
+    }
+
+    @DeleteMapping("/metronome/{metronomeId}")
+    public Rehearsal deleteRehearsal(@PathVariable String metronomeId) {
+        return rehearsalService.deleteMetronome(metronomeId);
     }
 }

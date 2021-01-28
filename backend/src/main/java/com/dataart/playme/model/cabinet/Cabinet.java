@@ -15,4 +15,10 @@ public class Cabinet {
     private List<RehearsalMember> members;
 
     private RehearsalState rehearsalState = RehearsalState.STOPPED;
+
+    private MetronomeConfiguration metronomeConfiguration = new MetronomeConfiguration();
+
+    public String toString() {
+        return "[" + getClass().getName() + "]";
+    }
 }

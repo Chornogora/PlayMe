@@ -28,4 +28,8 @@ public class Musician {
 
     @OneToMany(mappedBy = "musician", fetch = FetchType.LAZY)
     private List<Membership> memberships;
+
+    public String toString() {
+        return "[" + getClass().getName() + "]";
+    }
 }

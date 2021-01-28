@@ -5,6 +5,10 @@ body {
   background-size: 100%;
 }
 
+.invisible {
+  display: none;
+}
+
 a {
   transition: color 0.25s ease-in-out;
 }

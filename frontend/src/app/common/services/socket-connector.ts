@@ -1,7 +1,7 @@
-import {Output, EventEmitter, Injectable} from '@angular/core';
-import {CompatClient, Stomp} from '@stomp/stompjs';
-import {CabinetMessage} from '../dto/socket-message/cabinet-message.dto';
-import {ErrorMessage} from '../dto/socket-message/error-message.dto';
+import {EventEmitter, Injectable, Output} from '@angular/core';
+import {Client} from '@stomp/stompjs';
+import {CabinetMessage} from '../dto/socket/cabinet-message.dto';
+import {ErrorMessage} from '../dto/socket/error-message.dto';
 import * as SockJS from 'sockjs-client';
 import {RehearsalMemberDto} from '../dto/rehearsal-member.dto';
 
@@ -14,7 +14,7 @@ export class SocketConnector {
 
   readonly musicianId: string;
 
-  private stompClient: CompatClient;
+  private stompClient: Client;
 
   @Output() messageEvent = new EventEmitter<CabinetMessage>();
 
@@ -22,36 +22,53 @@ export class SocketConnector {
 
   @Output() rehearsalStateChangedEvent = new EventEmitter<string>();
 
+  @Output() metronomeEvent = new EventEmitter<Uint8Array>();
+
   subscriptionFunction = (() => {
     this.subscribeOnMessageEvent();
     this.subscribeOnRehearsalStateChangeEvent();
     this.subscribeOnError();
-    this.stompClient.send('/app/connect', {},
-      JSON.stringify({rehearsalId: this.rehearsalId, musicianId: this.musicianId}));
+    this.subscribeOnMetronomeEvent();
+    this.stompClient.publish({
+      destination: '/app/connect',
+      body: JSON.stringify({rehearsalId: this.rehearsalId, musicianId: this.musicianId})
+    });
   });
 
   constructor(address: string, rehearsalId: string, musicianId: string) {
     this.musicianId = musicianId;
     this.rehearsalId = rehearsalId;
-    const ws = new SockJS(address);
-    this.stompClient = Stomp.over(ws);
-    this.stompClient.connect({address}, this.subscriptionFunction);
+    this.stompClient = new Client({
+      onConnect: this.subscriptionFunction,
+      webSocketFactory: () => new SockJS(address)
+    });
+    this.stompClient.activate();
   }
 
   switchMicrophone(sessionId: string): void {
-    this.stompClient.send('/app/switch-microphone', {},
-      sessionId);
+    this.stompClient.publish({
+      destination: '/app/switch-microphone',
+      body: sessionId
+    });
   }
 
   startCountdown(): void {
-    this.stompClient.send('/app/start-countdown', {},
-      this.rehearsalId);
+    this.stompClient.publish({
+      destination: '/app/start-countdown',
+      body: this.rehearsalId
+    });
+  }
+
+  changeMetronome(newConfig): void {
+    this.stompClient.publish({
+      destination: '/app/update-metronome',
+      body: JSON.stringify({rehearsalId: this.rehearsalId, metronomeConfiguration: newConfig})
+    });
   }
 
   private subscribeOnMessageEvent(): void {
     this.stompClient.subscribe(`/cabinet/${this.rehearsalId}/state`, (message) => {
       const outMessage = new CabinetMessage();
-      outMessage.title = message.command;
       if (message.body) {
         outMessage.content = JSON.parse(message.body);
       }
@@ -68,6 +85,16 @@ export class SocketConnector {
     });
   }
 
+  private subscribeOnMetronomeEvent(): void {
+    this.stompClient.subscribe(`/cabinet/${this.rehearsalId}/metronome`,
+      (message) => {
+        const signalAsString = message.body;
+        const audioArray = Uint8Array.from(atob(signalAsString), c => c.charCodeAt(0));
+        this.metronomeEvent.emit(audioArray);
+      });
+  }
+
+
   private subscribeOnError(): void {
     this.stompClient.subscribe(`/cabinet/${this.rehearsalId}/error/${this.musicianId}`,
       (message) => {
@@ -81,5 +108,19 @@ export class SocketConnector {
       .members
       .filter((member: RehearsalMemberDto) => member.musician.id === this.musicianId)[0]
       .sessionId;
+  }
+
+  start(): void {
+    this.stompClient.publish({
+      destination: '/app/start',
+      body: this.rehearsalId
+    });
+  }
+
+  stopRehearsal(): void {
+    this.stompClient.publish({
+      destination: '/app/stop',
+      body: this.rehearsalId
+    });
   }
 }
