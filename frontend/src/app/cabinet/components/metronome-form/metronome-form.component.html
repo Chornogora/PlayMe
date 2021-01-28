@@ -1,0 +1,26 @@
+<div class="metronome-form">
+
+  <div class="metronome-panel">
+    <div *ngFor="let metronome of rehearsal.metronomes; let i = index" class="metronome-tab">
+      <div (click)="currentMetronome = metronome"
+           [ngClass]="{'metronome-current-tab':currentMetronome === metronome}">{{i + 1}}</div>
+    </div>
+    <div *ngIf="rehearsal.metronomes.length < 9" class="metronome-tab" (click)="createMetronome()">+</div>
+  </div>
+
+  <div *ngIf="currentMetronome">
+    <div class="w3-center">
+      <div>
+        <label for="tempo-input">Select metronome tempo: {{currentMetronome.tempo}}</label>
+      </div>
+      <input [(ngModel)]="currentMetronome.tempo" id="tempo-input" name="tempo-input" type="range" min="40" max="208"
+             class="form-control" (change)="updateMetronome()">
+    </div>
+
+    <div class="row">
+      <button (click)="enableMetronome()">Enable</button>
+      <button (click)="deleteMetronome()">Delete</button>
+      <button (click)="disableMetronome()">Disable</button>
+    </div>
+  </div>
+</div>

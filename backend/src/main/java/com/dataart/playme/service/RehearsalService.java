@@ -18,4 +18,10 @@ public interface RehearsalService {
     Rehearsal updateRehearsal(UpdateRehearsalDto dto, Musician updateAuthor);
 
     void deleteRehearsal(String id, Musician deleteInitiator);
+
+    Rehearsal addMetronome(String rehearsalId, int tempo);
+
+    Rehearsal deleteMetronome(String metronomeId);
+
+    Rehearsal updateMetronome(String metronomeId, int tempo);
 }

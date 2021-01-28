@@ -25,7 +25,8 @@ public class SocketLifecycleEventHandler implements WebSocketHandlerDecoratorFac
 
             @Override
             public void afterConnectionClosed(WebSocketSession session, CloseStatus closeStatus) throws Exception {
-                controller.setOffline(session.getId());
+                String sessionId = session.getId();
+                controller.setOffline(sessionId);
                 super.afterConnectionClosed(session, closeStatus);
             }
         };

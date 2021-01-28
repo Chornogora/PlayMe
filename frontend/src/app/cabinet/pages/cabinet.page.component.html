@@ -6,12 +6,36 @@
 <div class="rehearsal-countdown">{{countdownText}}</div>
 
 <button *ngIf="this.rehearsalState === 'STOPPED' && isCreator(musician)" class="btn-outline-danger start-button"
-        (click)="sendStartCountdownCommand()" #startButton>Start
+        (click)="sendStartCountdownCommand()">Start
 </button>
 
-<div *ngIf="isCreator(musician)" class="metronome-button"></div>
+<button *ngIf="this.rehearsalState === 'STARTED' && isCreator(musician)" class="btn-outline-danger start-button"
+        (click)="sendStopCommand()">Stop
+</button>
+
+<div *ngIf="isCreator(musician)" class="metronome-area">
+  <div *ngFor="let metronome of rehearsal.metronomes; let i = index">
+    <div [ngClass]="{'metronome-tab':true,
+     'metronome-current-tab':metronome.id === metronomeConfiguration.metronomeId}"
+         (click)="changeMetronomeManually(i+1)">{{i + 1}}. {{metronome.tempo}} ticks/min
+    </div>
+  </div>
+  <div [ngClass]="{'metronome-button':true,
+      'active-metronome-button':metronomeConfiguration.enabled,
+      'disabled-metronome-button':!metronomeConfiguration.enabled}"
+       (click)="isMetronomeConfiguring = !isMetronomeConfiguring"></div>
+</div>
 
 <audio *ngIf="rehearsalState === 'COUNTDOWN'" src="assets/sound/ring1.mp3" autoplay></audio>
+
+<app-metronome-form *ngIf="isCreator(musician)"
+                    [rehearsal]="rehearsal"
+                    [events]="eventsSubject.asObservable()"
+                    (metronomeEnabledEvent)="enableMetronome($event)"
+                    (metronomeDisabledEvent)="disableMetronome()"
+                    (updateRehearsalEvent)="updateRehearsal($event)"
+                    [ngClass]="{'metronome-form-component':true,
+                    'invisible':!isMetronomeConfiguring}"></app-metronome-form>
 
 <app-modal *ngIf="alreadyConnected"
            [title]="'Rehearsal is already opened'"

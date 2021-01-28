@@ -40,20 +40,63 @@
   color: aqua;
 }
 
-.metronome-button {
+.metronome-area {
   position: absolute;
+  top: 12%;
   left: 80%;
-  top: 60%;
+  width: 20%;
+  height: 80%;
+  background-color: #242526;
+  color: rgb(128, 128, 128);
+  box-shadow: -6px 0 12px 0 rgba(0,0,0,0.75);
+  font-size: 18pt;
+  padding-left: 10px;
+}
+
+.metronome-button {
   border-radius: 100%;
   border: 3px solid white;
   height: 100px;
   width: 100px;
-  background: url("/assets/img/metronome2.png") no-repeat;
-  background-size: 100%;
   transition: border-color 0.25s ease-in-out;
+  margin-top: 10px;
+  position: absolute;
+  left: 35%;
+  top: 75%;
 }
 
 .metronome-button:hover {
   border-color: aqua;
   cursor: pointer;
+}
+
+.active-metronome-button {
+  background: url("/assets/img/metronome2.png") no-repeat;
+  background-size: 100%;
+}
+
+.disabled-metronome-button {
+  background: url("/assets/img/metronome-disabled.png") no-repeat;
+  background-size: 100%;
+}
+
+.metronome-form-component {
+  position: absolute;
+  left: 38%;
+  width: 20%;
+  top: 30%;
+  height: 20%;
+}
+
+.metronome-tab {
+  transition: color 0.25s ease-in-out;
+}
+
+.metronome-tab:hover {
+  cursor: pointer;
+  color: aqua;
+}
+
+.metronome-current-tab {
+  color: red;
 }

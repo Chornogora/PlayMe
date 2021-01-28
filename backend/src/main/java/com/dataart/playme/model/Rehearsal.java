@@ -1,11 +1,14 @@
 package com.dataart.playme.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor
@@ -31,4 +34,14 @@ public class Rehearsal {
             joinColumns = @JoinColumn(name = "rehearsal_id"),
             inverseJoinColumns = @JoinColumn(name = "musician_id"))
     private List<Musician> members;
+
+    @OneToMany(mappedBy = "rehearsal", fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<Metronome> metronomes;
+
+    public List<Metronome> getMetronomes() {
+        return metronomes.stream()
+                .sorted(Comparator.comparing(Metronome::getCreationDatetime))
+                .collect(Collectors.toList());
+    }
 }

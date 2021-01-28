@@ -1,6 +1,7 @@
 package com.dataart.playme.controller.socket;
 
 import com.dataart.playme.dto.cabinet.EnterMessage;
+import com.dataart.playme.dto.cabinet.UpdateMetronomeMessage;
 import com.dataart.playme.exception.socket.SocketException;
 import com.dataart.playme.model.cabinet.Cabinet;
 import com.dataart.playme.model.cabinet.RehearsalState;
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 
 @Controller
-public class CabinetController {
+public class CabinetController implements CabinetPublisher {
 
     private final CabinetService cabinetService;
 
@@ -50,10 +51,41 @@ public class CabinetController {
         sendRehearsalState(stateAsText, rehearsalId);
     }
 
+    @MessageMapping("/start")
+    public void start(String rehearsalId) {
+        RehearsalState state = cabinetService.start(rehearsalId);
+        String stateAsText = state.name();
+        sendRehearsalState(stateAsText, rehearsalId);
+    }
+
+    @MessageMapping("/stop")
+    public void stop(String rehearsalId) {
+        RehearsalState state = cabinetService.stop(rehearsalId);
+        String stateAsText = state.name();
+        sendRehearsalState(stateAsText, rehearsalId);
+    }
+
+    @MessageMapping("/update-metronome")
+    public void updateMetronome(UpdateMetronomeMessage message) {
+        Cabinet cabinet = cabinetService.updateMetronome(message);
+        sendCabinetStatus(cabinet);
+    }
+
     @MessageExceptionHandler(value = {SocketException.class})
     public void handleException(SocketException exception) {
         template.convertAndSend(String.format("/cabinet/%s/error/%s", exception.getRehearsalId(),
                 exception.getMusicianId()), exception);
+    }
+
+    @Override
+    public void sendMetronome(String rehearsalId, String metronomeSignal) {
+        template.convertAndSend("/cabinet/" + rehearsalId + "/metronome",
+                metronomeSignal);
+    }
+
+    @Override
+    public void sendCabinetUpdate(Cabinet cabinet) {
+        sendCabinetStatus(cabinet);
     }
 
     public void setOffline(String sessionId) {

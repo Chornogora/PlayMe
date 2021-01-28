@@ -20,7 +20,6 @@ export class MemberListComponent {
   }
 
   switchMicrophone(member: RehearsalMemberDto): void {
-    console.log('inside');
     if (this.isMyself(member)) {
       this.switchMicrophoneEvent.emit(member.sessionId);
     }

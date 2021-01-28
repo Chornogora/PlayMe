@@ -5,11 +5,13 @@ import {BandsModule} from '../bands/bands.module';
 import {AppCommonModule} from '../common/app-common.module';
 import {FormsModule} from '@angular/forms';
 import {MemberListComponent} from './components/member-list/member-list.component';
+import {MetronomeFormComponent} from './components/metronome-form/metronome-form.component';
 
 @NgModule({
   declarations: [
     CabinetPageComponent,
-    MemberListComponent
+    MemberListComponent,
+    MetronomeFormComponent
   ],
   imports: [
     BrowserModule,
