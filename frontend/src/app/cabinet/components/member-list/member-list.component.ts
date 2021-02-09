@@ -26,6 +26,6 @@ export class MemberListComponent {
   }
 
   microphoneEnabled(member: RehearsalMemberDto): boolean {
-    return member.microphoneEnabled;
+    return member.microphoneStatus === 'ON';
   }
 }

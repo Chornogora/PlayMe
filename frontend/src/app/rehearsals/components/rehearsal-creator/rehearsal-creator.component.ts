@@ -22,7 +22,8 @@ export class RehearsalCreatorComponent {
     finishDatetime: new Date(),
     members: [],
     creator: null,
-    metronomes: []
+    metronomes: [],
+    record: null
   };
 
   isBandChoice = true;
@@ -52,7 +53,9 @@ export class RehearsalCreatorComponent {
     this.rehearsalService.createRehearsal(this.newRehearsal)
       .subscribe((rehearsal: RehearsalDto) => {
         this.rehearsalCreatedEvent.emit(rehearsal);
-      }, () => this.showError());
+      }, (error) => {
+        this.showError();
+      });
   }
 
   addMember(newMember: MusicianDto): void {

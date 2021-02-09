@@ -1,0 +1,24 @@
+<div *ngIf="record" class="tracks-area">
+  <div *ngFor="let track of tracks; let i = index">
+    <app-track-component [track]="track"
+                         [elementId]="'track' + i"
+                         [events]="eventsSubject.asObservable()"
+                         [member]="getTrackMember(track.musician)"
+                         [isCreator]="isCreator"
+                         (stopPlayingEvent)="stopAll()" #track
+                         [updateTracksSubject]="updateTracksSubject"
+                         (pauseEvent)="checkTotalPause()"
+                         (pinnedEvent)="switchPinnedStatus(track.musician, $event)">
+    </app-track-component>
+  </div>
+</div>
+<div *ngIf="record && record.tracks && record.tracks.length" class="control-area">
+  <i class="far fa-stop-circle small-icon" (click)="stopAll()"></i>
+  <i [class]="{'play-button':true, far:true, 'fa-play-circle':(this.playingStatus === 'stopped'),
+  'fa-pause-circle':(this.playingStatus === 'playing')}" (click)="switchStatus()"></i>
+  <i [class]="{far:true, 'fa-arrow-alt-circle-left':true, 'small-icon':(playingStatus === 'stopped'),
+'disabled-icon':(playingStatus === 'playing')}" (click)="moveToEarliest()"></i>
+</div>
+<div *ngIf="!record || !record.tracks || !record.tracks.length" class="no-tracks">
+  <div>No tracks found yet</div>
+</div>

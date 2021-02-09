@@ -4,6 +4,7 @@ import {CabinetMessage} from '../dto/socket/cabinet-message.dto';
 import {ErrorMessage} from '../dto/socket/error-message.dto';
 import * as SockJS from 'sockjs-client';
 import {RehearsalMemberDto} from '../dto/rehearsal-member.dto';
+import {MusicianDto} from '../dto/musician.dto';
 
 @Injectable()
 export class SocketConnector {
@@ -23,6 +24,8 @@ export class SocketConnector {
   @Output() rehearsalStateChangedEvent = new EventEmitter<string>();
 
   @Output() metronomeEvent = new EventEmitter<Uint8Array>();
+
+  @Output() personalCabinetUpdateEvent = new EventEmitter<CabinetMessage>();
 
   subscriptionFunction = (() => {
     this.subscribeOnMessageEvent();
@@ -66,6 +69,41 @@ export class SocketConnector {
     });
   }
 
+  switchPinnedStatus(dto: { musician: MusicianDto, pinned: boolean }): void {
+    this.stompClient.publish({
+      destination: '/app/update-pinned-status',
+      body: JSON.stringify({musicianId: dto.musician.id, pinnedStatus: dto.pinned})
+    });
+  }
+
+  start(): void {
+    this.stompClient.publish({
+      destination: '/app/start',
+      body: this.rehearsalId
+    });
+  }
+
+  stopRehearsal(): void {
+    this.stompClient.publish({
+      destination: '/app/stop',
+      body: this.rehearsalId
+    });
+  }
+
+  sendAudio(recordEncoded: string, metadata: any): void {
+    this.stompClient.publish({
+      destination: '/app/record',
+      body: recordEncoded,
+      headers: metadata
+    });
+  }
+
+  askForCabinet(): void {
+    this.stompClient.publish({
+      destination: '/app/get-cabinet'
+    });
+  }
+
   private subscribeOnMessageEvent(): void {
     this.stompClient.subscribe(`/cabinet/${this.rehearsalId}/state`, (message) => {
       const outMessage = new CabinetMessage();
@@ -74,6 +112,7 @@ export class SocketConnector {
       }
       if (!this.sessionId) {
         this.initSessionId(outMessage);
+        this.subscribeOnCabinetUpdate();
       }
       this.messageEvent.emit(outMessage);
     });
@@ -94,6 +133,16 @@ export class SocketConnector {
       });
   }
 
+  private subscribeOnCabinetUpdate(): void {
+    this.stompClient.subscribe(`/cabinet/${this.sessionId}`,
+      (message) => {
+        const outMessage = new CabinetMessage();
+        if (message.body) {
+          outMessage.content = JSON.parse(message.body);
+        }
+        this.personalCabinetUpdateEvent.emit(outMessage);
+      });
+  }
 
   private subscribeOnError(): void {
     this.stompClient.subscribe(`/cabinet/${this.rehearsalId}/error/${this.musicianId}`,
@@ -108,19 +157,5 @@ export class SocketConnector {
       .members
       .filter((member: RehearsalMemberDto) => member.musician.id === this.musicianId)[0]
       .sessionId;
-  }
-
-  start(): void {
-    this.stompClient.publish({
-      destination: '/app/start',
-      body: this.rehearsalId
-    });
-  }
-
-  stopRehearsal(): void {
-    this.stompClient.publish({
-      destination: '/app/stop',
-      body: this.rehearsalId
-    });
   }
 }

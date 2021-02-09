@@ -104,7 +104,8 @@ export class RehearsalEditComponent implements OnInit {
       finishDatetime: new Date(this.updatedRehearsal.finishDatetime),
       creator: this.rehearsalToUpdate.creator,
       members: this.updatedRehearsal.members,
-      metronomes: []
+      metronomes: [],
+      record: null
     };
   }
 

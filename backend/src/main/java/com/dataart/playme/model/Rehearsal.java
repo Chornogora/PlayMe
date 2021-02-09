@@ -35,9 +35,13 @@ public class Rehearsal {
             inverseJoinColumns = @JoinColumn(name = "musician_id"))
     private List<Musician> members;
 
-    @OneToMany(mappedBy = "rehearsal", fetch = FetchType.LAZY)
     @JsonManagedReference
+    @OneToMany(mappedBy = "rehearsal", fetch = FetchType.LAZY)
     private List<Metronome> metronomes;
+
+    @JsonManagedReference
+    @OneToOne(mappedBy = "rehearsal")
+    private Record record;
 
     public List<Metronome> getMetronomes() {
         return metronomes.stream()

@@ -1,6 +1,7 @@
 package com.dataart.playme.controller.socket;
 
 import com.dataart.playme.dto.cabinet.EnterMessage;
+import com.dataart.playme.dto.cabinet.PinnedStatusMessage;
 import com.dataart.playme.dto.cabinet.UpdateMetronomeMessage;
 import com.dataart.playme.exception.socket.SocketException;
 import com.dataart.playme.model.cabinet.Cabinet;
@@ -44,6 +45,15 @@ public class CabinetController implements CabinetPublisher {
         sendCabinetStatus(cabinet);
     }
 
+    @MessageMapping("/update-pinned-status")
+    public void updatePinnedStatus(@Payload PinnedStatusMessage message, SimpMessageHeaderAccessor headerAccessor) {
+        String sessionId = headerAccessor.getSessionId();
+
+        Cabinet cabinet = cabinetService.updatePinnedStatus(message.getMusicianId(),
+                message.isPinnedStatus(), sessionId);
+        sendCabinetStatus(cabinet);
+    }
+
     @MessageMapping("/start-countdown")
     public void startCountdown(String rehearsalId) {
         RehearsalState state = cabinetService.startCountdown(rehearsalId);
@@ -62,6 +72,7 @@ public class CabinetController implements CabinetPublisher {
     public void stop(String rehearsalId) {
         RehearsalState state = cabinetService.stop(rehearsalId);
         String stateAsText = state.name();
+        sendCabinetUpdate(cabinetService.findById(rehearsalId));
         sendRehearsalState(stateAsText, rehearsalId);
     }
 
@@ -69,6 +80,13 @@ public class CabinetController implements CabinetPublisher {
     public void updateMetronome(UpdateMetronomeMessage message) {
         Cabinet cabinet = cabinetService.updateMetronome(message);
         sendCabinetStatus(cabinet);
+    }
+
+    @MessageMapping("/get-cabinet")
+    public void sendCabinet(SimpMessageHeaderAccessor headerAccessor) {
+        String sessionId = headerAccessor.getSessionId();
+        Cabinet cabinet = cabinetService.findBySessionId(sessionId);
+        template.convertAndSend("/cabinet/" + sessionId, cabinet);
     }
 
     @MessageExceptionHandler(value = {SocketException.class})
@@ -88,6 +106,7 @@ public class CabinetController implements CabinetPublisher {
         sendCabinetStatus(cabinet);
     }
 
+    @Transactional
     public void setOffline(String sessionId) {
         Cabinet cabinet = cabinetService.setOffline(sessionId);
         if (cabinet != null) {
@@ -95,7 +114,7 @@ public class CabinetController implements CabinetPublisher {
         }
     }
 
-    private void sendCabinetStatus(Cabinet cabinet) {
+    void sendCabinetStatus(Cabinet cabinet) {
         String path = "/cabinet/" + cabinet.getRehearsal().getId() + "/state";
         template.convertAndSend(path, cabinet);
     }

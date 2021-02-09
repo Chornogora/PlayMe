@@ -9,8 +9,10 @@ import com.dataart.playme.model.Rehearsal;
 import com.dataart.playme.repository.MetronomeRepository;
 import com.dataart.playme.repository.RehearsalRepository;
 import com.dataart.playme.service.CabinetService;
+import com.dataart.playme.service.FileService;
 import com.dataart.playme.service.RehearsalService;
 import com.dataart.playme.service.dto.RehearsalDtoTransformationService;
+import com.dataart.playme.util.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,17 +26,20 @@ public class RehearsalServiceImpl implements RehearsalService {
 
     private final CabinetService cabinetService;
 
+    private final FileService fileService;
+
+    private final RehearsalDtoTransformationService rehearsalDtoTransformationService;
+
     private final RehearsalRepository rehearsalRepository;
 
     private final MetronomeRepository metronomeRepository;
 
-    private final RehearsalDtoTransformationService rehearsalDtoTransformationService;
-
     @Autowired
-    public RehearsalServiceImpl(CabinetService cabinetService, RehearsalRepository rehearsalRepository,
+    public RehearsalServiceImpl(CabinetService cabinetService, FileService fileService, RehearsalRepository rehearsalRepository,
                                 MetronomeRepository metronomeRepository,
                                 RehearsalDtoTransformationService rehearsalDtoTransformationService) {
         this.cabinetService = cabinetService;
+        this.fileService = fileService;
         this.rehearsalRepository = rehearsalRepository;
         this.metronomeRepository = metronomeRepository;
         this.rehearsalDtoTransformationService = rehearsalDtoTransformationService;
@@ -77,6 +82,10 @@ public class RehearsalServiceImpl implements RehearsalService {
         if (!deleteInitiator.getId().equals(rehearsal.getCreator().getId())) {
             throw new ForbiddenException("Only rehearsal creator can make changes");
         }
+        rehearsal.getRecord().getTracks().forEach(track -> {
+            String trackFolder = Constants.get(Constants.TRACK_ROOT_DIRECTORY_ID);
+            fileService.deleteFile(track.getFileUrl(), trackFolder);
+        });
         rehearsalRepository.delete(rehearsal);
     }
 

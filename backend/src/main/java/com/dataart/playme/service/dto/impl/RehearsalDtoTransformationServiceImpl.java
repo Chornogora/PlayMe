@@ -10,6 +10,7 @@ import com.dataart.playme.service.dto.RehearsalDtoTransformationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -44,6 +45,7 @@ public class RehearsalDtoTransformationServiceImpl implements RehearsalDtoTransf
 
         List<Musician> members = musicianRepository.findAllById(dto.getMembersId());
         rehearsal.setMembers(members);
+        rehearsal.setMetronomes(Collections.emptyList());
 
         return rehearsal;
     }

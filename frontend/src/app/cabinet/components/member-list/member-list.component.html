@@ -4,7 +4,7 @@
       <span class="member-name">
         {{member.musician.user.firstName}} {{member.musician.user.lastName}} ({{member.musician.user.login}})
       </span>
-      <i *ngIf="member.sessionId" [ngClass]="{fas:true,
+      <i *ngIf="member.sessionId && member.microphoneStatus !== 'MUTED'" [ngClass]="{fas:true,
           'fa-microphone':microphoneEnabled(member), 'fa-microphone-slash':!(microphoneEnabled(member)),
           'changeable':isMyself(member)}" (click)="switchMicrophone(member)"></i>
     </span>

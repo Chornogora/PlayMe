@@ -1,22 +1,28 @@
-.rehearsal-description {
+.rehearsal-countdown-text {
+  position: relative;
+  font-size: 30vh;
+  color: white;
+  top: 22%;
+  height: 20%;
+  z-index: 5;
+}
+
+.rehearsal-countdown, .main-content-component {
   position: absolute;
   left: 25%;
-  width: 45%;
-  text-align: center;
-  top: 14%;
-  max-height: 26%;
-  color: white;
+  width: 50%;
+  top: 12%;
+  height: 80%;
+  z-index: 4;
 }
 
 .rehearsal-countdown {
-  position: absolute;
-  left: 25%;
-  width: 45%;
+  background-color: rgba(127, 127, 127, 0.85);
   text-align: center;
-  font-size: 30vh;
-  color: white;
-  top: 30%;
-  height: 20%;
+}
+
+.main-content-component {
+  background-color: #242526;
 }
 
 .btn-outline-danger {
@@ -31,7 +37,7 @@
 .start-button {
   position: absolute;
   top: 80%;
-  left: 45%;
+  left: 6.5%;
   transition: color 0.3s ease-in-out;
 }
 
@@ -48,7 +54,7 @@
   height: 80%;
   background-color: #242526;
   color: rgb(128, 128, 128);
-  box-shadow: -6px 0 12px 0 rgba(0,0,0,0.75);
+  box-shadow: -6px 0 12px 0 rgba(0, 0, 0, 0.75);
   font-size: 18pt;
   padding-left: 10px;
 }
@@ -78,14 +84,6 @@
 .disabled-metronome-button {
   background: url("/assets/img/metronome-disabled.png") no-repeat;
   background-size: 100%;
-}
-
-.metronome-form-component {
-  position: absolute;
-  left: 38%;
-  width: 20%;
-  top: 30%;
-  height: 20%;
 }
 
 .metronome-tab {

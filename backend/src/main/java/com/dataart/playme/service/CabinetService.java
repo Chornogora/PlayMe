@@ -6,6 +6,10 @@ import com.dataart.playme.model.cabinet.RehearsalState;
 
 public interface CabinetService {
 
+    Cabinet findById(String rehearsalId);
+
+    Cabinet findBySessionId(String sessionId);
+
     Cabinet setOnline(String rehearsalId, String musicianId, String sessionId);
 
     Cabinet setOffline(String sessionId);
@@ -21,4 +25,7 @@ public interface CabinetService {
     Cabinet updateMetronome(UpdateMetronomeMessage message);
 
     void updateRehearsal(String rehearsalId);
+
+    Cabinet updatePinnedStatus(String musicianId, boolean pinnedStatus,
+                               String sessionId);
 }
