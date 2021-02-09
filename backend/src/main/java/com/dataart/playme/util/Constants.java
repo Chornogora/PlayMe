@@ -24,6 +24,8 @@ public final class Constants {
 
     public static final String FILE_ROOT_DIRECTORY_ID = "storage.path.files";
 
+    public static final String TRACK_ROOT_DIRECTORY_ID = "storage.path.tracks";
+
     private static Properties properties;
 
     public static String get(String constantName) {

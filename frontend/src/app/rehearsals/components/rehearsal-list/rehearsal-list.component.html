@@ -32,6 +32,6 @@
 
 <app-modal *ngIf="rehearsalToDelete"
            [title]="'Rehearsal deleting'"
-           [text]="'Are you sure want to delete this rehearsal?'"
+           [text]="deleteModalText"
            (cancelEvent)="cancelDeleting()"
            (deleteEvent)="submitDeleting()"></app-modal>

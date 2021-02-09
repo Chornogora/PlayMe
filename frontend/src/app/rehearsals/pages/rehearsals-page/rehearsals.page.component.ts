@@ -77,7 +77,8 @@ export class RehearsalsPageComponent extends MusicianPageComponent implements On
   deleteRehearsal($event: RehearsalDto): void {
     this.rehearsalService.deleteRehearsal($event)
       .subscribe(() => this.reload(),
-        error => this.showDeleteError(error.error.message));
+        () => this.showDeleteError('Can\'t delete this rehearsal. Maybe there are some metronomes ' +
+          'set up for this rehearsal. Delete them first and try again'));
   }
 
   rehearsalUpdated($event: RehearsalDto): void {
@@ -91,7 +92,7 @@ export class RehearsalsPageComponent extends MusicianPageComponent implements On
   }
 
   showDeleteError(message: string): void {
-    this.toastService.show('Error', {
+    this.toastService.show('An error occur', {
       classname: 'bg-danger text-white',
       delay: 5000,
       autohide: true,

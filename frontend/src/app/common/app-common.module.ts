@@ -25,6 +25,7 @@ import {BandChoiceComponent} from './component/band-choice/band-choice.component
 import {SocketConnector} from './services/socket-connector';
 import {MetronomeService} from './services/metronome.service';
 import {AudioService} from './services/audio.service';
+import {RecordService} from './services/record.service';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,7 @@ import {AudioService} from './services/audio.service';
   providers: [AuthorizationService, UserService, PostService,
     DateService, BandService, SubscriptionService, EncoderService,
     ToastService, RegistrationService, CaptchaService, RehearsalService,
-    SocketConnector, MetronomeService, AudioService]
+    SocketConnector, MetronomeService, AudioService, RecordService]
 })
 export class AppCommonModule {
 }

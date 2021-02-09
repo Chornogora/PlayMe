@@ -1,0 +1,21 @@
+<div class="track">
+  <div class="track-header">
+    {{track.musician.user.firstName}} {{track.musician.user.lastName}} {{track.musician.nickname ? '(' + track.musician.nickname + ')' : ''}}
+  </div>
+  <div class="track-control">
+    <div>
+      <i [class]="{fas: true, 'fa-play-circle':(status !== 'playing'),
+      'fa-pause-circle':(status === 'playing'), 'track-button':true, 'play-button':true}"
+         (click)="(status === 'playing') ? pauseManually() : playTrack()"></i>
+    </div>
+    <div *ngIf="isCreator">
+      <i [class]="{fas:true, 'fa-thumbtack':true, 'track-button': true, 'unpinned':member.microphoneStatus !== 'MUTED'}"
+         (click)="switchPinnedStatus()"></i>
+      <div>{{member.microphoneStatus === 'MUTED' ? 'Pinned' : 'Unpinned'}}</div>
+    </div>
+  </div>
+  <div class="main-track">
+    <div id="{{elementId}}">
+    </div>
+  </div>
+</div>

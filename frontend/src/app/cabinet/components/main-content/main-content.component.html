@@ -1,0 +1,38 @@
+<div>
+  <div class="w3-bar w3-black main-content-tabs row">
+    <button
+      [class]="{'w3-bar-item': true, 'w3-button':true, 'col-md': true, 'active-tab':(state === 'tracks')}"
+      (click)="changeState('tracks')">Tracks
+    </button>
+    <button
+      [class]="{'w3-bar-item': true, 'w3-button':true, 'col-md': true, 'active-tab':(state === 'metronomes')}"
+      (click)="changeState('metronomes')">Metronomes
+    </button>
+    <button
+      [class]="{'w3-bar-item': true, 'w3-button':true, 'col-md': true, 'active-tab':(state === 'description')}"
+      (click)="changeState('description')">Description
+    </button>
+  </div>
+
+  <div class="main-content">
+    <div [ngClass]="{'invisible':(state !== 'tracks')}" class="main-content-tracks">
+      <app-tracks-component [record]="record"
+                            [updateTracksSubject]="updateTracksSubject"
+                            [members]="members"
+                            [isCreator]="isCreator(musician)"
+                            (pinnedEvent)="switchPinnedStatus($event)"></app-tracks-component>
+    </div>
+    <div [ngClass]="{'main-content-metronome':'true', 'invisible':(state !== 'metronomes')}">
+      <app-metronome-form *ngIf="isCreator(musician)"
+                          [rehearsal]="rehearsal"
+                          [events]="eventsSubject.asObservable()"
+                          (metronomeEnabledEvent)="metronomeEnabledEvent.emit($event)"
+                          (metronomeDisabledEvent)="metronomeDisabledEvent.emit()"
+                          (updateRehearsalEvent)="updateRehearsalEvent.emit($event)"
+                          class="metronome-form-component"></app-metronome-form>
+    </div>
+    <div *ngIf="state === 'description' && rehearsal" class="main-content-description">
+      {{rehearsal.description ? rehearsal.description : 'No description provided'}}
+    </div>
+  </div>
+</div>

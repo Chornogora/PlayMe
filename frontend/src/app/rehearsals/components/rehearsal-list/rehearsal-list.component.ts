@@ -20,6 +20,8 @@ export class RehearsalListComponent {
 
   rehearsalToDelete: RehearsalDto;
 
+  deleteModalText: string;
+
   @Output() updateRehearsalEvent = new EventEmitter<RehearsalDto>();
 
   @Output() deleteRehearsalEvent = new EventEmitter<RehearsalDto>();
@@ -33,6 +35,9 @@ export class RehearsalListComponent {
   }
 
   deleteRehearsal(rehearsal: RehearsalDto): void {
+    this.deleteModalText = (rehearsal.metronomes.length || rehearsal.record) ?
+      'Metronomes or records were detected. Are you sure want to delete this rehearsal?'
+      : 'Are you sure want to delete this rehearsal?';
     this.rehearsalToDelete = rehearsal;
   }
 
@@ -42,6 +47,7 @@ export class RehearsalListComponent {
 
   submitDeleting(): void {
     this.deleteRehearsalEvent.emit(this.rehearsalToDelete);
+    this.rehearsalToDelete = null;
   }
 
   canBeUpdated(rehearsal: RehearsalDto): boolean {

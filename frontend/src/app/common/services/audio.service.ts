@@ -3,9 +3,12 @@ import {Injectable} from '@angular/core';
 @Injectable()
 export class AudioService {
 
-  audioContext = new AudioContext();
+  audioContext;
 
   play(signal: Uint8Array): void {
+    if (!this.audioContext) {
+      this.audioContext = new AudioContext();
+    }
     const arrayBuffer = new ArrayBuffer(signal.length);
     const bufferView = new Uint8Array(arrayBuffer);
     for (let i = 0; i < signal.length; i++) {

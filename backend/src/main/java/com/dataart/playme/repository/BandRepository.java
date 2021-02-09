@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
 public interface BandRepository extends JpaRepository<Band, String>, FilteredBandRepository {
 
     @Query("SELECT b FROM Band b WHERE b.id IN :#{#bandIds}")

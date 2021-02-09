@@ -4,6 +4,7 @@ import com.dataart.playme.service.FileService;
 import com.dataart.playme.util.Constants;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -31,5 +32,11 @@ public class FileServiceImpl implements FileService {
             fos.write(data);
         }
         return FILE_MARK + resourceId + fileName;
+    }
+
+    @Override
+    public boolean deleteFile(String fileName, String folderName) {
+        String filePath = Constants.get(Constants.FILE_STORAGE_PATH_ID) + folderName + "\\" + fileName;
+        return new File(filePath).delete();
     }
 }

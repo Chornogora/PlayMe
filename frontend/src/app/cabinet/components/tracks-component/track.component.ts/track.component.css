@@ -1,0 +1,43 @@
+.track {
+  margin-bottom: -15px;
+}
+
+.main-track {
+  position: relative;
+  left: 15%;
+  width: 80%;
+  bottom: 65px;
+}
+
+.track-header {
+  text-align: center;
+  color: white;
+}
+
+.track-control {
+  display: inline-block;
+  color: white;
+  position: relative;
+  text-align: center;
+  top: 40px;
+  width: 15%;
+  right: 2%;
+}
+
+.track-button {
+  font-size: 30px;
+  transition: color 0.25s ease-in-out;
+}
+
+.track-button:hover {
+  cursor: pointer;
+  color: aqua;
+}
+
+.play-button {
+  margin-bottom: 20px;
+}
+
+.unpinned {
+  transform: rotate(270deg);
+}

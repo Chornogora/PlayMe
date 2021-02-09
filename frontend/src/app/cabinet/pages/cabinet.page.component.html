@@ -1,9 +1,22 @@
 <app-header (signOutEvent)="signOut()" [user]="user"></app-header>
 <app-rehearsal-members-list [members]="members" [musician]="musician"
                             (switchMicrophoneEvent)="switchMicrophone($event)"></app-rehearsal-members-list>
-<div class="rehearsal-description" *ngIf="rehearsal && rehearsal.description">{{rehearsal.description}}</div>
+<app-cabinet-main-content [rehearsal]="rehearsal"
+                          [record]="record"
+                          [musician]="musician"
+                          [eventsSubject]="eventsSubject"
+                          [updateTracksSubject]="updateTracksSubject"
+                          [recordService]="recordService"
+                          [members]="members"
+                          (metronomeEnabledEvent)="enableMetronome($event)"
+                          (metronomeDisabledEvent)="disableMetronome()"
+                          (updateRehearsalEvent)="updateRehearsal($event)"
+                          (pinnedEvent)="switchPinnedStatus($event)"
+                          class="main-content-component"></app-cabinet-main-content>
 
-<div class="rehearsal-countdown">{{countdownText}}</div>
+<div *ngIf="countdownText" class="rehearsal-countdown">
+  <div *ngIf="countdownText" class="rehearsal-countdown-text">{{countdownText}}</div>
+</div>
 
 <button *ngIf="this.rehearsalState === 'STOPPED' && isCreator(musician)" class="btn-outline-danger start-button"
         (click)="sendStartCountdownCommand()">Start
@@ -23,19 +36,10 @@
   <div [ngClass]="{'metronome-button':true,
       'active-metronome-button':metronomeConfiguration.enabled,
       'disabled-metronome-button':!metronomeConfiguration.enabled}"
-       (click)="isMetronomeConfiguring = !isMetronomeConfiguring"></div>
+       (click)="switchMetronome()"></div>
 </div>
 
 <audio *ngIf="rehearsalState === 'COUNTDOWN'" src="assets/sound/ring1.mp3" autoplay></audio>
-
-<app-metronome-form *ngIf="isCreator(musician)"
-                    [rehearsal]="rehearsal"
-                    [events]="eventsSubject.asObservable()"
-                    (metronomeEnabledEvent)="enableMetronome($event)"
-                    (metronomeDisabledEvent)="disableMetronome()"
-                    (updateRehearsalEvent)="updateRehearsal($event)"
-                    [ngClass]="{'metronome-form-component':true,
-                    'invisible':!isMetronomeConfiguring}"></app-metronome-form>
 
 <app-modal *ngIf="alreadyConnected"
            [title]="'Rehearsal is already opened'"

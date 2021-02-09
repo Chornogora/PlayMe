@@ -1,5 +1,6 @@
 import {MusicianDto} from './musician.dto';
 import {MetronomeDto} from './metronome.dto';
+import {RecordDto} from './record.dto';
 
 export class RehearsalDto {
   id: string;
@@ -9,4 +10,5 @@ export class RehearsalDto {
   creator: MusicianDto;
   members: MusicianDto[];
   metronomes: MetronomeDto[];
+  record: RecordDto;
 }

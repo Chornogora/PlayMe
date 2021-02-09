@@ -1,0 +1,27 @@
+.main-content-tabs {
+  position: absolute;
+  background-color: #242526 !important;
+  left: 16px;
+}
+
+.main-content-tabs > button {
+  border-right: 1px solid black;
+}
+
+.active-tab {
+  color: black;
+  background-color: white;
+}
+
+.main-content {
+  position: absolute;
+  left: 3%;
+  width: 94%;
+  top: 10%;
+  height: 85%;
+}
+
+.main-content-description {
+  color: white;
+  text-align: center;
+}

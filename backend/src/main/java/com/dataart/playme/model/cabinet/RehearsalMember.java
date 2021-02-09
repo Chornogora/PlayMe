@@ -12,9 +12,13 @@ public class RehearsalMember {
 
     private Musician musician;
 
-    private boolean microphoneEnabled;
+    private MicrophoneStatus microphoneStatus = MicrophoneStatus.OFF;
 
     public String toString() {
         return "[" + getClass().getName() + "]";
+    }
+
+    public enum MicrophoneStatus {
+        ON, OFF, MUTED
     }
 }

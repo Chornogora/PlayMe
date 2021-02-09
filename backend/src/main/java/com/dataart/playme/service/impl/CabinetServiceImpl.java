@@ -5,11 +5,13 @@ import com.dataart.playme.dto.cabinet.UpdateMetronomeMessage;
 import com.dataart.playme.exception.NoSuchRecordException;
 import com.dataart.playme.exception.socket.CabinetIllegalStateException;
 import com.dataart.playme.exception.socket.SocketException;
+import com.dataart.playme.model.Record;
 import com.dataart.playme.model.Rehearsal;
 import com.dataart.playme.model.cabinet.Cabinet;
 import com.dataart.playme.model.cabinet.RehearsalMember;
 import com.dataart.playme.model.cabinet.RehearsalState;
 import com.dataart.playme.repository.CabinetRepository;
+import com.dataart.playme.repository.RecordRepository;
 import com.dataart.playme.repository.RehearsalRepository;
 import com.dataart.playme.service.CabinetService;
 import org.apache.commons.lang3.StringUtils;
@@ -22,9 +24,7 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.Base64;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -43,12 +43,27 @@ public class CabinetServiceImpl implements CabinetService {
 
     private final CabinetRepository cabinetRepository;
 
+    private final RecordRepository recordRepository;
+
     @Autowired
     public CabinetServiceImpl(@Lazy CabinetPublisher cabinetPublisher,
-                              RehearsalRepository rehearsalRepository, CabinetRepository cabinetRepository) {
+                              RehearsalRepository rehearsalRepository, CabinetRepository cabinetRepository,
+                              RecordRepository recordRepository) {
         this.cabinetPublisher = cabinetPublisher;
         this.rehearsalRepository = rehearsalRepository;
         this.cabinetRepository = cabinetRepository;
+        this.recordRepository = recordRepository;
+    }
+
+    @Override
+    public Cabinet findById(String rehearsalId) {
+        return cabinetRepository.getCabinet(rehearsalId)
+                .orElseThrow(() -> new NoSuchRecordException("Can't find cabinet by rehearsal id"));
+    }
+
+    @Override
+    public Cabinet findBySessionId(String sessionId) {
+        return cabinetRepository.findBySessionId(sessionId);
     }
 
     @Override
@@ -75,7 +90,19 @@ public class CabinetServiceImpl implements CabinetService {
                 .stream()
                 .filter(member -> sessionId.equals(member.getSessionId()))
                 .findFirst()
-                .ifPresent(member -> member.setMicrophoneEnabled(!member.isMicrophoneEnabled()));
+                .ifPresent(this::switchMicrophoneStatus);
+        return cabinet;
+    }
+
+    @Override
+    public Cabinet updatePinnedStatus(String musicianId, boolean pinnedStatus,
+                                      String sessionId) {
+        Cabinet cabinet = cabinetRepository.findBySessionId(sessionId);
+        cabinet.getMembers()
+                .stream()
+                .filter(member -> musicianId.equals(member.getMusician().getId()))
+                .findFirst()
+                .ifPresent(member -> changePinnedStatus(member, pinnedStatus));
         return cabinet;
     }
 
@@ -92,7 +119,14 @@ public class CabinetServiceImpl implements CabinetService {
         Cabinet cabinet = cabinetRepository.getCabinet(rehearsalId)
                 .orElseThrow(() -> new NoSuchRecordException("Can't find cabinet by rehearsal id"));
         cabinet.setRehearsalState(RehearsalState.STARTED);
+
+        if (cabinet.getRehearsal().getRecord() == null) {
+            createRecord(cabinet.getRehearsal());
+        }
+        cabinet.getRehearsal().getRecord().setStartDatetime(new Date(System.currentTimeMillis()));
+        recordRepository.save(cabinet.getRehearsal().getRecord());
         new MetronomeTimerTask(cabinet).run();
+
         return RehearsalState.STARTED;
     }
 
@@ -101,6 +135,12 @@ public class CabinetServiceImpl implements CabinetService {
         Cabinet cabinet = cabinetRepository.getCabinet(rehearsalId)
                 .orElseThrow(() -> new NoSuchRecordException("Can't find cabinet by rehearsal id"));
         cabinet.setRehearsalState(RehearsalState.STOPPED);
+
+        if (cabinet.getRehearsal().getRecord() == null) {
+            createRecord(cabinet.getRehearsal());
+        }
+        cabinet.getRehearsal().getRecord().setFinishDatetime(new Date(System.currentTimeMillis()));
+        recordRepository.save(cabinet.getRehearsal().getRecord());
         return RehearsalState.STOPPED;
     }
 
@@ -140,6 +180,30 @@ public class CabinetServiceImpl implements CabinetService {
                         })
                         .collect(Collectors.toList()));
         return cabinetRepository.addCabinet(cabinet);
+    }
+
+    private void createRecord(Rehearsal rehearsal) {
+        Record record = new Record();
+        record.setId(UUID.randomUUID().toString());
+        record.setRehearsal(rehearsal);
+        record.setTracks(Collections.emptyList());
+        Record created = recordRepository.save(record);
+        rehearsal.setRecord(created);
+    }
+
+    private void switchMicrophoneStatus(RehearsalMember member) {
+        RehearsalMember.MicrophoneStatus status = member.getMicrophoneStatus();
+        if (status == RehearsalMember.MicrophoneStatus.ON) {
+            member.setMicrophoneStatus(RehearsalMember.MicrophoneStatus.OFF);
+        } else if (status == RehearsalMember.MicrophoneStatus.OFF) {
+            member.setMicrophoneStatus(RehearsalMember.MicrophoneStatus.ON);
+        }
+    }
+
+    private void changePinnedStatus(RehearsalMember member, boolean isPinned) {
+        RehearsalMember.MicrophoneStatus newStatus = isPinned ?
+                RehearsalMember.MicrophoneStatus.MUTED : RehearsalMember.MicrophoneStatus.OFF;
+        member.setMicrophoneStatus(newStatus);
     }
 
     private class MetronomeTimerTask extends TimerTask {

@@ -31,6 +31,7 @@ public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer 
     @Override
     public void configureWebSocketTransport(WebSocketTransportRegistration registration) {
         registration.addDecoratorFactory(socketLifecycleEventHandler);
+        registration.setMessageSizeLimit(128 * 1024);
     }
 
     @Autowired
