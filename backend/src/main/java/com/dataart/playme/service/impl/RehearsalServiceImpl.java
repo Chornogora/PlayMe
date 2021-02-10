@@ -82,10 +82,12 @@ public class RehearsalServiceImpl implements RehearsalService {
         if (!deleteInitiator.getId().equals(rehearsal.getCreator().getId())) {
             throw new ForbiddenException("Only rehearsal creator can make changes");
         }
-        rehearsal.getRecord().getTracks().forEach(track -> {
-            String trackFolder = Constants.get(Constants.TRACK_ROOT_DIRECTORY_ID);
-            fileService.deleteFile(track.getFileUrl(), trackFolder);
-        });
+        if (rehearsal.getRecord() != null && rehearsal.getRecord().getTracks() != null) {
+            rehearsal.getRecord().getTracks().forEach(track -> {
+                String trackFolder = Constants.get(Constants.TRACK_ROOT_DIRECTORY_ID);
+                fileService.deleteFile(track.getFileUrl(), trackFolder);
+            });
+        }
         rehearsalRepository.delete(rehearsal);
     }
 
