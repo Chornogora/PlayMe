@@ -1,7 +1,6 @@
 package com.dataart.playme.controller.rest;
 
 import com.dataart.playme.dto.CaptchaDto;
-import com.dataart.playme.dto.UserDto;
 import com.dataart.playme.dto.UserRegistrationDto;
 import com.dataart.playme.model.User;
 import com.dataart.playme.service.CaptchaService;

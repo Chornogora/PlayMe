@@ -1,9 +1,0 @@
-databaseChangeLog:
-  - changeSet:
-      id: 2020-12-1-20-20-delete-unique-constraint-for-captcha-token
-      author: liquibase-dbadmin
-      changes:
-        - dropUniqueConstraint:
-            constraintName: captcha_tokens_token_key
-            tableName: captcha_tokens
-            uniqueColumns: token
