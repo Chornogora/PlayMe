@@ -39,9 +39,9 @@ dependencies {
         exclude group: 'org.springframework'
     }
 
-    implementation group: 'javax.mail', name: 'mail', version: '1.4.5'
-    implementation group: 'com.sun.mail', name: 'smtp', version: '1.4.4'
-    implementation group: 'javax.activation', name: 'activation', version: '1.1'
+    implementation group: 'javax.mail', name: 'mail', version: '1.4.7'
+    implementation group: 'com.sun.mail', name: 'smtp', version: '1.6.2'
+    implementation group: 'javax.activation', name: 'activation', version: '1.1.1'
 
     testImplementation group: 'junit', name: 'junit', version: '4.12'
 }

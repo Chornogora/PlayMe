@@ -1,0 +1,26 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2020-1-24-20-00-metronome-table-creation
+      author: liquibase-dbadmin
+      changes:
+        - createTable:
+            tableName: metronomes
+            columns:
+              - column:
+                  name: id
+                  type: varchar(36)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: tempo
+                  type: integer
+                  constraints:
+                    nullable: false
+              - column:
+                  name: rehearsal_id
+                  type: varchar(36)
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_metronomes_rehearsals
+                    references: rehearsals(id)

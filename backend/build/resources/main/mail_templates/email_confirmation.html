@@ -1,0 +1,44 @@
+<style>
+    .content {
+        position: absolute;
+        top: 20%;
+        left: 25%;
+        width: 50%;
+        background: rgba(255, 255, 255, 0.8);
+        text-align: center;
+    }
+
+    .confirm-button {
+        margin-top: 6px;
+        box-shadow: inset 0 1px 0 0 #ffffff;
+        background: #ededed linear-gradient(to bottom, #ededed 5%, #dfdfdf 100%);
+        border-radius: 6px;
+        border: 1px solid #dcdcdc;
+        display: inline-block;
+        cursor: pointer;
+        color: black;
+        font-family: Arial, serif;
+        font-size: 15px;
+        font-weight: bold;
+        padding: 6px 24px;
+        text-decoration: none;
+        text-shadow: 0 1px 0 #ffffff;
+    }
+
+    .confirm-button:hover {
+        background: #dfdfdf linear-gradient(to bottom, #dfdfdf 5%, #ededed 100%);
+    }
+
+    .confirm-button:active {
+        position: relative;
+        top: 1px;
+    }
+</style>
+
+<div class="content">
+    <h3>Hello, {{name}}!</h3>
+    <div>Follow the link below to confirm your email address and start using PlayMe.</div>
+    <div>
+        <a href="{{link}}" class="confirm-button">Confirm email</a>
+    </div>
+</div>
