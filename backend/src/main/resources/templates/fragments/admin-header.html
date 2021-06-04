@@ -3,15 +3,19 @@
 <head>
 </head>
 <body>
-<nav th:fragment="admin-header" class="navbar navbar-dark bg-dark">
+<nav th:fragment="admin-header" class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" th:href="@{/admin/users}">
+        <img th:attr="src=@{/image/icon.png}" width="30" height="30" class="d-inline-block align-top"
+             alt="logo">
+        PlayMe
+    </a>
     <div class="collapse navbar-collapse custom-navbar">
-        <a class="navbar-brand" th:href="@{/admin/users}">
-            <img th:attr="src=@{/image/icon.png}" width="30" height="30" class="d-inline-block align-top" alt="logo">
-            PlayMe
-        </a>
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link" th:href="@{/admin/users}">Users</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/admin/dump/page}">Dump</a>
             </li>
         </ul>
         <div class="form-inline">

@@ -26,6 +26,8 @@ public final class Constants {
 
     public static final String TRACK_ROOT_DIRECTORY_ID = "storage.path.tracks";
 
+    public static final String BACKUP_FILE_LOCATION = "/home/anthony/Work/Programming/Projects/PlayMe/data";
+
     private static Properties properties;
 
     public static String get(String constantName) {

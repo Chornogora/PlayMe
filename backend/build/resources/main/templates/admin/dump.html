@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Page</title>
+
+    <link rel='shortcut icon' type='image/x-icon' th:href='@{/favicon.ico}'/>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/fontawesome-all.min.css}">
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+    <link rel="stylesheet" th:href="@{/css/admin-dump.css}">
+
+    <script th:attr="src=@{/js/jquery-3.5.1.slim.min.js}"></script>
+    <script th:attr="src=@{/js/bootstrap.min.js}"></script>
+    <script th:attr="src=@{/js/constants.js}"></script>
+</head>
+<body>
+<div th:replace="/fragments/admin-header.html :: admin-header"></div>
+<div th:replace="/fragments/db-dump.html :: db-dump"></div>
+</body>
+</html>
