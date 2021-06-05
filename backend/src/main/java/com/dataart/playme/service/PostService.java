@@ -27,4 +27,8 @@ public interface PostService {
     void deleteComment(Comment comment, Musician musician);
 
     int getPostsAmount(List<Band> bands);
+
+    Post putLike(Post post, Musician likedBy);
+
+    Post unputLike(Post post, Musician likedBy);
 }

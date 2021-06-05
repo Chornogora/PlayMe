@@ -28,6 +28,7 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class PostServiceImpl implements PostService {
@@ -121,6 +122,20 @@ public class PostServiceImpl implements PostService {
     @Override
     public int getPostsAmount(List<Band> bands) {
         return postRepository.getPostsAmount(bands);
+    }
+
+    @Override
+    public Post putLike(Post post, Musician likedBy) {
+        post.getLikedBy().add(likedBy);
+        return postRepository.save(post);
+    }
+
+    @Override
+    public Post unputLike(Post post, Musician likedBy) {
+        post.setLikedBy(post.getLikedBy().stream()
+                .filter(musician -> !musician.getId().equals(likedBy.getId()))
+                .collect(Collectors.toList()));
+        return postRepository.save(post);
     }
 
     @Transactional

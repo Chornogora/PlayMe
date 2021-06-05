@@ -41,9 +41,32 @@
   position: relative;
 }
 
-.comment-link:hover {
+.comment-link-text:hover {
   color: red;
   cursor: pointer;
+}
+
+.like {
+  display: inline-block;
+  margin: 2px 2rem 2px 2px;
+}
+
+.like-amount {
+  margin-right: 1px;
+}
+
+.like-button {
+  color: white;
+  font-size: 1rem;
+}
+
+.like-button:hover {
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.liked {
+  color: red;
 }
 
 .end-of-news {

@@ -6,6 +6,7 @@ import {NewsDto} from '../../../common/dto/news.dto';
 import {UserService} from '../../../common/services/user.service';
 import {BandDto} from '../../../common/dto/band.dto';
 import {DateService} from '../../../common/services/date.service';
+import {MusicianDto} from '../../../common/dto/musician.dto';
 
 @Component({
   selector: 'app-home-news-line',
@@ -18,6 +19,8 @@ export class NewsLineComponent implements OnInit {
   @ViewChild('anchor') anchor: ElementRef<HTMLElement>;
 
   @Input() user: UserDto;
+
+  @Input() musician: MusicianDto;
 
   posts: PostDto[] = [];
 
@@ -86,5 +89,17 @@ export class NewsLineComponent implements OnInit {
 
   deleteComment(commentId: string, post: PostDto): void {
     this.newsService.deleteComment(commentId, post);
+  }
+
+  isLiked(post: PostDto): boolean {
+    return this.newsService.isLiked(post, this.musician);
+  }
+
+  putOrUnputLike(post: PostDto): void {
+    if (this.isLiked(post)) {
+      this.newsService.unputLike(post);
+    } else {
+      this.newsService.putLike(post);
+    }
   }
 }

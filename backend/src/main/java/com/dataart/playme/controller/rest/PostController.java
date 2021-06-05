@@ -66,6 +66,18 @@ public class PostController {
         throw new BadRequestException("Invalid data");
     }
 
+    @PostMapping("/{post}/_like")
+    public Post putLike(@PathVariable Post post,
+                        @CurrentMusician Musician musician) {
+        return postService.putLike(post, musician);
+    }
+
+    @PostMapping("/{post}/_unlike")
+    public Post unputLike(@PathVariable Post post,
+                          @CurrentMusician Musician musician) {
+        return postService.unputLike(post, musician);
+    }
+
     @DeleteMapping("/{post}")
     public void deletePost(@PathVariable Post post,
                            @CurrentMusician Musician musician) {

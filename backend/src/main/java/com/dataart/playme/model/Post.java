@@ -38,6 +38,12 @@ public class Post {
             inverseJoinColumns = @JoinColumn(name = "photo_id"))
     private List<Photo> photos;
 
+    @ManyToMany
+    @JoinTable(name = "likes",
+            joinColumns = @JoinColumn(name = "post_id"),
+            inverseJoinColumns = @JoinColumn(name = "musician_id"))
+    private List<Musician> likedBy;
+
     @ManyToOne
     @JoinColumn(name = "creator_id")
     private Musician creator;

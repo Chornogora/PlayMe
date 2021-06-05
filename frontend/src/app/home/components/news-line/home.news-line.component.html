@@ -26,12 +26,19 @@
               <div *ngFor="let file of post.files">
                 <i class="fas fa-compact-disc"></i>
                 <a href="{{'http://localhost:8080/file/' + file.fileUrl}}">
-                  {{file.fileUrl.substr( 41)}}
+                  {{file.fileUrl.substr(41)}}
                 </a>
               </div>
             </div>
           </div>
-          <span class="comment-link" (click)="openComments(post)">Comments</span>
+          <div class="comment-link">
+            <div class="like">
+              <span class="like-amount">{{post.likedBy.length}}</span>
+              <i [class]="{'fas': true, 'fa-heart':true, 'like-button': true, 'liked':(isLiked(post))}"
+                 (click)="putOrUnputLike(post)"></i>
+            </div>
+            <span class="comment-link-text" (click)="openComments(post)">Comments</span>
+          </div>
           <app-comments-list *ngIf="commentOpened[post.id]" [comments]="post.comments" [user]="user"
                              (commentCreationEvent)="createComment($event, post)"
                              (commentDeletingEvent)="deleteComment($event, post)"></app-comments-list>

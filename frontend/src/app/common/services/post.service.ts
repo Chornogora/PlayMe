@@ -1,9 +1,10 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {PostDto} from '../dto/post.dto';
 import {BandDto} from '../dto/band.dto';
 import {CommentDto} from '../dto/comment.dto';
 import {CreatePostDto} from '../dto/create-post.dto';
+import {MusicianDto} from '../dto/musician.dto';
 
 @Injectable()
 export class PostService {
@@ -52,5 +53,23 @@ export class PostService {
 
   deletePost(post: PostDto): any {
     return this.httpClient.delete(`http://localhost:8080/posts/${post.id}`, {withCredentials: true});
+  }
+
+  isLiked(post: PostDto, musician: MusicianDto): boolean {
+    const currentLike = post.likedBy
+      .find(likedMusician => likedMusician.id === musician.id);
+    return currentLike != null;
+  }
+
+  putLike(post: PostDto): void {
+    this.httpClient.post(`http://localhost:8080/posts/${post.id}/_like`, null, {withCredentials: true})
+      .subscribe((postUpdated: PostDto) => post.likedBy = postUpdated.likedBy,
+        error => console.log(error));
+  }
+
+  unputLike(post: PostDto): void {
+    this.httpClient.post(`http://localhost:8080/posts/${post.id}/_unlike`, null, {withCredentials: true})
+      .subscribe((postUpdated: PostDto) => post.likedBy = postUpdated.likedBy,
+        error => console.log(error));
   }
 }

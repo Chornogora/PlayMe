@@ -1,0 +1,27 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2021-4-6-20-20-create-table-likes
+      author: liquibase-dbadmin
+      changes:
+        - createTable:
+            tableName: likes
+            columns:
+              - column:
+                  name: post_id
+                  type: varchar(36)
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_likes_posts
+                    references: posts(id)
+              - column:
+                  name: musician_id
+                  type: varchar(36)
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_likes_musicians
+                    references: musicians(id)
+              - addPrimaryKey:
+                  constraintName: pk_likes
+                  tableName: likes
+                  columnNames: post_id, musician_id
+                  validate: true
