@@ -1,0 +1,45 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2021-5-6-11-15-create-table-notifications
+      author: liquibase-dbadmin
+      changes:
+        - createTable:
+            tableName: notifications
+            columns:
+              - column:
+                  name: id
+                  type: varchar(36)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: title
+                  type: varchar(64)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: text
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: read
+                  type: boolean
+                  constraints:
+                    nullable: false
+                    default: false
+              - column:
+                  name: musician_id
+                  type: varchar(36)
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_notifications_musicians
+                    references: musicians(id)
+        - addColumn:
+            tableName: musicians
+            columns:
+              - column:
+                  name: email_notifications
+                  type: boolean
+                  constraints:
+                    default: true

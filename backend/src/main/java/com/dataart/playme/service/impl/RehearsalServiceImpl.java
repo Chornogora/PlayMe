@@ -10,6 +10,7 @@ import com.dataart.playme.repository.MetronomeRepository;
 import com.dataart.playme.repository.RehearsalRepository;
 import com.dataart.playme.service.CabinetService;
 import com.dataart.playme.service.FileService;
+import com.dataart.playme.service.NotificationService;
 import com.dataart.playme.service.RehearsalService;
 import com.dataart.playme.service.dto.RehearsalDtoTransformationService;
 import com.dataart.playme.util.Constants;
@@ -34,15 +35,19 @@ public class RehearsalServiceImpl implements RehearsalService {
 
     private final MetronomeRepository metronomeRepository;
 
+    private final NotificationService notificationService;
+
     @Autowired
     public RehearsalServiceImpl(CabinetService cabinetService, FileService fileService, RehearsalRepository rehearsalRepository,
                                 MetronomeRepository metronomeRepository,
-                                RehearsalDtoTransformationService rehearsalDtoTransformationService) {
+                                RehearsalDtoTransformationService rehearsalDtoTransformationService,
+                                NotificationService notificationService) {
         this.cabinetService = cabinetService;
         this.fileService = fileService;
         this.rehearsalRepository = rehearsalRepository;
         this.metronomeRepository = metronomeRepository;
         this.rehearsalDtoTransformationService = rehearsalDtoTransformationService;
+        this.notificationService = notificationService;
     }
 
     @Override
@@ -61,7 +66,19 @@ public class RehearsalServiceImpl implements RehearsalService {
         Rehearsal rehearsal = rehearsalDtoTransformationService.creationDtoToRehearsal(dto);
         String id = UUID.randomUUID().toString();
         rehearsal.setId(id);
-        return rehearsalRepository.save(rehearsal);
+        Rehearsal savedRehearsal = rehearsalRepository.save(rehearsal);
+
+        String messageText = createMessageText(dto);
+        savedRehearsal.getMembers()
+                .forEach(member -> notificationService.createNotification(member, messageText, "New rehearsal"));
+
+        return savedRehearsal;
+    }
+
+    private String createMessageText(CreateRehearsalDto dto) {
+        return String.format("%s created a rehearsal from %2$tH:%2$tM %2$te.%2$tm.%2$tY to " +
+                "%3$tH:%3$tM %3$te.%3$tm.%3$tY and invited you to attend it",
+                dto.getCreator().getUser().getLogin(), dto.getStartDatetime(), dto.getFinishDatetime());
     }
 
     @Override

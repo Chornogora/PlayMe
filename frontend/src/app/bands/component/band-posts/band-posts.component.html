@@ -51,5 +51,5 @@
 </div>
 
 <app-modal *ngIf="postToDelete" [title]="'Post deleting confirmation'" [text]="'Are you sure want to delete this post?'"
-           (deleteEvent)="deletePost()"
+           (acceptEvent)="deletePost()"
            (cancelEvent)="cancelDeleting()"></app-modal>

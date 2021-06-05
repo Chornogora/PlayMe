@@ -36,10 +36,10 @@
 </div>
 
 <app-modal *ngIf="shouldLeaveBand" [title]="'Leaving confirmation'" [text]="'Are you sure want to leave this band?'"
-           (deleteEvent)="leaveBand()"
+           (acceptEvent)="leaveBand()"
            (cancelEvent)="cancelLeaving()"></app-modal>
 
 <app-modal *ngIf="showMessage" [title]="'Can\'t leave band'"
            [text]="'You can\'t leave this band, appoint another leader first'"
-           (deleteEvent)="cancelLeaving()"
+           (acceptEvent)="cancelLeaving()"
            (cancelEvent)="cancelLeaving()"></app-modal>

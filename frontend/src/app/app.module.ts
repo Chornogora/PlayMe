@@ -19,6 +19,8 @@ import {RehearsalsModule} from './rehearsals/rehearsals.module';
 import {RehearsalsPageComponent} from './rehearsals/pages/rehearsals-page/rehearsals.page.component';
 import {CabinetPageComponent} from './cabinet/pages/cabinet.page.component';
 import {CabinetModule} from './cabinet/cabinet.module';
+import {NotificationsPageComponent} from './notifications/pages/notifications.page.component';
+import {NotificationsModule} from './notifications/notifications.module';
 
 const appRoutes: Routes = [
   {path: '', component: HomePageComponent},
@@ -29,7 +31,8 @@ const appRoutes: Routes = [
   {path: 'band/:id', component: BandPageComponent},
   {path: 'band/:id/edit', component: BandEditPageComponent},
   {path: 'rehearsals', component: RehearsalsPageComponent},
-  {path: 'rehearsal/:id', component: CabinetPageComponent}
+  {path: 'rehearsal/:id', component: CabinetPageComponent},
+  {path: 'notifications', component: NotificationsPageComponent}
 ];
 
 @NgModule({
@@ -47,6 +50,7 @@ const appRoutes: Routes = [
     AppCommonModule,
     RehearsalsModule,
     CabinetModule,
+    NotificationsModule
   ],
   bootstrap: [AppComponent]
 })

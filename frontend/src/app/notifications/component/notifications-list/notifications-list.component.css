@@ -1,0 +1,36 @@
+.notifications-list {
+  position: relative;
+  top: 2rem;
+  left: 20%;
+  width: 60%;
+}
+
+.notification {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  background-color: #242526;
+  color: #ced4da;
+  min-height: 5rem;
+  font-size: 2rem;
+  text-align: center;
+  vertical-align: middle;
+  border-radius: 2rem;
+  transition: background-color .15s ease-in-out;
+}
+
+.notification-new {
+  background-color: #3A3B3C;
+  color: #e9ecef;
+}
+
+.notification:hover {
+  background-color: #17a2b8;
+  color: white;
+  cursor: pointer;
+}
+
+.no-notifications {
+  color: white;
+  font-size: 2rem;
+  text-align: center;
+}

@@ -9,6 +9,7 @@ import com.dataart.playme.exception.NoSufficientPrivilegesException;
 import com.dataart.playme.model.*;
 import com.dataart.playme.repository.*;
 import com.dataart.playme.service.BandService;
+import com.dataart.playme.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,15 +33,18 @@ public class BandServiceImpl implements BandService {
 
     private final BandStatusRepository bandStatusRepository;
 
+    private final NotificationService notificationService;
+
     @Autowired
     public BandServiceImpl(BandRepository bandRepository, MemberStatusRepository memberStatusRepository,
                            MembershipRepository membershipRepository, MusicianRepository musicianRepository,
-                           BandStatusRepository bandStatusRepository) {
+                           BandStatusRepository bandStatusRepository, NotificationService notificationService) {
         this.bandRepository = bandRepository;
         this.memberStatusRepository = memberStatusRepository;
         this.membershipRepository = membershipRepository;
         this.musicianRepository = musicianRepository;
         this.bandStatusRepository = bandStatusRepository;
+        this.notificationService = notificationService;
     }
 
     @Override
@@ -178,6 +182,10 @@ public class BandServiceImpl implements BandService {
     private Membership saveMember(Band band, Musician musician, String statusName) {
         MemberStatus memberStatus = memberStatusRepository.findByName(statusName)
                 .orElseThrow(() -> new NoSuchRecordException("Cannot find member status"));
+
+        notificationService.createNotification(musician,
+                "You were added to the band " + band.getName(), "New Membership");
+
         return membershipRepository.save(new Membership(new Membership.MembershipId(musician.getId(), band.getId()),
                 musician, band, memberStatus));
     }

@@ -29,6 +29,12 @@ public class Musician {
     @OneToMany(mappedBy = "musician", fetch = FetchType.LAZY)
     private List<Membership> memberships;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "recipient")
+    @JsonManagedReference
+    private List<Notification> notifications;
+
+    private boolean emailNotifications = true;
+
     public String toString() {
         return "[" + getClass().getName() + "]";
     }

@@ -19,14 +19,14 @@ export class ModalComponent implements AfterViewInit {
 
   @Output() cancelEvent = new EventEmitter<void>();
 
-  @Output() deleteEvent = new EventEmitter<void>();
+  @Output() acceptEvent = new EventEmitter<void>();
 
   constructor(private modalService: NgbModal) {
   }
 
   ngAfterViewInit(): void {
     this.modalService.open(this.content, {ariaLabelledBy: 'modal-basic-title'}).result.then(() => {
-      this.deleteEvent.emit();
+      this.acceptEvent.emit();
     }, () => {
       this.cancelEvent.emit();
     });

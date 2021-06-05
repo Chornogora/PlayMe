@@ -44,12 +44,12 @@
 
 <app-modal *ngIf="memberToDelete" [title]="'Member deleting confirmation'"
            [text]="'Are you sure want to delete this member?'"
-           (deleteEvent)="deleteMusician()"
+           (acceptEvent)="deleteMusician()"
            (cancelEvent)="cancelDeleting()"></app-modal>
 
 <app-modal *ngIf="memberToBecomeLeader" [title]="'Member update confirmation'"
            [text]="'Are you sure want this member to become a new leader? Your status will be changed to administrator'"
-           (deleteEvent)="updateMember(memberToBecomeLeader, 'leader')"
+           (acceptEvent)="updateMember(memberToBecomeLeader, 'leader')"
            (cancelEvent)="cancelDeleting()"></app-modal>
 
 <app-toasts></app-toasts>

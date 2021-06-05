@@ -1,0 +1,16 @@
+<div class="notifications-list">
+  <div *ngFor="let notification of notifications"
+       [class]="{'notification':true, 'notification-new': !notification.read}"
+       (click)="openNotification(notification)">
+    <span class="notification-text">{{notification.title}}</span>
+  </div>
+
+  <div *ngIf="notifications.length === 0" class="no-notifications">
+    No notifications found
+  </div>
+</div>
+
+<app-modal *ngIf="currentNotification" [title]="currentNotification.title"
+           [text]="currentNotification.text"
+           (cancelEvent)="closeNotification()"
+           (acceptEvent)="closeNotification()"></app-modal>

@@ -26,6 +26,7 @@ import {SocketConnector} from './services/socket-connector';
 import {MetronomeService} from './services/metronome.service';
 import {AudioService} from './services/audio.service';
 import {RecordService} from './services/record.service';
+import {NotificationService} from './services/notification.service';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import {RecordService} from './services/record.service';
   providers: [AuthorizationService, UserService, PostService,
     DateService, BandService, SubscriptionService, EncoderService,
     ToastService, RegistrationService, CaptchaService, RehearsalService,
-    SocketConnector, MetronomeService, AudioService, RecordService]
+    SocketConnector, MetronomeService, AudioService, RecordService,
+    NotificationService]
 })
 export class AppCommonModule {
 }
