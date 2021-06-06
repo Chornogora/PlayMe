@@ -1,0 +1,3 @@
+<app-header (signOutEvent)="signOut()" [user]="user" [tab]="'profile'"></app-header>
+<app-toasts class="toast-block"></app-toasts>
+<app-edit-profile [update]="update" [musician]="musician" (musicianUpdatedEvent)="musicianUpdatedAction($event)"></app-edit-profile>

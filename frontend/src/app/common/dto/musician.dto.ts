@@ -6,4 +6,5 @@ export class MusicianDto {
   nickname: string;
   user: UserDto;
   memberships: MembershipDto[];
+  emailNotifications: boolean;
 }

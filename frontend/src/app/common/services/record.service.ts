@@ -31,7 +31,6 @@ export class RecordService {
       const stream = await navigator.mediaDevices.getUserMedia({audio: true});
       this.mediaRecorder = new MediaRecorder(stream, {
         audioBitsPerSecond: RecordService.BITS_PER_SECOND,
-        audioBitrateMode: 'cbr',
         mimeType: 'audio/webm'
       });
       this.mediaRecorder.ondataavailable = ((event: BlobEvent) => {

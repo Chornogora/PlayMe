@@ -29,9 +29,10 @@
     </div>
 
     <div class="form-inline rounded navbar-element sign-out">
-      <span class="user-name">{{user.firstName}} {{user.lastName}}
+      <div class="user-name">
+        <a class="profile-name" href="profile">{{user.firstName}} {{user.lastName}}</a>
         <input type="submit" class="btn btn-outline-info sign-out-btn" value="Sign out" (click)="signOut()">
-      </span>
+      </div>
     </div>
   </div>
 </nav>

@@ -21,6 +21,8 @@ import {CabinetPageComponent} from './cabinet/pages/cabinet.page.component';
 import {CabinetModule} from './cabinet/cabinet.module';
 import {NotificationsPageComponent} from './notifications/pages/notifications.page.component';
 import {NotificationsModule} from './notifications/notifications.module';
+import {EditProfilePageComponent} from './profile/pages/edit-profile.page.component';
+import {EditProfileModule} from './profile/profile.module';
 
 const appRoutes: Routes = [
   {path: '', component: HomePageComponent},
@@ -32,7 +34,8 @@ const appRoutes: Routes = [
   {path: 'band/:id/edit', component: BandEditPageComponent},
   {path: 'rehearsals', component: RehearsalsPageComponent},
   {path: 'rehearsal/:id', component: CabinetPageComponent},
-  {path: 'notifications', component: NotificationsPageComponent}
+  {path: 'notifications', component: NotificationsPageComponent},
+  {path: 'profile', component: EditProfilePageComponent}
 ];
 
 @NgModule({
@@ -50,7 +53,8 @@ const appRoutes: Routes = [
     AppCommonModule,
     RehearsalsModule,
     CabinetModule,
-    NotificationsModule
+    NotificationsModule,
+    EditProfileModule
   ],
   bootstrap: [AppComponent]
 })

@@ -1,0 +1,54 @@
+<div class="user-form col-md-4 offset-md-4">
+
+  <div>
+    <div *ngIf="error" class="error-message">{{error}}</div>
+    <div class="form-group">
+      <label for="email-input">Email</label>
+      <input type="email" name="email" class="form-control" id="email-input" placeholder="example@gmail.com"
+             [(ngModel)]="update.email">
+      <div *ngIf="validationIssues.includes('no_email')" class="error-message">No email provided</div>
+      <div *ngIf="validationIssues.includes('long_email')" class="error-message">Email is too long</div>
+      <div *ngIf="validationIssues.includes('email_format')" class="error-message">Incorrect format of email</div>
+    </div>
+    <div class="form-group">
+      <label for="first-name-input">First name</label>
+      <input type="text" name="firstName" class="form-control" id="first-name-input" placeholder="First-Name"
+             [(ngModel)]="update.firstName">
+      <div *ngIf="validationIssues.includes('no_name')" class="error-message">No first name provided</div>
+      <div *ngIf="validationIssues.includes('short_name')" class="error-message">First name is too short</div>
+      <div *ngIf="validationIssues.includes('long_name')" class="error-message">First name is too long</div>
+      <div *ngIf="validationIssues.includes('wrong_name')" class="error-message">Invalid symbols found in first name,
+        only alphabetical symbols and "-" are acceptable
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="last-name-input">Last name</label>
+      <input type="text" name="lastName" class="form-control" id="last-name-input" placeholder="Last-Name"
+             [(ngModel)]="update.lastName">
+      <div *ngIf="validationIssues.includes('no_surname')" class="error-message">No last name provided</div>
+      <div *ngIf="validationIssues.includes('short_surname')" class="error-message">Last name is too short</div>
+      <div *ngIf="validationIssues.includes('long_surname')" class="error-message">Last name is too long</div>
+      <div *ngIf="validationIssues.includes('wrong_surname')" class="error-message">Invalid symbols found in last name,
+        only alphabetical symbols and "-" are acceptable
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="email-notifications-input">Email notifications</label>
+      <input type="checkbox" name="lastName" class="form-control" id="email-notifications-input"
+             [(ngModel)]="update.emailNotifications">
+    </div>
+    <div class="row">
+      <div class="col"></div>
+      <input type="submit" class="btn btn-outline-danger sign-up-btn col" value="Update" (click)="tryUpdateMusician()">
+      <div class="col"></div>
+      <a href="" class="btn btn-light cancel-btn col">Cancel</a>
+      <div class="col"></div>
+    </div>
+  </div>
+</div>
+
+<app-modal *ngIf="mailChanged" [title]="'Email will be changed'"
+           [text]="'You will need to confirm a new email. You will be signed out, so make sure ' +
+            'that you have an access to your email'"
+           (cancelEvent)="closeNotification()"
+           (acceptEvent)="updateMusician()"></app-modal>

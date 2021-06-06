@@ -9,6 +9,7 @@ import com.dataart.playme.model.User;
 import com.dataart.playme.repository.StatusRepository;
 import com.dataart.playme.repository.UserRepository;
 import com.dataart.playme.security.Encoder;
+import com.dataart.playme.service.EmailConfirmationService;
 import com.dataart.playme.service.UserService;
 import com.dataart.playme.util.Constants;
 import com.dataart.playme.util.DateUtil;
@@ -30,11 +31,14 @@ public class UserServiceImpl implements UserService {
 
     private final Encoder encoder;
 
+    private final EmailConfirmationService emailConfirmationService;
+
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, StatusRepository statusRepository, Encoder encoder) {
+    public UserServiceImpl(UserRepository userRepository, StatusRepository statusRepository, Encoder encoder, EmailConfirmationService emailConfirmationService) {
         this.userRepository = userRepository;
         this.statusRepository = statusRepository;
         this.encoder = encoder;
+        this.emailConfirmationService = emailConfirmationService;
     }
 
     @Override
@@ -79,6 +83,7 @@ public class UserServiceImpl implements UserService {
             Status pendingStatus = statusRepository.findByName(statusName)
                     .orElseThrow(() -> new NoSuchRecordException("Cannot find pending status"));
             user.setStatus(pendingStatus);
+            emailConfirmationService.sendConfirmationMessage(user);
         } else if (!user.getStatus().getName().equals(changes.getStatus())) {
             Status newStatus = statusRepository.findByName(changes.getStatus())
                     .orElseThrow(() -> new NoSuchRecordException("Cannot find status"));
