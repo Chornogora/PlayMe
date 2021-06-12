@@ -16,9 +16,6 @@ import {ToastService} from '../../../common/services/toast.service';
 })
 export class BandEditPageComponent extends AbstractBandPageComponent implements OnInit {
 
-  @ViewChild('avatar', {static: false})
-  avatar: ElementRef;
-
   @ViewChild('toast', {static: false})
   toast: ElementRef;
 
@@ -107,13 +104,13 @@ export class BandEditPageComponent extends AbstractBandPageComponent implements 
     const image = files.item(0);
     const reader = new FileReader();
     reader.onload = () => {
-      this.avatar.nativeElement.src = reader.result.toString();
-      this.showToast();
+      this.band.logo = reader.result.toString();
+      this.updateBand();
     };
     reader.readAsDataURL(image);
   }
 
-  changeName(): void {
+  updateBand(): void {
     this.bandService.updateBand(this.band)
       .subscribe(band => {
         this.band = band;

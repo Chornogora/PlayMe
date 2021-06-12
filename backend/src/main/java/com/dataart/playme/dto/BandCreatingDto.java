@@ -20,4 +20,6 @@ public class BandCreatingDto {
 
     @Null
     private List<Membership> members;
+
+    private String logo;
 }

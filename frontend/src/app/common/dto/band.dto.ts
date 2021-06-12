@@ -8,6 +8,7 @@ export class BandDto {
   creationDate: Date;
   members: MembershipDto[];
   bandStatus: { id: string, name: string };
+  logo: string;
 
   constructor(id: string, name: string, creationDate: Date, members: MembershipDto[]) {
     this.id = id;

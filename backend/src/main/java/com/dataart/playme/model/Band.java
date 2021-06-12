@@ -21,6 +21,8 @@ public class Band {
 
     private Date creationDate;
 
+    private String logo;
+
     @JsonManagedReference
     @OneToMany(mappedBy = "band", fetch = FetchType.LAZY)
     private List<Membership> members;

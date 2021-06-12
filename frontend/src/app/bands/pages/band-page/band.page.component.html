@@ -1,6 +1,6 @@
 <app-header (signOutEvent)="signOut()" [user]="user"></app-header>
 <div *ngIf="band" class="band-page-content">
-  <img src="/assets/img/camera.png" class="band-image">
+  <img [src]="band.logo ? 'http://localhost:8080/images/' + band.logo : 'assets/img/camera.png'" class="band-image">
   <div class="band-info">
     <div *ngIf="musician && band && bandService.isLeader(musician, band) && band.bandStatus.name === 'active'"
          class="band-edit">

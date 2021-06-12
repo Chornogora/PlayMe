@@ -9,6 +9,7 @@ import com.dataart.playme.exception.NoSufficientPrivilegesException;
 import com.dataart.playme.model.*;
 import com.dataart.playme.repository.*;
 import com.dataart.playme.service.BandService;
+import com.dataart.playme.service.ImageService;
 import com.dataart.playme.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,8 @@ import java.util.stream.Collectors;
 @Service
 public class BandServiceImpl implements BandService {
 
+    private static final String LOGO_FILE_PREFIX = "band_logo_";
+
     private final BandRepository bandRepository;
 
     private final MemberStatusRepository memberStatusRepository;
@@ -35,16 +38,20 @@ public class BandServiceImpl implements BandService {
 
     private final NotificationService notificationService;
 
+    private final ImageService imageService;
+
     @Autowired
     public BandServiceImpl(BandRepository bandRepository, MemberStatusRepository memberStatusRepository,
                            MembershipRepository membershipRepository, MusicianRepository musicianRepository,
-                           BandStatusRepository bandStatusRepository, NotificationService notificationService) {
+                           BandStatusRepository bandStatusRepository, NotificationService notificationService,
+                           ImageService imageService) {
         this.bandRepository = bandRepository;
         this.memberStatusRepository = memberStatusRepository;
         this.membershipRepository = membershipRepository;
         this.musicianRepository = musicianRepository;
         this.bandStatusRepository = bandStatusRepository;
         this.notificationService = notificationService;
+        this.imageService = imageService;
     }
 
     @Override
@@ -67,6 +74,7 @@ public class BandServiceImpl implements BandService {
     public Band updateBand(BandCreatingDto dto, Band band, Musician changedBy) {
         if (isLeader(band, changedBy)) {
             band.setName(dto.getName());
+            setLogoForBand(dto, band);
             return bandRepository.save(band);
         }
         throw new NoSufficientPrivilegesException("Can't update band: user is not a leader");
@@ -176,6 +184,7 @@ public class BandServiceImpl implements BandService {
         BandStatus bandStatus = bandStatusRepository.findByName(bandStatusName);
         band.setBandStatus(bandStatus);
 
+        setLogoForBand(dto, band);
         return band;
     }
 
@@ -240,5 +249,13 @@ public class BandServiceImpl implements BandService {
             return;
         }
         throw new ConflictException("Cannot delete subscriber");
+    }
+
+    private void setLogoForBand(BandCreatingDto dto, Band band) {
+        if (dto.getLogo() != null) {
+            String filename = LOGO_FILE_PREFIX + band.getName();
+            String file = imageService.createImage(dto.getLogo(), filename);
+            band.setLogo(file);
+        }
     }
 }

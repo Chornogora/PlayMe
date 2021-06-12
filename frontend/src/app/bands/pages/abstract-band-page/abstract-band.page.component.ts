@@ -45,4 +45,6 @@ export class AbstractBandPageComponent extends UserRolePageComponent implements 
         this.musician = musician;
       });
   }
+
+
 }

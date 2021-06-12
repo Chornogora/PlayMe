@@ -59,7 +59,7 @@ export class BandService {
   }
 
   updateBand(band: BandDto): any {
-    return this.httpClient.patch(`http://localhost:8080/bands/${band.id}`, {name: band.name},
+    return this.httpClient.patch(`http://localhost:8080/bands/${band.id}`, {name: band.name, logo: band.logo},
       {withCredentials: true});
   }
 

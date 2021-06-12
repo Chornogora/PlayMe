@@ -2,7 +2,7 @@
 <div *ngIf="band" class="band-page-content">
   <div class="avatar-pick w3-center">
     <div class="image-upload">
-      <img class="current-image" src="assets/img/camera.png" #avatar>
+      <img class="current-image" [src]="band.logo ? 'http://localhost:8080/images/' + band.logo : 'assets/img/camera.png'">
       <div class="new-image">
         <input id="image-input" type="file" (change)="setAvatar($event.target.files)"/>
         <label for="image-input">
@@ -16,7 +16,7 @@
     <label for="band-name">Name</label>
     <div>
       <input class="band-name" type="text" [(ngModel)]="band.name" value="{{band.name}}" id="band-name">
-      <i class="fas fa-save save-name-button" (click)="changeName()"></i>
+      <i class="fas fa-save save-name-button" (click)="updateBand()"></i>
     </div>
   </div>
   <hr>

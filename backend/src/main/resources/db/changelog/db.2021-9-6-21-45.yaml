@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2021-5-6-11-15-create-table-notifications
+      author: liquibase-dbadmin
+      changes:
+        - addColumn:
+            tableName: bands
+            columns:
+              - column:
+                  name: logo
+                  type: varchar(64)
