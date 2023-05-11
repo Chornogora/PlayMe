@@ -8,7 +8,7 @@ import {RecordService} from '../../../common/services/record.service';
 })
 export class NoiseFilteringComponent {
 
-    entries = ['no', 'frequencies', 'biquad'];
+    entries = ['no', 'frequencies', 'standard'];
 
     @Input() recordService: RecordService;
 

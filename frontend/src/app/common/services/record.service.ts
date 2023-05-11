@@ -32,7 +32,7 @@ export class RecordService {
 
   async startRecording(muted = false): Promise<void> {
     if (!this.mediaRecorder || this.mediaRecorder.state !== 'recording') {
-      const audioConstraints = (this.filteringMethod === 'biquad')
+      const audioConstraints = (this.filteringMethod === 'standard')
           ? {audio: {noiseSuppression: true}} : {audio: true};
       const stream = await navigator.mediaDevices.getUserMedia(audioConstraints);
       this.mediaRecorder = new MediaRecorder(stream, {
