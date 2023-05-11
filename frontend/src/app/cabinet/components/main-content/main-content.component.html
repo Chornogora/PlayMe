@@ -9,6 +9,14 @@
       (click)="changeState('metronomes')">Metronomes
     </button>
     <button
+        [class]="{'w3-bar-item': true, 'w3-button':true, 'col-md': true, 'active-tab':(state === 'canon')}"
+        (click)="changeState('canon')">Delay
+    </button>
+    <button
+            [class]="{'w3-bar-item': true, 'w3-button':true, 'col-md': true, 'active-tab':(state === 'noise')}"
+            (click)="changeState('noise')">Noise filtering
+    </button>
+    <button
       [class]="{'w3-bar-item': true, 'w3-button':true, 'col-md': true, 'active-tab':(state === 'description')}"
       (click)="changeState('description')">Description
     </button>
@@ -30,6 +38,16 @@
                           (metronomeDisabledEvent)="metronomeDisabledEvent.emit()"
                           (updateRehearsalEvent)="updateRehearsalEvent.emit($event)"
                           class="metronome-form-component"></app-metronome-form>
+    </div>
+    <div [ngClass]="{'main-content-canon':'true', 'invisible':(state !== 'canon')}">
+      <app-canon-form [recordService]="recordService"
+                          class="canon-form-component">
+      </app-canon-form>
+    </div>
+    <div [ngClass]="{'main-content-noise':'true', 'invisible':(state !== 'noise')}">
+      <app-noise-filtering-form [recordService]="recordService"
+                      class="noise-filtering-form-component">
+      </app-noise-filtering-form>
     </div>
     <div *ngIf="state === 'description' && rehearsal" class="main-content-description">
       {{rehearsal.description ? rehearsal.description : 'No description provided'}}

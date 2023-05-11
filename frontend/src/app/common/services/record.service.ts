@@ -16,6 +16,10 @@ export class RecordService {
 
   finished = false;
 
+  delay = 0;
+
+  filteringMethod: string;
+
   mediaRecorder: MediaRecorder;
 
   constructor(private encoderService: EncoderService, private httpClient: HttpClient) {
@@ -28,13 +32,15 @@ export class RecordService {
 
   async startRecording(muted = false): Promise<void> {
     if (!this.mediaRecorder || this.mediaRecorder.state !== 'recording') {
-      const stream = await navigator.mediaDevices.getUserMedia({audio: true});
+      const audioConstraints = (this.filteringMethod === 'biquad')
+          ? {audio: {noiseSuppression: true}} : {audio: true};
+      const stream = await navigator.mediaDevices.getUserMedia(audioConstraints);
       this.mediaRecorder = new MediaRecorder(stream, {
         audioBitsPerSecond: RecordService.BITS_PER_SECOND,
         mimeType: 'audio/webm'
       });
       this.mediaRecorder.ondataavailable = ((event: BlobEvent) => {
-        this.sendChunk(event.data);
+          this.sendChunk(event.data);
       });
       if (muted) {
         this.muteRecording();
@@ -42,6 +48,26 @@ export class RecordService {
       this.mediaRecorder.start(500);
     }
   }
+
+  private sendChunk(chunk: Blob): void {
+    const reader = this.encoderService.encodeBase64(chunk);
+    reader.onloadend = () => {
+      const encodedSound = reader.result.toString();
+      this.socketConnector.sendAudio(encodedSound, {
+        firstRecord: this.firstRecord,
+        bitsPerSecond: this.mediaRecorder.audioBitsPerSecond,
+        lastRecord: this.finished,
+        delayTime: this.delay,
+        filterNoise: this.filteringMethod === 'frequency'
+      });
+      this.firstRecord = false;
+      if (this.finished) {
+        this.firstRecord = true;
+        this.finished = false;
+      }
+    };
+  }
+
 
   muteRecording(): void {
     if (this.mediaRecorder) {
@@ -62,20 +88,11 @@ export class RecordService {
     }
   }
 
-  private sendChunk(chunk: Blob): void {
-    const reader = this.encoderService.encodeBase64(chunk);
-    reader.onloadend = () => {
-      const encodedSound = reader.result.toString();
-      this.socketConnector.sendAudio(encodedSound, {
-        firstRecord: this.firstRecord,
-        bitsPerSecond: this.mediaRecorder.audioBitsPerSecond,
-        lastRecord: this.finished
-      });
-      this.firstRecord = false;
-      if (this.finished) {
-        this.firstRecord = true;
-        this.finished = false;
-      }
-    };
+  setDelay(delay: number): void {
+    this.delay = delay;
+  }
+
+  setFilteringMethod(noiseFiltering: string): void {
+    this.filteringMethod = noiseFiltering;
   }
 }

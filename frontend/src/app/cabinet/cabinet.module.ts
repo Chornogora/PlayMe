@@ -9,12 +9,16 @@ import {MetronomeFormComponent} from './components/metronome-form/metronome-form
 import {MainContentComponent} from './components/main-content/main-content.component';
 import {TracksComponent} from './components/tracks-component/tracks.component';
 import {TrackComponent} from './components/tracks-component/track.component.ts/track.component';
+import {CanonFormComponent} from './components/canon-form.component/canon-form.component';
+import {NoiseFilteringComponent} from './components/noise-filtering-component/noise-filtering-component';
 
 @NgModule({
   declarations: [
     CabinetPageComponent,
     MemberListComponent,
     MetronomeFormComponent,
+    CanonFormComponent,
+    NoiseFilteringComponent,
     MainContentComponent,
     TracksComponent,
     TrackComponent

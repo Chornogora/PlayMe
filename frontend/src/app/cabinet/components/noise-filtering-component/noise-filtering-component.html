@@ -1,0 +1,12 @@
+<div class="noise-filtering-form">
+    <div class="noise-filtering-panel">
+        <div>
+            <div *ngFor="let entry of entries">
+                <input type="radio" id="{{ entry + '-id'}}"
+                       [checked]="entry == 'no'"
+                       name="filteringMethod" (change)="updateFilteringMethod(entry)">
+                <label for="{{ entry + '-id'}}" class="noise-label">{{ entry }}</label>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,8 @@
+<div class="canon-form">
+    <div class="canon-panel">
+        <div>
+            <input type="range" min="0" max="20" id="delay" [(ngModel)]="delay" (ngModelChange)="updateDelay()">
+            <label for="delay" class="delay-description">Current value is: {{ 0.25 * delay }} seconds</label>
+        </div>
+    </div>
+</div>

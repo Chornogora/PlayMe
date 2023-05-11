@@ -35,13 +35,13 @@ export class MainContentComponent {
 
   @Output() pinnedEvent = new EventEmitter<{ musician: MusicianDto, pinned: boolean }>();
 
-  state: 'tracks' | 'metronomes' | 'description';
+  state: 'tracks' | 'metronomes' | 'description' | 'canon' | 'noise';
 
   constructor() {
     this.state = 'tracks';
   }
 
-  changeState(newState: 'tracks' | 'metronomes' | 'description'): void {
+  changeState(newState: 'tracks' | 'metronomes' | 'description' | 'canon' | 'noise'): void {
     this.state = newState;
   }
 
