@@ -11,6 +11,7 @@ import com.dataart.playme.repository.CabinetRepository;
 import com.dataart.playme.repository.TrackRepository;
 import com.dataart.playme.service.RecordService;
 import com.dataart.playme.util.Constants;
+import com.dataart.playme.util.MonitorCache;
 import org.postgresql.util.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,17 +32,23 @@ public class RecordServiceImpl implements RecordService {
 
     private static final String TRACK_MARK = "track_";
 
-    private static final String EXTENSION = ".webm";
+    private static final String EXTENSION = ".wav";
 
     private final CabinetRepository cabinetRepository;
 
     private final TrackRepository trackRepository;
 
+    private final PostProcessingService postProcessingService;
+
+    private final MonitorCache monitorCache;
+
     @Autowired
     public RecordServiceImpl(CabinetRepository cabinetRepository,
-                             TrackRepository trackRepository) {
+                             TrackRepository trackRepository, PostProcessingService postProcessingService, MonitorCache monitorCache) {
         this.cabinetRepository = cabinetRepository;
         this.trackRepository = trackRepository;
+        this.postProcessingService = postProcessingService;
+        this.monitorCache = monitorCache;
     }
 
     @Override
@@ -60,15 +67,22 @@ public class RecordServiceImpl implements RecordService {
         String filePath = rootDirectory + trackDirectory + "\\" +
                 track.getFileUrl();
 
-        try {
-            File file = new File(filePath);
-            if (!file.exists()) {
-                file.createNewFile();
-            }
+        Object monitor = monitorCache.addMonitor(track.getFileUrl());
+        synchronized (monitor) {
+            try {
+                File file = new File(filePath);
+                if (!file.exists()) {
+                    file.createNewFile();
+                }
 
-            writeToFile(decoded, file, dto);
-        } catch (IOException e) {
-            LOGGER.error("Can't write to file", e);
+                writeToFile(decoded, file, dto);
+
+                if (dto.isLastRecord()) {
+                    postProcessingService.postProcess(filePath, dto);
+                }
+            } catch (IOException e) {
+                LOGGER.error("Can't write to file", e);
+            }
         }
     }
 

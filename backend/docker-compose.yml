@@ -1,0 +1,17 @@
+version: "3"
+services:
+  playmedb:
+    image: mirror-hub.docker.tech.lastmile.com/postgres:11
+    environment:
+      POSTGRES_DB: playme
+      POSTGRES_USER: postgres_user
+      POSTGRES_PASSWORD: postgres_password
+    ports:
+      - 5432:5432
+    volumes:
+      - playmedb:/var/lib/postgresql2/data
+      - ./docker/db/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+volumes:
+  playmedb:
+    driver: local

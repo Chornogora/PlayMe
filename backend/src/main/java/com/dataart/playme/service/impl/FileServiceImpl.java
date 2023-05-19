@@ -18,7 +18,12 @@ public class FileServiceImpl implements FileService {
     @Override
     public byte[] readFromFile(String fileName, String folderName) throws IOException {
         String filePath = Constants.get(Constants.FILE_STORAGE_PATH_ID) + folderName + "\\" + fileName;
-        try (FileInputStream fis = new FileInputStream(filePath)) {
+        String mixedFilePath = Constants.get(Constants.FILE_STORAGE_PATH_ID) + folderName + "\\" +
+                fileName.split("\\.wav")[0] + "-mixed.wav";
+
+        String path = new File(mixedFilePath).exists()
+                ? mixedFilePath : filePath;
+        try (FileInputStream fis = new FileInputStream(path)) {
             return fis.readAllBytes();
         }
     }

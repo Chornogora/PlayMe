@@ -31,3 +31,5 @@ databaseChangeLog:
       file: classpath:/db/changelog/db.2021-5-6-11-15.yaml
   - include:
       file: classpath:/db/changelog/db.2021-9-6-21-45.yaml
+  - include:
+      file: classpath:/db/changelog/db.2021-9-6-21-45.yaml

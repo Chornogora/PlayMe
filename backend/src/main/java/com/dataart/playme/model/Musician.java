@@ -29,7 +29,7 @@ public class Musician {
     @OneToMany(mappedBy = "musician", fetch = FetchType.LAZY)
     private List<Membership> memberships;
 
-    @OneToMany(mappedBy = "recipient")
+    @OneToMany(mappedBy = "recipient", fetch = FetchType.EAGER)
     @JsonManagedReference
     private List<Notification> notifications;
 

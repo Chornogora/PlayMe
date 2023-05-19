@@ -14,4 +14,8 @@ public class RecordChunkDto {
     boolean lastRecord;
 
     int bitsPerSecond;
+
+    int delayTime;
+
+    boolean filterNoise;
 }
